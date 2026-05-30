@@ -364,7 +364,7 @@ function analyzeWriting(text, targetWords){
         const result=analyzeWriting(text, target);  // {band, raw, words, metrics}
         // blank / time-out with nothing written => lowest level
         const band = (result.words<5) ? 'Pre-A1' : result.band;
-        detectedBands.push({band, result});
+        detectedBands.push({band, result, text});
 
         document.getElementById('test-screen').classList.add('hidden');
         const gs=document.getElementById('grading-screen');
@@ -445,7 +445,9 @@ function analyzeWriting(text, targetWords){
     function reportToHub(level){
         try{
             if(window.parent && window.parent!==window && location.hash.indexOf('hub=1')>=0){
-                window.parent.postMessage({type:'cefr_result', level:String(level||'')}, '*');
+                // include the student's written responses (one per stage)
+                const responses = detectedBands.map(d => (d.text||"").trim());
+                window.parent.postMessage({type:'cefr_result', level:String(level||''), responses:responses}, '*');
             }
         }catch(e){}
     }
