@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEFR Adaptive Listening Assessment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+    :root{
+        --ink:#1c1a17;--ink-soft:#57514a;--ink-faint:#8a827a;--paper:#faf7f2;--card:#fffdf9;
+        --line:#e7e0d5;--line-strong:#d8cfc0;--accent:#9a3412;--accent-soft:#c2613a;--accent-wash:#fbeee6;
+        --good:#3f6212;--good-wash:#f0f4e6;--warn:#b45309;--danger:#b91c1c;--danger-wash:#fdeceb;
+        --shadow:0 1px 2px rgba(60,48,32,.04),0 8px 30px rgba(60,48,32,.07);
+    }
+    *{box-sizing:border-box;}
+    html{-webkit-text-size-adjust:100%;}
+    body{font-family:"Inter",system-ui,sans-serif;background:var(--paper);
+        background-image:radial-gradient(circle at 18% 12%,#fff 0,transparent 38%),radial-gradient(circle at 85% 88%,#f4ede1 0,transparent 45%);
+        color:var(--ink);line-height:1.65;margin:0;padding:32px 18px 64px;min-height:100vh;}
+    .container{max-width:720px;margin:0 auto;background:var(--card);border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;}
+    .inner{padding:clamp(26px,5vw,52px);}
+    .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 14px;}
+    h1{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(2rem,6vw,2.9rem);line-height:1.05;letter-spacing:-.01em;margin:0 0 18px;}
+    h2{font-family:"Fraunces",serif;font-weight:600;font-size:1.7rem;margin:0 0 10px;}
+    h3{font-family:"Fraunces",serif;font-weight:600;font-size:1.25rem;margin:0 0 6px;}
+    .lede{font-size:1.06rem;color:var(--ink-soft);margin:0 0 16px;max-width:54ch;}
+    .meta-note{font-size:.9rem;color:var(--ink-faint);display:flex;gap:10px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:26px 0 24px;}
+    .meta-note svg{flex:none;margin-top:3px;}
+    ul.rules{margin:0 0 30px;padding-left:18px;color:var(--ink-soft);font-size:.96rem;}
+    ul.rules li{margin-bottom:7px;}
+
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px clamp(26px,5vw,52px);border-bottom:1px solid var(--line);}
+    .stage-label{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;}
+    .stage-label b{color:var(--accent);font-weight:600;}
+    .pips{display:flex;gap:7px;}
+    .pip{width:9px;height:9px;border-radius:50%;background:var(--line-strong);transition:all .4s ease;}
+    .pip.done{background:var(--accent-soft);}
+    .pip.active{background:var(--accent);box-shadow:0 0 0 4px var(--accent-wash);transform:scale(1.15);}
+
+    .prompt-tag{display:inline-block;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);background:var(--accent-wash);border:1px solid #f0d3c4;padding:4px 11px;border-radius:14px;font-weight:600;margin-bottom:18px;}
+
+    .player{background:linear-gradient(180deg,#fffefb,#fdfaf4);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:14px;padding:30px 26px;margin:0 0 26px;text-align:center;}
+    .play-btn{width:84px;height:84px;border-radius:50%;background:var(--accent);color:#fff;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;margin:0 auto 16px;transition:transform .15s,background .2s,box-shadow .2s;box-shadow:0 6px 20px rgba(154,52,18,.28);padding:0;}
+    .play-btn:hover:not(:disabled){transform:scale(1.05);background:var(--accent-soft);}
+    .play-btn:active:not(:disabled){transform:scale(.97);}
+    .play-btn:disabled{background:var(--line-strong);box-shadow:none;cursor:not-allowed;}
+    .play-btn svg{margin-left:4px;}
+    .play-btn.playing svg{margin-left:0;}
+    .player-status{font-size:.96rem;color:var(--ink-soft);font-weight:500;margin:0 0 4px;min-height:1.2em;}
+    .player-sub{font-size:.84rem;color:var(--ink-faint);margin:0;}
+    .progress{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin:18px auto 0;max-width:340px;}
+    .progress i{display:block;height:100%;width:0;background:var(--accent-soft);border-radius:4px;transition:width .25s linear;}
+    .audio-error{font-size:.9rem;color:var(--danger);background:var(--danger-wash);border:1px solid #f3c9c6;border-radius:9px;padding:11px 15px;margin:14px 0 0;}
+
+    .questions-locked{opacity:.45;pointer-events:none;filter:grayscale(.3);transition:opacity .4s,filter .4s;}
+    .locked-hint{font-size:.9rem;color:var(--ink-faint);text-align:center;margin:0 0 18px;display:flex;align-items:center;justify-content:center;gap:8px;}
+
+    .question-block{margin-bottom:26px;}
+    .qhead{display:flex;gap:12px;align-items:baseline;margin-bottom:14px;}
+    .qnum{font-family:"Fraunces",serif;font-weight:600;font-size:.95rem;color:#fff;background:var(--accent);min-width:26px;height:26px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;flex:none;margin-top:1px;}
+    .qtext{font-weight:500;font-size:1.04rem;color:var(--ink);}
+    .options{display:grid;gap:9px;}
+    .opt{display:flex;align-items:center;gap:13px;cursor:pointer;padding:13px 16px;border-radius:10px;background:var(--card);border:1.5px solid var(--line);transition:border-color .18s,background .18s,transform .08s;font-size:.98rem;}
+    .opt:hover{border-color:var(--accent-soft);background:#fffaf6;}
+    .opt:active{transform:scale(.992);}
+    .opt input{position:absolute;opacity:0;pointer-events:none;}
+    .dot{width:19px;height:19px;border-radius:50%;border:2px solid var(--line-strong);flex:none;display:inline-flex;align-items:center;justify-content:center;transition:border-color .18s;}
+    .opt:hover .dot{border-color:var(--accent-soft);}
+    .opt.sel{border-color:var(--accent);background:var(--accent-wash);}
+    .opt.sel .dot{border-color:var(--accent);}
+    .opt.sel .dot::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent);}
+    .opt-letter{font-size:.78rem;color:var(--ink-faint);font-weight:600;min-width:14px;}
+    .opt.sel .opt-letter{color:var(--accent);}
+
+    .error{color:var(--accent);font-size:.92rem;margin:18px 0 0;font-weight:500;background:var(--accent-wash);border:1px solid #f0d3c4;border-radius:9px;padding:11px 15px;display:flex;align-items:center;gap:9px;}
+    button.next{font-family:"Inter",sans-serif;background:var(--ink);color:#fff;border:none;padding:16px 28px;font-size:1.02rem;border-radius:11px;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:24px;transition:background .2s,transform .08s;letter-spacing:.01em;}
+    button.next:hover{background:var(--accent);}
+    button.next:active{transform:scale(.99);}
+    button.next svg{transition:transform .2s;}
+    button.next:hover svg{transform:translateX(3px);}
+    button.start{font-family:"Inter",sans-serif;background:var(--ink);color:#fff;border:none;padding:16px 28px;font-size:1.02rem;border-radius:11px;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;transition:background .2s;}
+    button.start:hover{background:var(--accent);}
+
+    #results-screen{text-align:center;}
+    .result-badge{display:inline-block;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--good);background:var(--good-wash);border:1px solid #d8e4bf;padding:6px 14px;border-radius:20px;font-weight:600;margin-bottom:8px;}
+    .final-score{font-family:"Fraunces",serif;font-size:clamp(3.4rem,14vw,5.2rem);font-weight:600;color:var(--accent);margin:10px 0 14px;line-height:1;letter-spacing:-.02em;}
+    .feedback-text{font-size:1.08rem;color:var(--ink-soft);max-width:48ch;margin:0 auto 8px;}
+    .scale{display:flex;gap:4px;justify-content:center;margin:30px auto 8px;max-width:400px;}
+    .scale .step{flex:1;text-align:center;font-size:.74rem;font-weight:600;color:var(--ink-faint);padding:7px 2px;border-radius:7px;background:var(--paper);border:1px solid var(--line);}
+    .scale .step.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+    .improve{text-align:left;margin:34px 0 0;padding:28px 26px;background:var(--paper);border:1px solid var(--line);border-radius:14px;}
+    .improve-sub{font-size:.96rem;color:var(--ink-soft);margin:0 0 18px;}
+    .focus-list{list-style:none;margin:0;padding:0;display:grid;gap:14px;}
+    .focus-list li{display:flex;gap:13px;align-items:flex-start;}
+    .focus-list .fnum{flex:none;width:24px;height:24px;border-radius:7px;background:var(--accent-wash);color:var(--accent);font-weight:600;font-size:.82rem;display:inline-flex;align-items:center;justify-content:center;margin-top:2px;}
+    .focus-list .fbody{font-size:.96rem;color:var(--ink);line-height:1.55;}
+    .focus-list .fbody b{font-weight:600;}.focus-list .fbody span{color:var(--ink-soft);}
+
+    .contact{text-align:left;margin:22px 0 0;padding:24px 26px;background:linear-gradient(180deg,#fffdf9,#fbeee6);border:1px solid #f0d9cb;border-radius:14px;}
+    .contact-lead{font-family:"Fraunces",serif;font-weight:600;font-size:1.12rem;margin:0 0 6px;color:var(--accent);}
+    .contact-body{font-size:.98rem;color:var(--ink-soft);margin:0;line-height:1.6;}
+    .contact-body a{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:1px solid var(--accent-soft);}
+    .contact-body a:hover{color:var(--accent-soft);}
+    .contact-body b{color:var(--ink);font-weight:600;}
+    .disclaimer{font-size:.82rem;color:var(--ink-faint);margin:20px auto 0;max-width:52ch;line-height:1.5;}
+
+    .restart{margin-top:26px;}
+    .restart button{background:transparent;color:var(--ink-soft);border:1.5px solid var(--line-strong);width:100%;padding:16px 28px;font-size:1.02rem;border-radius:11px;cursor:pointer;font-weight:600;font-family:"Inter",sans-serif;}
+    .restart button:hover{background:var(--paper);color:var(--accent);border-color:var(--accent-soft);}
+
+    .fade{animation:fade .45s ease both;}
+    @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+    .hidden{display:none;}
+    @media(max-width:520px){.inner{padding:26px 20px;}.player{padding:24px 18px;}}
+</style>
+</head>
+<body>
+<div class="container">
+    <!-- Intro -->
+    <div id="intro-screen" class="inner fade">
+        <p class="eyebrow">Listening Proficiency · CEFR A1–C1</p>
+        <h1>Adaptive Listening Assessment</h1>
+        <p class="lede">You will listen to three audio clips and answer questions on each. The difficulty adapts to how accurately you answer. Listen carefully — each clip can be played only once.</p>
+        <div class="meta-note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8a827a" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+            <span>Each clip plays <b>once only</b>, so listen closely. The questions unlock after the audio finishes. Use headphones in a quiet place if you can.</span>
+        </div>
+        <ul class="rules">
+            <li>Press play when you are ready — the audio will not repeat.</li>
+            <li>Answer all five questions before continuing.</li>
+            <li>Please complete the test on your own, without help.</li>
+        </ul>
+        <button class="start" onclick="startTest()">Begin assessment <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
+
+    <!-- Test -->
+    <div id="test-screen" class="hidden">
+        <div class="topbar">
+            <span class="stage-label">Clip <b id="stage-num">1</b> of 3</span>
+            <div class="pips" id="pips"></div>
+        </div>
+        <div class="inner">
+            <span class="prompt-tag" id="prompt-tag">Clip 1</span>
+            <div class="player">
+                <button class="play-btn" id="play-btn" onclick="playAudio()" aria-label="Play audio">
+                    <svg id="play-icon" width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <p class="player-status" id="player-status">Press play to listen</p>
+                <p class="player-sub" id="player-sub">The clip will play once</p>
+                <div class="progress"><i id="progress-fill"></i></div>
+                <div id="audio-error" class="audio-error hidden"></div>
+            </div>
+
+            <p class="locked-hint" id="locked-hint">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
+                Questions unlock after the audio plays
+            </p>
+
+            <div id="questions-container" class="questions-locked"></div>
+            <p id="validation-error" class="error hidden">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 8v5M12 16.5v.01"/><circle cx="12" cy="12" r="9"/></svg>
+                Please answer all five questions before continuing.
+            </p>
+            <button class="next" id="next-btn" onclick="submitNode()">Next clip <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div id="results-screen" class="hidden inner">
+        <span class="result-badge">Assessment complete</span>
+        <h2>Your listening level</h2>
+        <div id="final-level" class="final-score"></div>
+        <p id="feedback-text" class="feedback-text"></p>
+        <div class="scale" id="scale"></div>
+        <div class="improve">
+            <h3>Where to focus next</h3>
+            <p class="improve-sub" id="improve-sub"></p>
+            <ul class="focus-list" id="focus-list"></ul>
+        </div>
+        <div class="contact">
+            <p class="contact-lead">Ready to take the next step?</p>
+            <p class="contact-body">Please contact <b>Christopher Mah</b> at <a href="tel:0823459615">082-345-9615</a> or Line ID: <b>pegasus028</b> for further information or to book a trial tutoring lesson.</p>
+        </div>
+        <p class="disclaimer">This automated estimate is based on your answers to the listening tasks. It is a guide, not a formal qualification — a teacher's assessment gives the most accurate placement.</p>
+        <div class="restart"><button onclick="restart()">Take the test again</button></div>
+    </div>
+</div>
+
+<script>
+    const testBank = {
+        'A1_Route': {
+            audioBase: "a1_route",
+            transcript: "Hello everyone. The museum is now open. Tickets are five dollars for adults and free for children. The museum closes at six o'clock. Please do not touch the paintings. Thank you and enjoy your visit.",
+            questions: [
+                { q: "Where are you?", options: ["A shop", "A school", "A museum", "A train station"], answer: 2 },
+                { q: "How much is a ticket for adults?", options: ["Free", "Six dollars", "Ten dollars", "Five dollars"], answer: 3 },
+                { q: "What time does it close?", options: ["Six o'clock", "At midnight", "Five o'clock", "In the morning"], answer: 0 },
+                { q: "What can children do?", options: ["Enter for free", "Buy a painting", "Touch paintings", "Pay five dollars"], answer: 0 },
+                { q: "What must you NOT do?", options: ["Visit", "Enjoy art", "Buy tickets", "Touch the paintings"], answer: 3 }
+            ]
+        },
+        'A1_Confirm': {
+            audioBase: "a1_confirm",
+            transcript: "Good morning. This is a message for Tom. Your bus to the airport leaves at nine o'clock, not eight. Please wait at the blue bus stop near the hotel. Bring your passport. See you soon.",
+            questions: [
+                { q: "Who is the message for?", options: ["Tom", "A pilot", "The hotel", "A bus driver"], answer: 0 },
+                { q: "What time does the bus leave?", options: ["Eight", "At noon", "Nine o'clock", "In the evening"], answer: 2 },
+                { q: "Where should he wait?", options: ["The airport", "At the hotel", "A train station", "The blue bus stop"], answer: 3 },
+                { q: "What must Tom bring?", options: ["A bus", "A ticket", "His passport", "Some blue paint"], answer: 2 },
+                { q: "Where is Tom going?", options: ["Home", "A hotel", "The airport", "The bus stop"], answer: 2 }
+            ]
+        },
+        'A2_Route': {
+            audioBase: "a2_route",
+            transcript: "Attention shoppers. The supermarket will close early today at four o'clock because of staff training. The bakery is offering fresh bread at half price after two o'clock. Remember to collect your loyalty points at the checkout. We apologise for any inconvenience.",
+            questions: [
+                { q: "Why is the shop closing early?", options: ["A holiday", "Bad weather", "Staff training", "Not enough bread"], answer: 2 },
+                { q: "What time will it close?", options: ["Two", "Four o'clock", "Half past one", "In the evening"], answer: 1 },
+                { q: "What is half price?", options: ["Points", "Fresh bread", "All the food", "The checkout"], answer: 1 },
+                { q: "When does the bread offer start?", options: ["At four", "Right now", "In the morning", "After two o'clock"], answer: 3 },
+                { q: "Where do you collect points?", options: ["Bakery", "At home", "The checkout", "The car park"], answer: 2 }
+            ]
+        },
+        'A2_Confirm': {
+            audioBase: "a2_confirm",
+            transcript: "Hi Sarah, it's Mike. I can't come to the cinema tonight because I have to work late. Can we go on Saturday afternoon instead? The film starts at three. Let me know if that works for you. Call me back. Bye.",
+            questions: [
+                { q: "Why can't Mike come tonight?", options: ["He is ill", "He is busy", "He has no money", "He must work late"], answer: 3 },
+                { q: "What does Mike suggest?", options: ["A new film", "Going Saturday", "Staying at home", "Working together"], answer: 1 },
+                { q: "What time does the film start?", options: ["Tonight", "At three", "On Saturday", "In the morning"], answer: 1 },
+                { q: "What does Mike want Sarah to do?", options: ["Work late", "Buy a ticket", "Call him back", "Go to the cinema now"], answer: 2 },
+                { q: "How does Mike feel about tonight?", options: ["Happy", "Angry", "Sorry he can't go", "Excited about work"], answer: 2 }
+            ]
+        },
+        'B1_Route': {
+            audioBase: "b1_route",
+            transcript: "Welcome to the city tour. Our first stop is the old castle, which was built over five hundred years ago. We'll spend about forty minutes there before walking to the river. Please stay with the group, as the streets can get crowded. If you get lost, call the number on your ticket. Lunch will be at a local restaurant around one o'clock.",
+            questions: [
+                { q: "What is the first stop?", options: ["A river", "A castle", "A restaurant", "The city centre"], answer: 1 },
+                { q: "How old is the castle?", options: ["Forty years", "One year old", "Over 500 years", "Fifty years old"], answer: 2 },
+                { q: "Why should people stay together?", options: ["It is cold", "The guide is tired", "Streets get crowded", "The castle is closed"], answer: 2 },
+                { q: "What should you do if lost?", options: ["Wait", "Go home", "Find the river", "Call the number"], answer: 3 },
+                { q: "What time is lunch?", options: ["Forty minutes", "Early morning", "Late at night", "Around one o'clock"], answer: 3 }
+            ]
+        },
+        'B1_Confirm': {
+            audioBase: "b1_confirm",
+            transcript: "In today's class we'll talk about recycling. Many people think recycling is difficult, but it's actually quite simple. The key is to separate your waste correctly. Paper, glass, and plastic should go in different bins. One common mistake is putting dirty food containers in with clean paper, which can ruin the whole batch. So always rinse your containers first.",
+            questions: [
+                { q: "What is the class about?", options: ["Cooking", "Recycling", "Buying bins", "Cleaning paper"], answer: 1 },
+                { q: "What does the speaker say about recycling?", options: ["It is costly", "It is simple", "It wastes time", "It is impossible"], answer: 1 },
+                { q: "What is the key to recycling?", options: ["Buy new bins", "Use less paper", "Separate the waste", "Rinse all the glass"], answer: 2 },
+                { q: "What common mistake is mentioned?", options: ["Using one bin", "Recycling glass", "Cleaning too much", "Mixing dirty food with paper"], answer: 3 },
+                { q: "What should you do first?", options: ["Buy bins", "Throw it away", "Rinse containers", "Separate the paper"], answer: 2 }
+            ]
+        },
+        'B2_Route': {
+            audioBase: "b2_route",
+            transcript: "The debate over remote working continues to divide opinion. Supporters argue that it boosts productivity and improves work-life balance. However, critics point out that it can lead to isolation and weaker team relationships. Interestingly, recent research suggests the truth lies somewhere in between: while individual output often rises, creativity and collaboration tend to suffer. Most experts now recommend a hybrid model as a sensible compromise.",
+            questions: [
+                { q: "What is the main topic?", options: ["Office design", "Remote working", "Team friendships", "Research methods"], answer: 1 },
+                { q: "What do supporters say?", options: ["It is lonely", "It harms teams", "It reduces creativity", "It boosts productivity"], answer: 3 },
+                { q: "What is one criticism mentioned?", options: ["Lower pay", "It raises output", "It is too popular", "It causes isolation"], answer: 3 },
+                { q: "What does the research suggest?", options: ["Remote is best", "Offices are better", "Nobody likes working", "The truth is in between"], answer: 3 },
+                { q: "What do most experts recommend?", options: ["Working alone", "A hybrid model", "Closing offices", "Banning remote work"], answer: 1 }
+            ]
+        },
+        'B2_Confirm': {
+            audioBase: "b2_confirm",
+            transcript: "I've just finished reading about the rise of electric cars, and the picture is more complicated than I expected. On the surface, they seem perfectly clean. But you have to consider where the electricity comes from. If it's generated by burning coal, the environmental benefit shrinks considerably. Add to that the difficulty of recycling the batteries, and it becomes clear that electric vehicles are a step forward, not a complete solution.",
+            questions: [
+                { q: "What is the speaker discussing?", options: ["Coal mining", "Electric cars", "Battery shops", "Cleaning products"], answer: 1 },
+                { q: "What does the speaker imply about them?", options: ["They are perfect", "They are useless", "They are too expensive", "They are not fully clean"], answer: 3 },
+                { q: "Why does electricity source matter?", options: ["It costs more", "Cars need more power", "Batteries charge slowly", "Coal reduces the benefit"], answer: 3 },
+                { q: "What problem with batteries is mentioned?", options: ["They are heavy", "They are cheap", "They are easy to make", "They are hard to recycle"], answer: 3 },
+                { q: "What is the speaker's overall view?", options: ["A perfect fix", "A total failure", "A waste of money", "A step in the right direction"], answer: 3 }
+            ]
+        },
+        'C1_Route': {
+            audioBase: "c1_route",
+            transcript: "What fascinates me about human memory is how unreliable it can be. We tend to think of our memories as recordings, faithfully preserved and replayed on demand. In reality, every time we recall an event, we subtly reconstruct it, often incorporating details that were never there. This is why eyewitness testimony, once considered the gold standard in court, is now treated with considerable caution. The implications for our sense of identity are profound, since we are, in a sense, the sum of stories we continually rewrite.",
+            questions: [
+                { q: "What is the speaker's main point?", options: ["People tell lies", "Courts are unfair", "Memory is unreliable", "Recordings are useful"], answer: 2 },
+                { q: "How do we wrongly think of memories?", options: ["As stories", "As court evidence", "As things we forget", "As faithful recordings"], answer: 3 },
+                { q: "What happens when we recall an event?", options: ["We forget it", "We reconstruct it", "We record it exactly", "We ignore the details"], answer: 1 },
+                { q: "Why is eyewitness testimony now doubted?", options: ["It costs money", "Courts dislike it", "Witnesses are dishonest", "Memory can be reconstructed"], answer: 3 },
+                { q: "What does the speaker suggest about identity?", options: ["It is fixed", "It cannot change", "It is based on rewritten stories", "It has nothing to do with memory"], answer: 2 }
+            ]
+        },
+        'C1_Confirm': {
+            audioBase: "c1_confirm",
+            transcript: "The notion that money buys happiness is both true and misleading. Research consistently shows that beyond a certain income, additional wealth yields diminishing returns in terms of life satisfaction. What matters more, it seems, is how money is spent. Spending on experiences rather than possessions, and on others rather than oneself, reliably produces greater contentment. The paradox, then, is that the relentless pursuit of more may actively undermine the very happiness it promises to deliver.",
+            questions: [
+                { q: "What is the speaker's central argument?", options: ["Money is evil", "Wealth is useless", "Rich people are unhappy", "Money's link to happiness is complex"], answer: 3 },
+                { q: "What does research show about high incomes?", options: ["Returns diminish", "They cause misery", "Money loses all value", "Happiness keeps rising"], answer: 0 },
+                { q: "What matters more than the amount?", options: ["Saving it all", "How it is spent", "Hiding your wealth", "Earning it quickly"], answer: 1 },
+                { q: "What kind of spending brings contentment?", options: ["On luxury goods", "On oneself only", "On expensive houses", "On experiences and others"], answer: 3 },
+                { q: "What is the paradox mentioned?", options: ["Money is fake", "The poor are happier", "Happiness cannot be studied", "Chasing more can reduce happiness"], answer: 3 }
+            ]
+        }
+    };
+
+    const routingMatrix = {
+        'B1_Route': { pass: 'B2_Route', fail: 'A2_Route' },
+        'B2_Route': { pass: 'C1_Route', fail: 'B1_Confirm' },
+        'C1_Route': { pass: 'C1_Confirm', fail: 'B2_Confirm' },
+        'A2_Route': { pass: 'A2_Confirm', fail: 'A1_Route' },
+        'A1_Route': { pass: 'A1_Confirm', fail: 'RESULT_PRE_A1' },
+        'C1_Confirm': { pass: 'RESULT_C1_HIGH', fail: 'RESULT_C1_LOW' },
+        'B2_Confirm': { pass: 'RESULT_B2_HIGH', fail: 'RESULT_B2_LOW' },
+        'B1_Confirm': { pass: 'RESULT_B1_HIGH', fail: 'RESULT_B1_LOW' },
+        'A2_Confirm': { pass: 'RESULT_A2_HIGH', fail: 'RESULT_A2_LOW' },
+        'A1_Confirm': { pass: 'RESULT_A1_HIGH', fail: 'RESULT_A1_LOW' }
+    };
+    const START_NODE='B1_Route';
+    const FULL_ORDER=['Pre-A1','A1','A2','B1','B2','C1'];
+    let currentNode=START_NODE, currentQuestions=[], stage=1;
+    let audio=null, hasPlayed=false, audioReady=false;
+
+    function startTest(){
+        document.getElementById('intro-screen').classList.add('hidden');
+        document.getElementById('test-screen').classList.remove('hidden');
+        loadNode(currentNode);
+    }
+
+    function renderPips(){
+        let h='';
+        for(let i=1;i<=3;i++){let c='pip';if(i<stage)c+=' done';else if(i===stage)c+=' active';h+='<span class="'+c+'"></span>';}
+        document.getElementById('pips').innerHTML=h;
+        document.getElementById('stage-num').innerText=stage;
+    }
+
+    function loadNode(level){
+        document.getElementById('validation-error').classList.add('hidden');
+        document.getElementById('audio-error').classList.add('hidden');
+        window.scrollTo({top:0,behavior:'smooth'});
+        const data=testBank[level];
+        currentQuestions=data.questions;
+        renderPips();
+        document.getElementById('prompt-tag').innerText='Clip '+stage;
+
+        // reset player
+        hasPlayed=false;
+        const btn=document.getElementById('play-btn'), icon=document.getElementById('play-icon');
+        btn.disabled=false; btn.classList.remove('playing');
+        icon.innerHTML='<path d="M8 5v14l11-7z"/>';
+        document.getElementById('player-status').innerText='Press play to listen';
+        document.getElementById('player-sub').innerText='The clip will play once';
+        document.getElementById('progress-fill').style.width='0%';
+
+        // prepare audio — try several formats/locations so files work however they were saved.
+        // Looks beside this page first (e.g. a1_route.mp3), matching a flat repo layout.
+        if(audio){ audio.pause(); audio=null; }
+        audioReady=false;
+        const base=data.audioBase;
+        const candidates=[
+            base+'.mp3', base+'.m4a', base+'.webm', base+'.ogg', base+'.wav',
+            'audio/'+base+'.mp3', 'audio/'+base+'.m4a', 'audio/'+base+'.webm'
+        ];
+        let candIdx=0;
+        audio=new Audio();
+        audio.preload='auto';
+        function tryNextSource(){
+            if(candIdx>=candidates.length){ if(!audioReady) onAudioError(); return; }
+            audio.src=candidates[candIdx++];
+            audio.load();
+        }
+        audio.addEventListener('canplaythrough',()=>{ audioReady=true; },{once:false});
+        audio.addEventListener('loadeddata',()=>{ audioReady=true; });
+        audio.addEventListener('timeupdate',()=>{
+            if(audio.duration) document.getElementById('progress-fill').style.width=(audio.currentTime/audio.duration*100)+'%';
+        });
+        audio.addEventListener('ended',onAudioEnded);
+        audio.addEventListener('error',()=>{ if(!audioReady) tryNextSource(); });
+        tryNextSource();
+
+        // lock questions
+        const lock=document.getElementById('questions-container');
+        lock.classList.add('questions-locked');
+        document.getElementById('locked-hint').style.display='flex';
+        document.getElementById('next-btn').style.display='none';
+
+        // render questions (locked until played)
+        const letters=['A','B','C','D'];
+        let qHTML='';
+        data.questions.forEach((qObj,index)=>{
+            qHTML+='<div class="question-block"><div class="qhead"><span class="qnum">'+(index+1)+'</span><span class="qtext">'+qObj.q+'</span></div><div class="options">';
+            qObj.options.forEach((opt,oi)=>{
+                qHTML+='<label class="opt" data-q="'+index+'"><input type="radio" name="q'+index+'" value="'+oi+'"><span class="dot"></span><span class="opt-letter">'+letters[oi]+'</span><span class="opt-body">'+opt+'</span></label>';
+            });
+            qHTML+='</div></div>';
+        });
+        lock.innerHTML=qHTML;
+        lock.querySelectorAll('.opt').forEach(label=>{
+            label.addEventListener('click',()=>{
+                const q=label.getAttribute('data-q');
+                lock.querySelectorAll('.opt[data-q="'+q+'"]').forEach(l=>l.classList.remove('sel'));
+                label.classList.add('sel');
+            });
+        });
+        document.querySelector('#test-screen .inner').classList.remove('fade');
+        void document.querySelector('#test-screen .inner').offsetWidth;
+        document.querySelector('#test-screen .inner').classList.add('fade');
+    }
+
+    function playAudio(){
+        if(hasPlayed||!audio) return;
+        hasPlayed=true;
+        const btn=document.getElementById('play-btn'), icon=document.getElementById('play-icon');
+        btn.disabled=true; btn.classList.add('playing');
+        icon.innerHTML='<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>';
+        document.getElementById('player-status').innerText='Playing…';
+        document.getElementById('player-sub').innerText='Listen carefully — this will not repeat';
+        const attempt=()=>{
+            const p=audio.play();
+            if(p&&p.catch) p.catch(()=>{
+                // a candidate may still be resolving; give it a moment, then fail gracefully
+                setTimeout(()=>{
+                    const p2=audio.play();
+                    if(p2&&p2.catch) p2.catch(onAudioError);
+                }, 600);
+            });
+        };
+        attempt();
+    }
+
+    function onAudioEnded(){
+        document.getElementById('player-status').innerText='Playback finished';
+        document.getElementById('player-sub').innerText='Now answer the questions below';
+        document.getElementById('progress-fill').style.width='100%';
+        unlockQuestions();
+    }
+
+    function onAudioError(){
+        // allow the student to proceed even if audio fails to load
+        const err=document.getElementById('audio-error');
+        err.classList.remove('hidden');
+        err.innerHTML='Audio could not be loaded. Please check your connection. You may answer based on what you heard, or contact your teacher if the problem continues.';
+        document.getElementById('player-status').innerText='Audio unavailable';
+        unlockQuestions();
+    }
+
+    function unlockQuestions(){
+        const lock=document.getElementById('questions-container');
+        lock.classList.remove('questions-locked');
+        document.getElementById('locked-hint').style.display='none';
+        document.getElementById('next-btn').style.display='inline-flex';
+    }
+
+    function submitNode(){
+        let score=0, allAnswered=true;
+        for(let i=0;i<currentQuestions.length;i++){
+            const sel=document.querySelector('input[name="q'+i+'"]:checked');
+            if(!sel){allAnswered=false;break;}
+            if(parseInt(sel.value)===currentQuestions[i].answer) score++;
+        }
+        if(!allAnswered){ document.getElementById('validation-error').classList.remove('hidden'); return; }
+        if(audio){ audio.pause(); audio=null; }
+        const passed=score>=3;
+        const next=passed?routingMatrix[currentNode].pass:routingMatrix[currentNode].fail;
+        if(next.startsWith('RESULT')) showResults(next);
+        else { currentNode=next; stage++; loadNode(currentNode); }
+    }
+
+    const resultsMap={
+        'RESULT_C1_HIGH':{level:'C1',band:'C1',text:'Excellent. You followed complex, abstract speech across two clips, catching detail, attitude, and implied meaning.'},
+        'RESULT_C1_LOW':{level:'B2 / C1',band:'B2',text:'Strong work. You understood advanced listening but performance varied across the two clips, placing you on the upper boundary.'},
+        'RESULT_B2_HIGH':{level:'B2',band:'B2',text:'Very good. You confidently followed detailed speech and grasped speakers\u2019 opinions and implications.'},
+        'RESULT_B2_LOW':{level:'B1 / B2',band:'B1',text:'Solid work. You reached the B2 level but performance varied across the two clips, placing you on the B1\u2013B2 boundary.'},
+        'RESULT_B1_HIGH':{level:'B1',band:'B1',text:'Good job. You understood the main points and key details of clear, everyday speech.'},
+        'RESULT_B1_LOW':{level:'A2 / B1',band:'A2',text:'You reached the B1 level but performance varied. You are moving from catching key facts to following connected speech.'},
+        'RESULT_A2_HIGH':{level:'A2',band:'A2',text:'You understood the key information in short, clear spoken messages on familiar topics.'},
+        'RESULT_A2_LOW':{level:'A1 / A2',band:'A1',text:'You reached the A2 level but performance varied across the two clips, placing you on the A1\u2013A2 boundary.'},
+        'RESULT_A1_HIGH':{level:'A1',band:'A1',text:'You understood basic words, numbers, and simple instructions in slow, clear speech.'},
+        'RESULT_A1_LOW':{level:'Pre-A1 / A1',band:'Pre-A1',text:'You caught some basic words but found the listening challenging. Keep building familiarity with everyday spoken English.'},
+        'RESULT_PRE_A1':{level:'Pre-A1',band:'Pre-A1',text:'Keep practising. Focus on recognising common words and numbers in short, slow audio clips.'}
+    };
+    const improvementMap={
+        'Pre-A1':{sub:'Your priority is to tune your ear to common spoken words and numbers.',focus:[
+            ['Numbers and times','Practise hearing prices, times, and dates spoken aloud until you recognise them instantly.'],
+            ['Everyday words','Listen for familiar words (places, food, days) in very short, slow clips.'],
+            ['Slow listening','Use audio designed for beginners, and replay it as much as you need outside of tests.'],
+            ['Key sounds','Train your ear to the sounds of English with short songs and simple dialogues.']
+        ]},
+        'A1':{sub:'You catch basic words. To reach A2, follow short messages and simple instructions.',focus:[
+            ['Short messages','Practise with phone messages and announcements that give one or two key facts.'],
+            ['Instructions','Listen for directions and simple steps ("turn left", "press the button").'],
+            ['Question words','Train yourself to catch who, what, where, when in spoken questions.'],
+            ['Everyday topics','Listen to slow conversations about shopping, travel, and daily life.']
+        ]},
+        'A2':{sub:'You understand key facts. To reach B1, follow the main points of longer, connected speech.',focus:[
+            ['Main idea','Practise summarising what a whole clip was about, not just single facts.'],
+            ['Connected speech','Get used to natural pace where words run together ("gonna", "wanna").'],
+            ['Sequencing','Follow a series of events or steps told in order across a longer clip.'],
+            ['Context clues','Use tone and situation to guess the meaning of unfamiliar words you hear.']
+        ]},
+        'B1':{sub:'You follow clear everyday speech. To reach B2, catch opinions, attitude, and implied meaning.',focus:[
+            ['Speaker opinion','Listen for whether a speaker is positive, negative, or neutral about a topic.'],
+            ['Implied meaning','Practise understanding points that are suggested but not stated directly.'],
+            ['Detail under pace','Catch specific details in faster, longer talks and discussions.'],
+            ['Varied accents','Expose yourself to different English accents to build flexibility.']
+        ]},
+        'B2':{sub:'You grasp detail and attitude. To reach C1, follow complex, abstract, and rapid speech.',focus:[
+            ['Abstract topics','Listen to talks on unfamiliar, abstract subjects (science, philosophy, economics).'],
+            ['Nuance and tone','Detect irony, doubt, and subtle shifts in a speaker\u2019s attitude.'],
+            ['Fast natural speech','Practise with native-speed podcasts, debates, and lectures.'],
+            ['Following argument','Track a speaker\u2019s reasoning and how their points connect across a long clip.']
+        ]},
+        'C1':{sub:'You listen at an advanced level. To consolidate toward C2, handle any accent, speed, or subject.',focus:[
+            ['Idiomatic speech','Tune in to idioms, slang, and culturally specific references.'],
+            ['Challenging audio','Listen to fast, overlapping conversation and poor-quality recordings.'],
+            ['Subtle inference','Catch fine distinctions, understatement, and unstated implications.'],
+            ['Wide exposure','Listen across many genres and regional accents to reach full fluency.']
+        ]}
+    };
+
+    function showResults(code){
+        if(audio){ audio.pause(); audio=null; }
+        document.getElementById('test-screen').classList.add('hidden');
+        const rs=document.getElementById('results-screen');
+        rs.classList.remove('hidden'); rs.classList.add('fade');
+        const f=resultsMap[code];
+        document.getElementById('final-level').innerText=f.level;
+        document.getElementById('feedback-text').innerText=f.text;
+        document.getElementById('scale').innerHTML=FULL_ORDER.map(s=>'<span class="step'+(s===f.band?' on':'')+'">'+s+'</span>').join('');
+        const imp=improvementMap[f.band];
+        document.getElementById('improve-sub').innerText=imp.sub;
+        document.getElementById('focus-list').innerHTML=imp.focus.map((x,i)=>'<li><span class="fnum">'+(i+1)+'</span><span class="fbody"><b>'+x[0]+'.</b> <span>'+x[1]+'</span></span></li>').join('');
+        window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    function restart(){
+        currentNode=START_NODE; stage=1;
+        if(audio){ audio.pause(); audio=null; }
+        document.getElementById('results-screen').classList.add('hidden');
+        document.getElementById('test-screen').classList.remove('hidden');
+        loadNode(currentNode);
+    }
+</script>
+</body>
+</html>
