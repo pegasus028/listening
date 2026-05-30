@@ -175,17 +175,7 @@
         <div id="final-level" class="final-score"></div>
         <p id="feedback-text" class="feedback-text"></p>
         <div class="scale" id="scale"></div>
-        <div class="improve">
-            <h3>Where to focus next</h3>
-            <p class="improve-sub" id="improve-sub"></p>
-            <ul class="focus-list" id="focus-list"></ul>
-        </div>
-        <div class="contact">
-            <p class="contact-lead">Ready to take the next step?</p>
-            <p class="contact-body">Please contact <b>Christopher Mah</b> at <a href="tel:0823459615">082-345-9615</a> or Line ID: <b>pegasus028</b> for further information or to book a trial tutoring lesson.</p>
-        </div>
         <p class="disclaimer">This automated estimate is based on your answers to the listening tasks. It is a guide, not a formal qualification — a teacher's assessment gives the most accurate placement.</p>
-        <div class="restart"><button onclick="restart()">Take the test again</button></div>
     </div>
 </div>
 
@@ -535,9 +525,6 @@
         document.getElementById('feedback-text').innerText=f.text;
         reportToHub(f.level);
         document.getElementById('scale').innerHTML=FULL_ORDER.map(s=>'<span class="step'+(s===f.band?' on':'')+'">'+s+'</span>').join('');
-        const imp=improvementMap[f.band];
-        document.getElementById('improve-sub').innerText=imp.sub;
-        document.getElementById('focus-list').innerHTML=imp.focus.map((x,i)=>'<li><span class="fnum">'+(i+1)+'</span><span class="fbody"><b>'+x[0]+'.</b> <span>'+x[1]+'</span></span></li>').join('');
         window.scrollTo({top:0,behavior:'smooth'});
     }
 

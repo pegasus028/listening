@@ -184,20 +184,7 @@
             <div id="trait-list"></div>
         </div>
 
-        <div class="improve">
-            <h3>Where to focus next</h3>
-            <p class="improve-sub" id="improve-sub"></p>
-            <ul class="focus-list" id="focus-list"></ul>
-        </div>
-
-        <div class="contact">
-            <p class="contact-lead">Ready to take the next step?</p>
-            <p class="contact-body">Please contact <b>Christopher Mah</b> at <a href="tel:0823459615">082-345-9615</a> or Line ID: <b>pegasus028</b> for further information or to book a trial tutoring lesson.</p>
-        </div>
-
         <p class="disclaimer">This automated estimate is based on measurable features of your writing (vocabulary range, sentence structure, cohesion, and task length). It is a guide, not a formal qualification — a teacher's review gives the most accurate placement.</p>
-
-        <div class="restart"><button onclick="restart()">Take the test again</button></div>
     </div>
 </div>
 
@@ -503,11 +490,6 @@ function analyzeWriting(text, targetWords){
         } else {
             traitEl.innerHTML='<p style="color:var(--ink-faint);font-size:.95rem;margin:0;">No text was submitted, so detailed traits are unavailable.</p>';
         }
-
-        const imp=improvementMap[final];
-        document.getElementById('improve-sub').innerText=imp.sub;
-        document.getElementById('focus-list').innerHTML=imp.focus.map((f,i)=>
-            '<li><span class="fnum">'+(i+1)+'</span><span class="fbody"><b>'+f[0]+'.</b> <span>'+f[1]+'</span></span></li>').join('');
 
         window.scrollTo({top:0,behavior:'smooth'});
     }

@@ -217,19 +217,6 @@
         <div id="final-level" class="final-score"></div>
         <p id="feedback-text" class="feedback-text"></p>
         <div class="scale" id="scale"></div>
-
-        <div class="improve" id="improve">
-            <h3 class="improve-title">Where to focus next</h3>
-            <p class="improve-sub" id="improve-sub"></p>
-            <ul class="focus-list" id="focus-list"></ul>
-        </div>
-
-        <div class="contact">
-            <p class="contact-lead">Ready to take the next step?</p>
-            <p class="contact-body">Please contact <b>Christopher Mah</b> at <a href="tel:0823459615">082-345-9615</a> or Line ID: <b>pegasus028</b> for further information or to book a trial tutoring lesson.</p>
-        </div>
-
-        <div class="restart"><button onclick="restart()">Take the test again</button></div>
     </div>
 </div>
 
@@ -548,13 +535,6 @@
         const scale = document.getElementById('scale');
         scale.innerHTML = order.map(s =>
             '<span class="step' + (s === finalData.band ? ' on' : '') + '">' + s + '</span>'
-        ).join('');
-
-        const imp = improvementMap[finalData.band];
-        document.getElementById('improve-sub').innerText = imp.sub;
-        document.getElementById('focus-list').innerHTML = imp.focus.map((f, i) =>
-            '<li><span class="fnum">' + (i + 1) + '</span>'
-            + '<span class="fbody"><b>' + f[0] + '.</b> <span>' + f[1] + '</span></span></li>'
         ).join('');
     }
 
