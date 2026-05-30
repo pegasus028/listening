@@ -56,10 +56,10 @@
     .test-state .yet{color:var(--ink-faint);}
     .test-state .lvl{color:var(--good);font-weight:600;}
     .test-cta{flex:none;}
-    .test-cta button{width:auto;padding:11px 20px;font-size:.94rem;}
+    .test-cta button{width:auto;padding:11px 22px;font-size:.94rem;min-width:120px;}
     .start-btn{background:var(--accent-soft) !important;}
     .start-btn:hover{background:var(--accent) !important;}
-    .test-cta .done-badge{font-size:.8rem;color:var(--good);font-weight:600;background:#e2eccd;padding:7px 13px;border-radius:8px;letter-spacing:.04em;}
+    .test-cta .done-badge{display:inline-flex;align-items:center;justify-content:center;min-width:120px;font-size:.9rem;color:var(--good);font-weight:600;background:#e2eccd;padding:11px 22px;border-radius:11px;letter-spacing:.04em;box-sizing:border-box;}
     /* expand caret next to level */
     .lvl-caret{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;background:#e2eccd;color:var(--good);border:none;cursor:pointer;padding:0;transition:background .2s;}
     .lvl-caret:hover{background:#d3e3b6;}
@@ -85,7 +85,7 @@
     .speaking-msg{color:var(--ink-faint) !important;}
     .line-link{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:1.5px solid var(--accent-soft);white-space:nowrap;}
     .line-link:hover{color:var(--accent-soft);}
-    .appt-btn{background:var(--accent-soft) !important;color:#fff !important;white-space:normal;line-height:1.2;padding:9px 16px !important;max-width:120px;text-align:center;}
+    .appt-btn{background:var(--accent-soft) !important;color:#fff !important;}
     .appt-btn:hover{background:var(--accent) !important;filter:none;}
 
     /* iframe overlay */
@@ -139,7 +139,7 @@
             <div class="avg-num" id="avg-num">—</div>
             <div class="avg-textwrap">
                 <div class="avg-label" id="avg-label"></div>
-                <div class="avg-cta">Ready to take the next step? Contact T.Chris for more info/book a trial lesson.</div>
+                <div class="avg-cta">Ready to take the next step? Contact T.Chris for more info/a trial lesson.</div>
             </div>
             <button class="avg-contact-btn" onclick="addLineFriend()">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.74 2 10.35c0 4.13 3.58 7.59 8.42 8.24.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1.01.89.55s5.86-3.45 8-5.91c1.47-1.61 2.18-3.25 2.18-5.16C22 5.74 17.52 2 12 2z"/></svg>
@@ -177,7 +177,7 @@
 
 <script>
     // ---- CONFIG ----
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6HfQN9ZZDuhnL5QG-G-ieXrYrUM-D8NoxNOFzdXlirsZiy5k4CcdZ9hP6KdIqHlki4Q/exec"; // ends in /exec
+    const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_URL_HERE"; // ends in /exec
     const TEST_FILES = { Reading:"reading.html", Writing:"writing.html", Listening:"listening.html" };
     const LINE_ID = "pegasus028";
     // ----------------
@@ -297,7 +297,9 @@
         const avg=avgLevel(student.results);
         document.getElementById('avg-num').textContent= avg || "—";
         document.getElementById('avg-label').innerHTML = avg
-            ? "Averaged across <b>"+doneCount+"</b> completed test"+(doneCount>1?"s":"")+"."
+            ? (doneCount===1
+                ? "Based only on 1 test."
+                : "Averaged across <b>"+doneCount+"</b> completed tests.")
             : "Complete a test to see your average level.";
         // Expand the average card (show CTA + Contact button) once any test is done.
         document.getElementById('avg-card').classList.toggle('expanded', doneCount>0);
@@ -312,7 +314,7 @@
                 +'<div class="test-state">'+(done
                     ? '<span class="lvl">Level: '+lvl+'</span> '
                       +'<button class="lvl-caret" title="Where to focus next" onclick="openFocus(\''+name+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>'
-                    : '<span class="yet">Yet to take</span> · <span style="color:var(--ink-faint)">'+desc+'</span>')
+                    : '<span style="color:var(--ink-faint)">'+desc+'</span>')
                 +'</div></div>'
                 +'<div class="test-cta">'+(done
                     ? '<span class="done-badge">DONE</span>'
@@ -323,9 +325,9 @@
         + '<div class="test-row speaking-row">'
         + '<div class="test-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h11a2 2 0 012 2z"/><path d="M9 9h6M9 12.5h4"/></svg></div>'
         + '<div class="test-info"><div class="test-name">Speaking</div>'
-        + '<div class="test-state"><span class="yet">Yet to take</span> · <span class="speaking-msg">Short conversation online/in-person.</span></div>'
+        + '<div class="test-state"><span class="speaking-msg">A short online / in-person conversation.</span></div>'
         + '</div>'
-        + '<div class="test-cta"><button class="appt-btn" onclick="addLineFriend()">Make<br>Appointment</button></div>'
+        + '<div class="test-cta"><button class="appt-btn" onclick="addLineFriend()">Contact</button></div>'
         + '</div>';
     }
 

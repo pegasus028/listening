@@ -55,7 +55,8 @@
         background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:18px 20px;resize:vertical;transition:border-color .18s;}
     textarea:focus{outline:none;border-color:var(--accent-soft);}
     textarea:disabled{background:var(--paper);color:var(--ink-faint);}
-    .wc-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:10px 2px 0;font-size:.9rem;color:var(--ink-faint);}
+    .wc-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:12px 2px 0;font-size:.9rem;color:var(--ink-faint);}
+    .wc-row .timer{margin:0 auto;}
     .wc-count{font-weight:600;font-variant-numeric:tabular-nums;}
     .wc-count b{color:var(--accent);}
     .wc-meter{flex:1;height:6px;background:var(--line);border-radius:4px;overflow:hidden;max-width:240px;margin:0 4px;}
@@ -141,10 +142,6 @@
         <div class="topbar">
             <span class="stage-label">Task <b id="stage-num">1</b> of 3</span>
             <div class="pips" id="pips"></div>
-            <div class="timer" id="timer">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>
-                <span id="timer-text">00:00</span>
-            </div>
         </div>
         <div class="inner">
             <span class="prompt-tag" id="prompt-tag">Task</span>
@@ -156,7 +153,10 @@
             <textarea id="essay" placeholder="Start writing your response here..." oninput="updateWordCount()" spellcheck="false"></textarea>
             <div class="wc-row">
                 <span class="wc-count"><b id="wc-now">0</b> words</span>
-                <span class="wc-meter"><i class="wc-fill" id="wc-fill"></i></span>
+                <div class="timer" id="timer">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>
+                    <span id="timer-text">00:00</span>
+                </div>
                 <span id="wc-hint" class="wc-hint">target <b id="wc-target">0</b></span>
             </div>
             <button id="submit-btn" onclick="submitEssay(false)">Submit &amp; continue <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
@@ -327,11 +327,7 @@ function analyzeWriting(text, targetWords){
     function updateWordCount(){
         const n=countWords(document.getElementById('essay').value);
         document.getElementById('wc-now').innerText=n;
-        const pct=Math.min(n/currentTarget*100,100);
-        const fill=document.getElementById('wc-fill');
-        fill.style.width=pct+'%';
         const met = n>=currentTarget;
-        fill.classList.toggle('met', met);
         const hint=document.getElementById('wc-hint');
         if(met){
             hint.innerHTML='<b style="color:var(--good);">target reached</b>';
