@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CEFR Adaptive Reading Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Libre+Franklin:wght@400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -200,6 +201,101 @@
   button:hover{background:var(--accent-soft) !important;}
   .restart button{background:transparent !important;color:var(--ink-soft) !important;}
   .restart button:hover{background:var(--paper) !important;color:var(--accent) !important;}
+
+  /* ===== Genre rendering styles ===== */
+  .render{margin:6px 0 22px;}
+  .render-host{background:none !important;border:none !important;padding:0 !important;}
+  mark{background:rgba(154,52,18,.14);color:var(--accent);padding:0 3px;border-radius:3px;font-weight:600;}
+  .ref{padding:0 2px;border-radius:3px;background:rgba(154,52,18,.08);color:var(--accent);}
+  .gf-ui{font-family:inherit;}
+  .gf-bulletin{font-family:"Libre Franklin","Inter",sans-serif;font-weight:700;}
+  .gf-news{font-family:"Special Elite",monospace;}
+  .gf-chat{font-family:"Patrick Hand",cursive;font-size:1.06em;}
+  .gf-review{font-family:"Libre Franklin","Inter",sans-serif;font-style:italic;}
+  .gf-journal{font-family:"Newsreader",Georgia,serif;font-style:italic;}
+
+  /* INFOGRAPHIC */
+  .infographic{display:flex;justify-content:center;}
+  .ig-card{width:100%;max-width:430px;background:#fffdf7;border:2px solid var(--line);border-radius:18px;padding:22px 24px 18px;position:relative;overflow:hidden;}
+  .ig-card::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;background:var(--genre);}
+  .ig-title{font-family:"Fraunces",serif;font-weight:700;font-size:1.7rem;color:var(--genre);text-align:center;margin-top:6px;}
+  .ig-rule{height:1.5px;background:var(--line);margin:12px 0 6px;}
+  .ig-row{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-radius:8px;gap:14px;}
+  .ig-row.alt{background:#fdf6ea;}
+  .ig-key{font-weight:700;color:var(--genre);}
+  .ig-val{color:#2a2722;text-align:right;}
+  .ig-footer{text-align:center;font-style:italic;color:var(--ink-soft);font-size:.92rem;margin-top:12px;}
+
+  /* BULLETIN BOARD */
+  .bulletin .cork{background:#b07a3f;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px),radial-gradient(rgba(0,0,0,.07) 1px,transparent 1px);background-size:14px 14px,14px 14px;background-position:0 0,7px 7px;padding:30px 22px;border-radius:10px;border:8px solid #6e4a23;display:flex;justify-content:center;}
+  .flyer{position:relative;background:#fffef9;width:100%;max-width:400px;padding:26px 26px 12px;box-shadow:0 8px 22px rgba(0,0,0,.28);transform:rotate(-1.1deg);font-family:"Libre Franklin","Inter",sans-serif;}
+  .flyer .pin{position:absolute;top:-9px;left:50%;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff6b6b,#b91c1c);box-shadow:0 3px 5px rgba(0,0,0,.35);transform:translateX(-50%);}
+  .flyer-tag{display:inline-block;background:#b91c1c;color:#fff;font-size:.66rem;font-weight:700;letter-spacing:.16em;padding:3px 10px;border-radius:3px;margin-bottom:10px;}
+  .flyer h3{font-weight:700;font-size:1.18rem;margin:0 0 12px;text-transform:uppercase;line-height:1.25;color:#1c1a14;}
+  .flyer p{font-size:.95rem;margin:0 0 10px;color:#2a2722;line-height:1.5;}
+  .tear-strips{display:flex;border-top:1px dashed #bbb;margin-top:8px;}
+  .tear-strips span{flex:1;border-left:1px dashed #ccc;font-size:.5rem;text-align:center;color:#b91c1c;font-weight:700;padding:6px 0 2px;writing-mode:vertical-rl;text-orientation:mixed;height:54px;}
+  .tear-strips span:first-child{border-left:none;}
+
+  /* NEWSPAPER */
+  .newspaper .paper{background:#f7f1e3;border:1px solid #ddd2b8;padding:22px 24px;box-shadow:inset 0 0 60px rgba(120,100,60,.08);}
+  .paper-masthead{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2.5px double #8a7c5a;padding-bottom:7px;margin-bottom:14px;gap:10px;}
+  .paper-section{font-family:"Special Elite",monospace;font-size:.64rem;letter-spacing:.16em;color:#5c5343;}
+  .paper-date{font-family:"Fraunces",serif;font-style:italic;font-weight:600;font-size:.86rem;color:#3a3225;}
+  .paper-cols{column-count:2;column-gap:22px;column-rule:1px solid #d8cdb0;}
+  .paper-cols h3{font-family:"Special Elite",monospace;font-size:1.12rem;text-align:center;margin:0 0 12px;line-height:1.3;text-transform:uppercase;column-span:all;}
+  .paper-cols p{font-family:"Newsreader",Georgia,serif;font-size:.95rem;text-align:justify;margin:0 0 9px;color:#2c2719;line-height:1.5;}
+
+  /* LINE-STYLE CHAT */
+  .chat .ln-window{background:#8ac6e8;border-radius:14px;overflow:hidden;border:1px solid #cfe3f2;max-width:470px;margin:0 auto;}
+  .ln-titlebar{display:flex;align-items:center;justify-content:space-between;background:#5aa6d6;color:#fff;padding:9px 14px;font-weight:600;}
+  .ln-back,.ln-menu{font-size:1.2rem;opacity:.9;}
+  .ln-chatname{font-size:.96rem;}
+  .ln-feed{padding:16px 12px;display:flex;flex-direction:column;gap:8px;background:#9ccdec;background-image:linear-gradient(#9ccdec,#a9d4ef);}
+  .ln-row{display:flex;gap:8px;align-items:flex-start;max-width:88%;}
+  .ln-row.left{align-self:flex-start;}
+  .ln-row.right{align-self:flex-end;flex-direction:row-reverse;}
+  .ln-av{width:34px;height:34px;border-radius:50%;flex:none;background:#fff;border:1px solid rgba(0,0,0,.08);}
+  .ln-av.spacer{visibility:hidden;}
+  .ln-stack{display:flex;flex-direction:column;gap:2px;}
+  .ln-row.right .ln-stack{align-items:flex-end;}
+  .ln-name{font-size:.72rem;color:#33576e;font-weight:600;padding:0 4px;}
+  .ln-bubble{position:relative;padding:9px 13px;border-radius:16px;font-size:1.04rem;line-height:1.4;max-width:100%;font-family:"Patrick Hand",cursive;}
+  .ln-bubble.left{background:#fff;color:#1c1a14;border-top-left-radius:4px;}
+  .ln-bubble.right{background:#7be07b;color:#16321a;border-top-right-radius:4px;}
+  .chat mark{background:rgba(154,52,18,.16);font-family:inherit;}
+
+  /* WEB REVIEW */
+  .webreview .rv-card{background:#fff;border:1px solid #e6e1d6;border-radius:14px;padding:20px 22px;font-family:"Libre Franklin","Inter",sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+  .rv-head{display:flex;gap:12px;align-items:center;margin-bottom:10px;}
+  .rv-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#9a3412,#c2613a);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.95rem;flex:none;}
+  .rv-name{font-weight:700;font-size:.96rem;display:block;}
+  .rv-verified{color:#0e7490;font-size:.72rem;font-weight:600;}
+  .rv-sub{font-size:.78rem;color:var(--ink-faint);}
+  .rv-stars{color:#e0a800;font-size:1.1rem;letter-spacing:2px;margin-bottom:8px;}
+  .rv-score{color:var(--ink-faint);font-size:.78rem;letter-spacing:0;margin-left:6px;}
+  .rv-title{font-weight:700;font-size:1.08rem;margin-bottom:8px;color:#1c1a14;}
+  .rv-body p{font-size:.95rem;margin:0 0 10px;color:#2c2719;line-height:1.55;}
+  .rv-foot{display:flex;gap:18px;border-top:1px solid #eee5d5;padding-top:11px;margin-top:4px;font-size:.8rem;color:var(--ink-faint);font-weight:600;}
+
+  /* SCIENTIFIC JOURNAL */
+  .journal .jr-page{background:#fffefb;border:1px solid #e0dac9;padding:28px 32px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+  .jr-runhead{display:flex;justify-content:space-between;font-family:"Newsreader",Georgia,serif;font-size:.7rem;font-style:italic;color:#6a6048;border-bottom:1px solid #ddd5c0;padding-bottom:5px;gap:10px;}
+  .jr-doi{font-size:.66rem;color:#a89a78;margin:5px 0 16px;}
+  .jr-title{font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:1.3rem;line-height:1.28;margin:0 0 12px;color:#1c1a14;}
+  .jr-authors{font-family:"Newsreader",Georgia,serif;font-size:.98rem;color:#2c2719;}
+  .jr-affil{font-family:"Newsreader",Georgia,serif;font-style:italic;font-size:.82rem;color:#6a6048;margin-bottom:18px;}
+  .jr-abstract-label{font-size:.66rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+  .jr-body{font-family:"Newsreader",Georgia,serif;font-size:1.0rem;line-height:1.68;text-align:justify;color:#23201a;}
+  .jr-body p{margin:0 0 11px;}
+  .jr-body p.dropcap::first-letter{font-family:"Fraunces",serif;font-weight:700;font-size:3.1rem;float:left;line-height:.82;padding:4px 8px 0 0;color:var(--accent);}
+
+  @media (max-width:520px){
+    .paper-cols{column-count:1;}
+    .jr-page{padding:22px 18px;}
+    .flyer{padding:20px 18px 10px;}
+  }
+
 </style>
 </head>
 <body>
@@ -212,7 +308,7 @@
         <p class="lede">Each passage adapts to your answers. Read carefully — the difficulty of the next text rises or falls based on how accurately you respond.</p>
         <div class="meta-note">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8a827a" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
-            <span>Answer all five questions on each screen before continuing. Bold words in the passage mark the specific word each question asks about. Please don't use outside resources.</span>
+            <span>Answer all five questions on each screen before continuing. Highlighted words in each text mark the specific words a question asks about. Please don't use outside resources.</span>
         </div>
         <button onclick="startTest()">Begin assessment <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </div>
@@ -225,7 +321,7 @@
         </div>
         <div class="inner">
             <div id="passage-container" class="passage-box"></div>
-            <div class="hint"><span class="swatch">word</span> &nbsp;Bold words in the passage are the ones asked about below.</div>
+            <div class="hint"><span class="swatch">word</span> &nbsp;Highlighted words in the text are the ones asked about below.</div>
             <div id="questions-container"></div>
             <p id="validation-error" class="error hidden">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 8v5M12 16.5v.01"/><circle cx="12" cy="12" r="9"/></svg>
@@ -247,107 +343,780 @@
 
 <script>
     const testBank = {
-        'A1_Route': {
-            passage: "Welcome to the Grand Hotel. Breakfast is served in the dining room from seven until ten in the morning. Please do not take food to your bedrooms. The swimming pool is open all day, but children must have an adult with <b>them</b>. If you need <b>clean</b> towels, please call the front desk. Enjoy your stay!",
-            questions: [
-                { q: "What is this text?", options: ["A map", "A menu", "A train ticket", "Guest information"], answer: 3 },
-                { q: "When does breakfast end?", options: ["Midday", "7:00 AM", "10:00 AM", "Late evening"], answer: 2 },
-                { q: "What must children have at the pool?", options: ["A toy", "A towel", "A grown-up", "Some warm food"], answer: 2 },
-                { q: "In the text, who does the word 'them' refer to?", options: ["Adults", "The towels", "People working", "The young guests"], answer: 3 },
-                { q: "What does the word 'clean' mean in this text?", options: ["Wet", "Cold", "Fresh", "Very expensive"], answer: 2 }
-            ]
-        },
-        'A1_Confirm': {
-            passage: "The city library is closing early today. <b>We</b> will close at 4:00 PM because of heavy snow. All afternoon reading groups are <b>canceled</b>. Please return your books to the box outside the front door. <b>We</b> will open again tomorrow morning at 9:00 AM. Thank you and stay safe!",
-            questions: [
-                { q: "What is the main purpose of this message?", options: ["A snowstorm", "Buying books", "Morning groups", "An early closure"], answer: 3 },
-                { q: "What time will the library close today?", options: ["4:00 PM", "At 9:00 AM", "The next day", "This afternoon"], answer: 0 },
-                { q: "What should people do with their books?", options: ["Keep them", "Take them home", "Hand them to staff", "Drop them in the box"], answer: 3 },
-                { q: "Who does the word 'We' refer to in the text?", options: ["The snow", "Library users", "The front door", "The library staff"], answer: 3 },
-                { q: "What does the word 'canceled' mean here?", options: ["Late", "Moved", "Finished", "Called off"], answer: 3 }
-            ]
-        },
-        'A2_Route': {
-            passage: "All staff must attend a short safety meeting on Wednesday afternoon at 2:00 PM. We will meet in the staff kitchen because the main conference room is <b>currently</b> being painted. The manager will explain the new fire alarm system. Please bring a pen to sign the attendance sheet. You do not need to bring your laptops. If you are sick on Wednesday, you must email <b>Sarah</b> before noon.",
-            questions: [
-                { q: "What is the purpose of this text?", options: ["Buy paint", "Test an alarm", "Laptop complaints", "A meeting announcement"], answer: 3 },
-                { q: "Where will the meeting take place?", options: ["At home", "Near the front door", "In the staff kitchen", "In the conference room"], answer: 2 },
-                { q: "Why was the location of the meeting changed?", options: ["Locked", "Too cold", "Alarms ringing", "It is being decorated"], answer: 3 },
-                { q: "In the final sentence, who is 'Sarah'?", options: ["A cook", "A painter", "The kitchen cleaner", "The person to notify"], answer: 3 },
-                { q: "What does the word 'currently' mean in this text?", options: ["Later", "At present", "In the past", "Very quickly"], answer: 1 }
-            ]
-        },
-        'A2_Confirm': {
-            passage: "Hi David. I left my blue winter jacket in your car yesterday. I think it is in the back seat. My house keys are in the pocket, so I cannot <b>get inside</b> my apartment. Can you please check your car and call me? I can walk to your office to get <b>it</b> this afternoon. Thanks, Sarah.",
-            questions: [
-                { q: "What is the main topic of this message?", options: ["Buying a car", "Walking to work", "A missing jacket", "Fixing an apartment"], answer: 2 },
-                { q: "Where exactly are the writer's keys?", options: ["At home", "In the car", "At the office", "Inside the jacket"], answer: 3 },
-                { q: "Who lost the item?", options: ["David", "Her boss", "The sender", "Work friends"], answer: 2 },
-                { q: "In the final sentence, what does 'it' refer to?", options: ["The car", "The keys", "The coat", "The building"], answer: 2 },
-                { q: "What does the phrase 'get inside' mean here?", options: ["See", "Walk", "Go in", "Tidy up"], answer: 2 }
-            ]
-        },
-        'B1_Route': {
-            passage: "Urban beekeeping has become a popular hobby for city residents who want to support local ecosystems. Rather than needing a large farm, people are placing small wooden hives on apartment balconies and rooftops. Bees travel up to three miles to find nectar in city parks and window boxes. While some neighbors worry about bee stings, experienced keepers state that honeybees are generally calm and only attack if they feel <b>their</b> hive is <b>threatened</b>. This practice not only provides owners with fresh honey but also helps pollinate urban gardens.",
-            questions: [
-                { q: "What is the text primarily about?", options: ["Selling honey", "Designing gardens", "Treating bee stings", "Keeping bees in cities"], answer: 3 },
-                { q: "How far will the bees fly to find food?", options: ["Three miles", "Just the rooftop", "Outside the hive", "Across the country"], answer: 0 },
-                { q: "What can we guess about urban gardens based on the text?", options: ["Very dry", "Gain from the bees", "Are mostly crowded", "Have no live plants"], answer: 1 },
-                { q: "What does the word 'their' refer to in the fourth sentence?", options: ["The bees", "The parks", "City neighbours", "Skilled beekeepers"], answer: 0 },
-                { q: "What does the word 'threatened' mean in this context?", options: ["Lost", "Asleep", "At risk", "Very hungry"], answer: 2 }
-            ]
-        },
-        'B1_Confirm': {
-            passage: "Recent studies suggest that taking micro-breaks during intense study sessions can significantly improve focus. A micro-break is a brief pause, lasting between thirty seconds and five minutes, taken every hour. Instead of checking social media, experts advise students to stand up, stretch, or look at a distant object. Doing <b>this</b> reduces eye strain and prevents mental fatigue. While some students worry that frequent pauses will disrupt their workflow, researchers found the opposite to be true. Those who <b>used</b> the strategy completed their assignments faster than those who studied without stopping.",
-            questions: [
-                { q: "What is the main purpose of the text?", options: ["Eye exercises", "Warning students", "Banning social media", "The benefit of short breaks"], answer: 3 },
-                { q: "According to the text, how long can a micro-break last?", options: ["One hour", "Thirty minutes", "At least an hour", "No more than five minutes"], answer: 3 },
-                { q: "In the fourth sentence, what does the word 'this' refer to?", options: ["Eye strain", "Mental fatigue", "Checking phones", "Pausing briefly"], answer: 3 },
-                { q: "What does the word 'used' replace from the previous sentence?", options: ["Worried", "Disrupted", "Studied hard", "Used the technique"], answer: 3 },
-                { q: "What can be inferred about students who study without stopping?", options: ["Finish faster", "Earn top grades", "Avoid all phones", "Need more time to finish"], answer: 3 }
-            ]
-        },
-        'B2_Route': {
-            passage: "The transition toward a cashless society has accelerated rapidly, largely driven by the convenience of contactless mobile payments. For consumers, the appeal lies in <b>frictionless</b> transactions and the elimination of physical wallets. Retailers also benefit, as digital systems streamline accounting and reduce the risk of on-site theft. However, this shift heavily marginalizes vulnerable groups, particularly the elderly and unbanked individuals <b>who</b> rely exclusively on physical currency. Furthermore, privacy advocates warn that abandoning cash completely allows financial institutions to track and record every single purchase, effectively ending anonymous commerce.",
-            questions: [
-                { q: "What is the primary focus of the passage?", options: ["Banking history", "Stopping card theft", "Teaching elders to pay", "An even-handed view of digital money"], answer: 3 },
-                { q: "What is one advantage digital systems give retailers?", options: ["More foot traffic", "Halts all online crime", "Protects buyer privacy", "Streamlines their bookkeeping"], answer: 3 },
-                { q: "In the fourth sentence, who does the word 'who' refer to?", options: ["Retailers", "Privacy advocates", "Wealthy business owners", "The old and those without bank accounts"], answer: 3 },
-                { q: "What does the word 'frictionless' mean in this context?", options: ["Unsafe", "Very slow", "Effortless", "Costly to use"], answer: 2 },
-                { q: "What is a likely consequence of ending anonymous commerce?", options: ["People will buy less", "Banks will lose money", "Purchases will be tracked", "Cash will return to favour"], answer: 2 }
-            ]
-        },
-        'B2_Confirm': {
-            passage: "Urban agriculture is transforming cityscapes through vertical farming, where crops are <b>cultivated</b> in stacked layers within climate-controlled warehouses. Unlike traditional farming, this hydroponic method uses nutrient-rich water rather than soil, significantly reducing resource consumption. Proponents highlight that this enclosed system eliminates the need for harmful chemical pesticides. Because the food is grown directly <b>where it will be consumed</b>, transportation costs and the associated carbon emissions are drastically cut. However, the immense electricity required to artificially replicate sunlight can cancel out these environmental benefits if the local grid relies on fossil fuels.",
-            questions: [
-                { q: "What is the primary topic of the passage?", options: ["Solar power", "City pollution", "Selling fresh food", "Farming indoors in cities"], answer: 3 },
-                { q: "Why does this system avoid chemical pesticides?", options: ["Water use", "It is too costly", "Government regulation", "It is a sealed environment"], answer: 3 },
-                { q: "What does the word 'cultivated' mean in the first sentence?", options: ["Sold", "Eaten", "Raised", "Thrown out"], answer: 2 },
-                { q: "What does 'where it will be consumed' refer to?", options: ["In the soil", "The warehouses", "The urban area", "The power grids"], answer: 2 },
-                { q: "What is the main environmental drawback mentioned?", options: ["Insects", "No farm jobs", "Large power demand", "Poor-tasting produce"], answer: 2 }
-            ]
-        },
-        'C1_Route': {
-            passage: "The phenomenon of decision fatigue suggests that the human brain's capacity for self-regulation is a finite resource, steadily depleted by the sheer volume of choices made throughout the day. Unlike physical exhaustion, cognitive depletion is highly <b>insidious</b>; individuals rarely recognize they are impaired. Instead, they begin to default to the path of least resistance, <b>which</b> manifests either as impulsive risk-taking or severe <b>choice paralysis</b>. This explains why corporate executives often adopt uniform wardrobes to eliminate trivial morning decisions, thereby conserving mental bandwidth for high-stakes strategic planning. Ultimately, willpower is less an enduring personality trait than a fluctuating physiological resource.",
-            questions: [
-                { q: "What is the central argument of the text?", options: ["People are lazy", "Executives need rest", "Self-control is finite", "Fast choices aid the brain"], answer: 2 },
-                { q: "What does the word 'insidious' imply about cognitive depletion?", options: ["It is loud", "It is easily fixed", "It causes physical pain", "It creeps up undetected"], answer: 3 },
-                { q: "Why do some people experience 'choice paralysis'?", options: ["They feel angry", "They lack schooling", "They crave wild risks", "Their mental reserves are spent"], answer: 3 },
-                { q: "In the third sentence, what does the word 'which' refer to?", options: ["Physical exhaustion", "A corporate executive", "A fluctuating resource", "Choosing the easiest option"], answer: 3 },
-                { q: "According to the passage, how is willpower best described?", options: ["A fixed trait", "A business tactic", "An unpredictable mood", "A variable store of energy"], answer: 3 }
-            ]
-        },
-        'C1_Confirm': {
-            passage: "The Sapir-Whorf hypothesis <b>postulates</b> that a person's native language shapes their cognitive processes, influencing what they most readily conceptualize. While extreme linguistic determinism is largely discredited, a more nuanced version retains empirical support. It suggests that language habitually directs attention toward particular features of the environment. For instance, speakers who rely on absolute directional coordinates consistently demonstrate superior spatial orientation. Conversely, lacking specific vocabulary for colour shades does not render individuals physiologically unable to see differences, but it measurably increases the cognitive effort required to categorize <b>them</b>. Ultimately, language appears to carve preferred mental pathways, subtly influencing perception.",
-            questions: [
-                { q: "What is the main topic of the passage?", options: ["Memory limits", "Colour blindness", "Giving directions", "How language shapes thinking"], answer: 3 },
-                { q: "What advantage do speakers using absolute coordinates have?", options: ["They read faster", "They walk more quickly", "They recall words better", "They have a strong sense of direction"], answer: 3 },
-                { q: "What does the word 'postulates' mean in the first sentence?", options: ["Hides", "Suggests", "Disproves", "Forgets about"], answer: 1 },
-                { q: "In the fifth sentence, what does 'them' refer to?", options: ["The speakers", "Mental pathways", "Shades of colour", "Directional terms"], answer: 2 },
-                { q: "What is the effect of lacking words for specific shades?", options: ["Total blindness", "Dislike of colour", "A need for glasses", "More effort to classify them"], answer: 3 }
-            ]
-        }
+            "A1_Route": {
+                    "genre": "Infographic",
+                    "infographic": {
+                            "title": "GREENPARK LIBRARY",
+                            "rows": [
+                                    [
+                                            "Open",
+                                            "Mon–Sat, 9 AM – 6 PM"
+                                    ],
+                                    [
+                                            "Closed",
+                                            "Sunday"
+                                    ],
+                                    [
+                                            "Free",
+                                            "Wi-Fi for members"
+                                    ],
+                                    [
+                                            "Books",
+                                            "Borrow up to 6"
+                                    ],
+                                    [
+                                            "Late return",
+                                            "$1 a day"
+                                    ]
+                            ],
+                            "footer": "Children's story time · Saturday 11 AM"
+                    },
+                    "questions": [
+                            {
+                                    "q": "What does this poster mainly tell you?",
+                                    "options": [
+                                            "How to read books",
+                                            "Facts about a library",
+                                            "The price of new books",
+                                            "A list of children's names"
+                                    ],
+                                    "answer": 1
+                            },
+                            {
+                                    "q": "Who can get free Wi-Fi?",
+                                    "options": [
+                                            "Everyone",
+                                            "All children",
+                                            "People who joined the library",
+                                            "People who go to Children's story time"
+                                    ],
+                                    "answer": 2
+                            },
+                            {
+                                    "q": "You return a book three days late. What happens?",
+                                    "options": [
+                                            "Nothing at all",
+                                            "You lose your card",
+                                            "You wait three weeks",
+                                            "You pay three dollars"
+                                    ],
+                                    "answer": 3
+                            },
+                            {
+                                    "q": "If you wanted to attend the story time activity, when should you arrive at the library?",
+                                    "options": [
+                                            "Mon 9 AM",
+                                            "11 AM Sunday",
+                                            "11 AM Saturday",
+                                            "Mon–Sat, 9 AM – 6 PM"
+                                    ],
+                                    "answer": 2
+                            },
+                            {
+                                    "q": "If you wanted to borrow six books, are you allowed to do it?",
+                                    "options": [
+                                            "No",
+                                            "Yes",
+                                            "Only if you pay $1 a day",
+                                            "No, except children attending story time"
+                                    ],
+                                    "answer": 1
+                            }
+                    ]
+            },
+            "A1_Confirm": {
+                    "genre": "Infographic",
+                    "infographic": {
+                            "title": "BLUE WAVE POOL",
+                            "rows": [
+                                    [
+                                            "Open",
+                                            "Every day, 7 AM – 9 PM"
+                                    ],
+                                    [
+                                            "Adults",
+                                            "$4 entry"
+                                    ],
+                                    [
+                                            "Under 12",
+                                            "Free with an adult"
+                                    ],
+                                    [
+                                            "No",
+                                            "Food by the water"
+                                    ],
+                                    [
+                                            "Lockers",
+                                            "Bring a $1 coin"
+                                    ]
+                            ],
+                            "footer": "Swimming lessons · Tuesday & Thursday evenings"
+                    },
+                    "questions": [
+                            {
+                                    "q": "What is the main purpose of this poster?",
+                                    "options": [
+                                            "To sell food",
+                                            "To find a lost coin",
+                                            "To teach swimming",
+                                            "To give pool information"
+                                    ],
+                                    "answer": 3
+                            },
+                            {
+                                    "q": "It says 'No food by the water'. What does this tell you to do?",
+                                    "options": [
+                                            "Eat quickly",
+                                            "Buy more food",
+                                            "Share your food",
+                                            "Do not eat there"
+                                    ],
+                                    "answer": 3
+                            },
+                            {
+                                    "q": "A mother brings her 8-year-old son. How much do they both need to pay?",
+                                    "options": [
+                                            "Nothing",
+                                            "Four dollars",
+                                            "Eight dollars",
+                                            "Twelve dollars"
+                                    ],
+                                    "answer": 1
+                            },
+                            {
+                                    "q": "You arrive at 8 in the morning. Is the pool open?",
+                                    "options": [
+                                            "No",
+                                            "Yes",
+                                            "Only for adults",
+                                            "Only on Tuesday"
+                                    ],
+                                    "answer": 1
+                            },
+                            {
+                                    "q": "You forgot to bring a coin for the locker. How would you most likely feel?",
+                                    "options": [
+                                            "Proud",
+                                            "Excited",
+                                            "Annoyed",
+                                            "Delighted"
+                                    ],
+                                    "answer": 2
+                            }
+                    ]
+            },
+            "A2_Route": {
+                    "genre": "Job advertisement",
+                    "passage": "PART-TIME CAFÉ ASSISTANT — Sunshine Café\n\nWe are looking for a friendly café assistant to join our small team. You will serve customers, make hot drinks, and keep the counter <b>tidy</b>. No experience is needed, as we will train you. Weekend work is required, so please only apply if you are free on Saturdays.\n\nWe offer £10 an hour and a free lunch on every shift. After one year, staff also receive a <b>yearly bonus</b>.\n\nTo apply, email Mr. Brown at jobs@sunshine.co with the subject line \"Café Assistant\". Please attach a short CV.",
+                    "questions": [
+                            {
+                                    "q": "What is the main purpose of this advertisement?",
+                                    "options": [
+                                            "To sell coffee",
+                                            "To hire a worker",
+                                            "To clean the cafe",
+                                            "To thank customers"
+                                    ],
+                                    "answer": 1
+                            },
+                            {
+                                    "q": "The advert asks you to keep the counter 'tidy'. What does 'tidy' mean here?",
+                                    "options": [
+                                            "Neat",
+                                            "Empty",
+                                            "Cheap",
+                                            "Closed"
+                                    ],
+                                    "answer": 0,
+                                    "refs": [
+                                            "tidy"
+                                    ]
+                            },
+                            {
+                                    "q": "Who should NOT apply for this job?",
+                                    "options": [
+                                            "Friendly people",
+                                            "People who like coffee",
+                                            "People busy on Saturdays",
+                                            "People with no experience"
+                                    ],
+                                    "answer": 2
+                            },
+                            {
+                                    "q": "Who should you contact to apply for this job?",
+                                    "options": [
+                                            "Mr. Brown",
+                                            "The café team",
+                                            "A café customer",
+                                            "A Café Assistant"
+                                    ],
+                                    "answer": 0
+                            },
+                            {
+                                    "q": "What is a 'yearly bonus'?",
+                                    "options": [
+                                            "A free meal",
+                                            "A daily wage",
+                                            "A training course",
+                                            "Extra pay once a year"
+                                    ],
+                                    "answer": 3,
+                                    "refs": [
+                                            "yearly bonus"
+                                    ]
+                            }
+                    ]
+            },
+            "A2_Confirm": {
+                    "genre": "Job advertisement",
+                    "passage": "WEEKEND DOG WALKER WANTED\n\nA local pet service needs a reliable dog walker for Saturday and Sunday mornings. You will collect dogs from their homes and walk them in the park for one hour. You must be <b>punctual</b>, as owners leave for work early and the dogs cannot wait.\n\nWe pay £12 per walk, and you can walk up to four dogs a day. Walkers who stay for six months earn an extra end-of-year bonus.\n\nYou do not need a car, but you must live near the town centre. To apply, send a message to Ms. Reed with the subject \"Dog Walker\" and tell us why you enjoy animals.",
+                    "questions": [
+                            {
+                                    "q": "What is this advert mainly about?",
+                                    "options": [
+                                            "Selling dogs",
+                                            "Finding lost dogs",
+                                            "Training pet owners",
+                                            "Finding someone to walk the dogs"
+                                    ],
+                                    "answer": 3
+                            },
+                            {
+                                    "q": "The advert says you must be 'punctual'. What does this mean?",
+                                    "options": [
+                                            "Kind",
+                                            "Quiet",
+                                            "Strong",
+                                            "On time"
+                                    ],
+                                    "answer": 3,
+                                    "refs": [
+                                            "punctual"
+                                    ]
+                            },
+                            {
+                                    "q": "Why is being late a serious problem in this job?",
+                                    "options": [
+                                            "The dogs get angry",
+                                            "The pay is reduced",
+                                            "The park closes early",
+                                            "Owners must leave for work"
+                                    ],
+                                    "answer": 3
+                            },
+                            {
+                                    "q": "If you attend school on weekday mornings, can you still take this job?",
+                                    "options": [
+                                            "No",
+                                            "Yes",
+                                            "Only during school holidays",
+                                            "Only with a note from your parents"
+                                    ],
+                                    "answer": 1
+                            },
+                            {
+                                    "q": "What does the advert ask you to include in your message?",
+                                    "options": [
+                                            "Your photo",
+                                            "A photo of a dog",
+                                            "Your home address",
+                                            "Why you like animals"
+                                    ],
+                                    "answer": 3
+                            }
+                    ]
+            },
+            "B1_Route": {
+                    "genre": "Dialogue",
+                    "passage": "<b>Sam:</b> So, are we still on for the hiking trip this weekend?\n<b>Maya:</b> I'd love to, but can we <b>wait and see</b>? They're saying it might rain on Saturday.\n<b>Sam:</b> A little rain never hurt anyone! Come on, where's your sense of adventure?\n<b>Maya:</b> It's not the rain I mind — it's the slippery paths. Last time I nearly twisted my ankle.\n<b>Sam:</b> Fair enough. How about we keep an eye on the forecast and decide on Friday night?\n<b>Maya:</b> Now you're talking. If it looks clear, I'm in. If not, let's do it the following week.\n<b>Sam:</b> Deal. I'll book the cabin either way — they refund us if we cancel early.",
+                    "questions": [
+                            {
+                                    "q": "What are Sam and Maya mainly trying to decide?",
+                                    "options": [
+                                            "Which cabin to buy",
+                                            "Where to eat dinner",
+                                            "How to fix an ankle",
+                                            "Whether to go hiking"
+                                    ],
+                                    "answer": 3
+                            },
+                            {
+                                    "q": "When Maya says she wants to 'wait and see', she means she is:",
+                                    "options": [
+                                            "Excited",
+                                            "Undecided for now",
+                                            "Waiting for someone",
+                                            "Looking for something"
+                                    ],
+                                    "answer": 1,
+                                    "refs": [
+                                            "wait and see"
+                                    ]
+                            },
+                            {
+                                    "q": "What is Maya's REAL reason for hesitating?",
+                                    "options": [
+                                            "She dislikes Sam",
+                                            "She has other plans",
+                                            "She cannot afford it",
+                                            "She fears injuring herself"
+                                    ],
+                                    "answer": 3
+                            },
+                            {
+                                    "q": "How does Sam feel about the trip overall?",
+                                    "options": [
+                                            "Keen",
+                                            "Bored",
+                                            "Furious",
+                                            "Reluctant"
+                                    ],
+                                    "answer": 0
+                            },
+                            {
+                                    "q": "When Maya says 'Now you're talking', she is showing that she:",
+                                    "options": [
+                                            "Wants silence",
+                                            "Feels confused",
+                                            "Likes Sam's idea",
+                                            "Is changing topic"
+                                    ],
+                                    "answer": 2,
+                                    "refs": [
+                                            "Now you're talking"
+                                    ]
+                            }
+                    ]
+            },
+            "B1_Confirm": {
+                    "genre": "Dialogue",
+                    "passage": "<b>Assistant:</b> Hi there, how can I help you today?\n<b>Customer:</b> My new phone keeps freezing. I bought it here last week and honestly, <b>I've had enough</b>.\n<b>Assistant:</b> I'm sorry to hear that. Have you tried turning it off and on again?\n<b>Customer:</b> Of course. I've done that a dozen times. <b>This isn't good enough</b>.\n<b>Assistant:</b> I understand. Since it's under a week old, you're entitled to a replacement. Do you have the receipt?\n<b>Customer:</b> Right here. I was worried you'd tell me to wait for a repair.\n<b>Assistant:</b> Not at all. A repair could take weeks, and that's hardly fair on a brand-new device. Let me sort out a new one for you now.\n<b>Customer:</b> Brilliant. That's a weight off my mind.",
+                    "questions": [
+                            {
+                                    "q": "What is John's main problem?",
+                                    "options": [
+                                            "A closed shop",
+                                            "A lost receipt",
+                                            "A high phone bill",
+                                            "A faulty new phone"
+                                    ],
+                                    "answer": 3
+                            },
+                            {
+                                    "q": "John says he 'has had enough'. This shows he is:",
+                                    "options": [
+                                            "Full of praise",
+                                            "Feeling unwell",
+                                            "Out of patience",
+                                            "Almost finished"
+                                    ],
+                                    "answer": 2,
+                                    "refs": [
+                                            "has had enough"
+                                    ]
+                            },
+                            {
+                                    "q": "When John says 'This isn't good enough', he means it:",
+                                    "options": [
+                                            "Is dangerous",
+                                            "Takes too long",
+                                            "Is a bad colour",
+                                            "Does not meet his needs"
+                                    ],
+                                    "answer": 3,
+                                    "refs": [
+                                            "This isn't good enough"
+                                    ]
+                            },
+                            {
+                                    "q": "How does John feel at the END of the conversation?",
+                                    "options": [
+                                            "Angry",
+                                            "Bored",
+                                            "Anxious",
+                                            "Relieved"
+                                    ],
+                                    "answer": 3
+                            },
+                            {
+                                    "q": "Why does SalesAssistant-Mark offer a replacement rather than a repair?",
+                                    "options": [
+                                            "It is cheaper",
+                                            "The phone is nearly new",
+                                            "Repairs are not allowed",
+                                            "Because John asked nicely"
+                                    ],
+                                    "answer": 1
+                            }
+                    ]
+            },
+            "B2_Route": {
+                    "genre": "Review",
+                    "passage": "Having heard months of breathless praise for Olive & Thyme, I arrived with sky-high expectations — and therein, perhaps, lay the problem. The dining room is undeniably stunning: warm lighting, exposed brick, and tables spaced generously enough for a private conversation. The starters, too, were faultless; the smoked-aubergine dip alone nearly justified the trip.\n\nThe main courses, however, were where the evening lost its footing. My lamb arrived lukewarm, and while the flavours were competent, they were hardly the <b>revelation</b> the menu's prose had promised. At these prices, \"good enough\" simply doesn't cut it.\n\nThe staff, I should add, were charming and attentive throughout. I left wanting to love the place more than I actually did. Olive & Thyme is not a bad restaurant — far from it — but it <b>trades on a reputation its kitchen no longer quite earns</b>.",
+                    "questions": [
+                            {
+                                    "q": "What was the reviewer's opinion of the starters?",
+                                    "options": [
+                                            "They were perfect",
+                                            "They were terrible",
+                                            "They were acceptable",
+                                            "They were served too cold"
+                                    ],
+                                    "answer": 0
+                            },
+                            {
+                                    "q": "How did the staff treat the reviewer?",
+                                    "options": [
+                                            "They were rude and slow",
+                                            "They were polite and helpful",
+                                            "They were friendly but rushed",
+                                            "They ignored the reviewer entirely"
+                                    ],
+                                    "answer": 1
+                            },
+                            {
+                                    "q": "The reviewer says the main courses were \"hardly the revelation the menu's prose had promised.\" What does 'revelation' imply here?",
+                                    "options": [
+                                            "A transcendent or highly original experience",
+                                            "An exhaustive and strictly factual list of ingredients",
+                                            "An unexpected disclosure of confidential information",
+                                            "A thoroughly underwhelming and predictable encounter"
+                                    ],
+                                    "answer": 0,
+                                    "refs": [
+                                            "hardly the revelation the menu's prose had promised.",
+                                            "revelation"
+                                    ]
+                            },
+                            {
+                                    "q": "The phrase 'trades on a reputation its kitchen no longer quite earns' suggests Olive & Thyme currently benefits from:",
+                                    "options": [
+                                            "Highly skilled chefs who are underpaid",
+                                            "An aggressive new marketing campaign",
+                                            "Customers who prefer average, familiar food",
+                                            "Historical goodwill that masks present mediocrity"
+                                    ],
+                                    "answer": 3,
+                                    "refs": [
+                                            "trades on a reputation its kitchen no longer quite earns"
+                                    ]
+                            },
+                            {
+                                    "q": "What best characterises the reviewer's ultimate disposition toward the restaurant?",
+                                    "options": [
+                                            "Vitriolic condemnation",
+                                            "Bewildered amusement",
+                                            "Unqualified endorsement",
+                                            "Resigned disappointment"
+                                    ],
+                                    "answer": 3
+                            }
+                    ]
+            },
+            "B2_Confirm": {
+                    "genre": "Review",
+                    "passage": "On paper, the Lumen Watch 3 ticks every box: a vivid display, a week-long battery, and a price that undercuts its better-known rivals. In practice, the experience is more of a mixed bag. The screen really is gorgeous, and the battery claims hold up — I went six days between charges without babying it, which is genuinely rare.\n\nWhere the Lumen <b>stumbles</b> is software. The fitness tracking is reliable enough, but the companion app is sluggish and crashes more often than I'd like. Syncing, when it works, is quick; the trouble is that <b>\"when it works\" carries more weight than it should</b>.\n\nWould I recommend it? Cautiously. If you want a handsome, long-lasting watch and you're willing to forgive some rough edges, it's a bargain. If you expect everything to run seamlessly out of the box, you may find yourself quietly frustrated. The hardware is ready; the software needs another year.",
+                    "questions": [
+                            {
+                                    "q": "What is the reviewer's main conclusion about the watch?",
+                                    "options": [
+                                            "Avoid it entirely",
+                                            "The best watch made",
+                                            "Not worth the money",
+                                            "Great value with flaws"
+                                    ],
+                                    "answer": 3
+                            },
+                            {
+                                    "q": "The review says the watch 'stumbles' on software. This means the software:",
+                                    "options": [
+                                            "Is easy to fix",
+                                            "Loads quickly",
+                                            "Looks beautiful",
+                                            "Performs poorly"
+                                    ],
+                                    "answer": 3,
+                                    "refs": [
+                                            "stumbles"
+                                    ]
+                            },
+                            {
+                                    "q": "What does 'when it works carries more weight than it should' suggest about syncing?",
+                                    "options": [
+                                            "Syncing is free",
+                                            "Syncing is heavy",
+                                            "Syncing often fails",
+                                            "Syncing always fails"
+                                    ],
+                                    "answer": 2,
+                                    "refs": [
+                                            "when it works carries more weight than it should"
+                                    ]
+                            },
+                            {
+                                    "q": "How would you describe the reviewer's attitude overall?",
+                                    "options": [
+                                            "Harsh and dismissive",
+                                            "Confused and unsure",
+                                            "Enthusiastic but unfair",
+                                            "Balanced and measured"
+                                    ],
+                                    "answer": 3
+                            },
+                            {
+                                    "q": "Who would be LEAST happy with this watch?",
+                                    "options": [
+                                            "A bargain hunter",
+                                            "A long-battery seeker",
+                                            "A fan of bright screens",
+                                            "Someone wanting flawless software"
+                                    ],
+                                    "answer": 3
+                            }
+                    ]
+            },
+            "C1_Route": {
+                    "genre": "Academic article",
+                    "passage": "The placebo effect has long been dismissed as a mere statistical <b>nuisance</b> — the background noise against which 'real' treatments are measured. Yet a growing body of research suggests that this framing is not only reductive but actively misleading. Far from being an absence of treatment, a placebo response appears to be a genuine neurobiological event, marshalling <b>the brain's own pharmacology</b> to modulate pain, mood, and even immune function.\n\nWhat complicates the picture is the role of expectation. In several trials, the colour, price, and even the perceived authority of the prescriber measurably altered outcomes — a finding that <b>unsettles the tidy boundary between the chemical and the contextual</b>. Critics counter that such effects are short-lived and rarely alter the course of disease. This <b>caution is warranted; nevertheless</b>, dismissing the phenomenon outright risks discarding a powerful adjunct to conventional therapy. The more productive question may not be whether placebos 'work', but under what conditions, and to what end, the body can be persuaded to heal itself.",
+                    "questions": [
+                            {
+                                    "q": "According to the passage, how do critics view the effects of placebos?",
+                                    "options": [
+                                            "As permanent cures for illness",
+                                            "As completely fake and nonexistent",
+                                            "As far too expensive to justify using",
+                                            "As brief and generally ineffective for the underlying disease"
+                                    ],
+                                    "answer": 3
+                            },
+                            {
+                                    "q": "The text says the placebo effect was historically treated as a 'nuisance'. This means it was considered:",
+                                    "options": [
+                                            "A popular modern medicine",
+                                            "A dangerous, toxic substance",
+                                            "An annoyance or inconvenience",
+                                            "A highly valuable scientific tool"
+                                    ],
+                                    "answer": 2,
+                                    "refs": [
+                                            "nuisance"
+                                    ]
+                            },
+                            {
+                                    "q": "Why does the author mention that placebos can marshal 'the brain's own pharmacology'?",
+                                    "options": [
+                                            "To criticise doctors who overprescribe medication",
+                                            "To prove that conventional drugs are unnecessary for treatment",
+                                            "To show that placebo responses trigger actual physical and chemical changes",
+                                            "To argue that patients must consciously focus to activate their immune systems"
+                                    ],
+                                    "answer": 2,
+                                    "refs": [
+                                            "the brain's own pharmacology"
+                                    ]
+                            },
+                            {
+                                    "q": "The author says the critics' 'caution is warranted' but follows with 'nevertheless'. What is the purpose of this transition?",
+                                    "options": [
+                                            "To introduce a completely different medical topic",
+                                            "To show that the author is confused about the clinical data",
+                                            "To completely dismiss the critics' arguments as scientifically inaccurate",
+                                            "To admit the critics make a valid point before highlighting the placebo's potential usefulness"
+                                    ],
+                                    "answer": 3,
+                                    "refs": [
+                                            "caution is warranted",
+                                            "nevertheless"
+                                    ]
+                            },
+                            {
+                                    "q": "That placebo outcomes 'unsettle the tidy boundary between the chemical and the contextual' means they:",
+                                    "options": [
+                                            "Prove chemicals have no real effect on human biology",
+                                            "Suggest that doctors should focus on making their offices look tidy",
+                                            "Confirm that the physical environment is completely separate from medical treatment",
+                                            "Challenge the clear separation between a drug's physical properties and the psychological environment"
+                                    ],
+                                    "answer": 3,
+                                    "refs": [
+                                            "unsettle the tidy boundary between the chemical and the contextual"
+                                    ]
+                            }
+                    ]
+            },
+            "C1_Confirm": {
+                    "genre": "Academic article",
+                    "passage": "The proposition that the language we speak conditions the way we think has had a turbulent history. In its strongest form — that language imprisons thought within fixed categories — it has been thoroughly <b>repudiated</b>. Speakers are demonstrably capable of conceiving distinctions their language does not encode. Yet the wholesale rejection of the strong claim has, until recently, obscured a subtler and more defensible hypothesis.\n\nContemporary studies point not to constraint but to <b>habituation</b>. Where a language obliges its speakers to mark, say, the precise source of their knowledge, those speakers attend more readily to such distinctions in non-linguistic tasks. Language, on this account, does not bound cognition so much as bias it, quietly privileging certain features of experience over others. The effect is cumulative rather than absolute, a matter of inclination rather than capacity. To insist that language either determines thought or is irrelevant to it is to pose a <b>false dichotomy</b>; the evidence points, as it so often does, to the unglamorous middle ground.",
+                    "questions": [
+                            {
+                                    "q": "What is the main point the author defends?",
+                                    "options": [
+                                            "Thought controls language",
+                                            "Language gently biases thought",
+                                            "Language fully controls thought",
+                                            "Language has no effect on thought"
+                                    ],
+                                    "answer": 1
+                            },
+                            {
+                                    "q": "The strong form of the claim has been 'repudiated'. This means it has been:",
+                                    "options": [
+                                            "Praised",
+                                            "Rejected",
+                                            "Improved",
+                                            "Universally accepted"
+                                    ],
+                                    "answer": 1,
+                                    "refs": [
+                                            "repudiated"
+                                    ]
+                            },
+                            {
+                                    "q": "The author prefers the idea of 'habituation'. This suggests language:",
+                                    "options": [
+                                            "Replaces older words",
+                                            "Has no lasting impact",
+                                            "Forces a way of thinking",
+                                            "Trains attention over time"
+                                    ],
+                                    "answer": 3,
+                                    "refs": [
+                                            "habituation"
+                                    ]
+                            },
+                            {
+                                    "q": "What does the author mean by 'a false dichotomy'?",
+                                    "options": [
+                                            "A proven theory",
+                                            "A type of language",
+                                            "A famous experiment",
+                                            "A wrong either/or choice"
+                                    ],
+                                    "answer": 3,
+                                    "refs": [
+                                            "a false dichotomy"
+                                    ]
+                            },
+                            {
+                                    "q": "The phrase 'the unglamorous middle ground' reveals the author's:",
+                                    "options": [
+                                            "Anger at other scholars",
+                                            "Boredom with the debate",
+                                            "Wry preference for nuance",
+                                            "Disappointment in the topic"
+                                    ],
+                                    "answer": 2,
+                                    "refs": [
+                                            "the unglamorous middle ground"
+                                    ]
+                            }
+                    ]
+            }
     };
+
+
+    // ===== Genre rendering layer =====
+    const AV_MAN = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><clipPath id='c'><circle cx='32' cy='32' r='32'/></clipPath></defs><g clip-path='url(%23c)'><rect width='64' height='64' fill='%23cfe3f5'/><circle cx='32' cy='25' r='13' fill='%23f1c9a5'/><path d='M19 19 a13 13 0 0 1 26 0 v2 h-4 q-9 -7 -18 0 v-2z' fill='%234a3728'/><path d='M14 64 v-9 q0-12 18-12 t18 12 v9z' fill='%233b6ea5'/><path d='M27 44 l5 6 5-6 z' fill='%23fff'/></g></svg>";
+    const AV_WOMAN = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><clipPath id='c'><circle cx='32' cy='32' r='32'/></clipPath></defs><g clip-path='url(%23c)'><rect width='64' height='64' fill='%23f5d6e3'/><path d='M17 30 q-3-22 15-22 t15 22 q0 14-15 14 t-15-14z' fill='%236b3b2a'/><circle cx='32' cy='27' r='12' fill='%23f4cdaa'/><path d='M16 64 v-8 q0-12 16-12 t16 12 v8z' fill='%23b5497f'/><path d='M19 30 q-4 6-2 16 M45 30 q4 6 2 16' stroke='%236b3b2a' stroke-width='4' fill='none'/></g></svg>";
+    const AV_LOGO = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><clipPath id='c'><circle cx='32' cy='32' r='32'/></clipPath></defs><g clip-path='url(%23c)'><rect width='64' height='64' fill='%23103d2e'/><rect x='14' y='14' width='36' height='36' rx='9' fill='%2316a34a'/><path d='M24 33 l6 6 12-14' stroke='%23fff' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></g></svg>";
+
+    const reviewMeta = {
+      B2_Route:{initials:'HC',name:'Helena Cross',subject:'Olive & Thyme',when:'2 days ago',headline:'Wanted to love it more than I did',helpful:42},
+      B2_Confirm:{initials:'MD',name:'Marcus Doyle',subject:'Lumen Watch 3',when:'1 week ago',headline:'A bargain with a software catch',helpful:118}
+    };
+    const journalMeta = {
+      C1_Route:{journal:'Journal of Clinical Neuroscience',vol:48,no:3,pp:'211\u2013227',doi:'1016/jcn.2024.03',title:'Reframing the Placebo Response: From Statistical Nuisance to Neurobiological Event',authors:'E. R. Vance, P. Nakamura',affil:'Department of Cognitive Medicine, Meridian University'},
+      C1_Confirm:{journal:'Annual Review of Linguistics',vol:11,no:1,pp:'88\u2013104',doi:'1146/arl.2024.11',title:'Linguistic Relativity Revisited: Habituation, Not Constraint',authors:'S. Adeyemi, L. Petrova',affil:'Centre for Language & Cognition, Thornbury Institute'}
+    };
+    const chatMeta = {
+      B1_Route:{title:'Sam & Maya',people:{'Sam':{display:'Sam',avatar:AV_MAN,side:'left'},'Maya':{display:'Maya',avatar:AV_WOMAN,side:'right'}}},
+      B1_Confirm:{title:'Support chat',people:{'Assistant':{display:'SalesAssistant-Mark',avatar:AV_LOGO,side:'left'},'Customer':{display:'John',avatar:AV_MAN,side:'right'}}}
+    };
+    const genreFontClass = {
+      'Infographic':'gf-ui','Job advertisement-Route':'gf-bulletin','Job advertisement-Confirm':'gf-news',
+      'Dialogue':'gf-chat','Review':'gf-review','Academic article':'gf-journal'
+    };
+
+    function escHTML(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+    function fmtPassage(raw){
+      return String(raw).split(/(<b>.*?<\/b>)/g).map(function(p){
+        var m=p.match(/^<b>([\s\S]*?)<\/b>$/);
+        return m? '<mark>'+escHTML(m[1])+'</mark>' : escHTML(p);
+      }).join('');
+    }
+    function genreKeyFor(nodeKey){
+      var n=testBank[nodeKey];
+      if(n.genre==='Job advertisement') return nodeKey.indexOf('Route')>=0 ? 'Job advertisement-Route':'Job advertisement-Confirm';
+      return n.genre;
+    }
+    // Render question text, wrapping ref phrases in the genre font
+    function renderQuestionText(nodeKey,qObj){
+      var text=String(qObj.q).replace(/<\/?b>/g,'');
+      var cls=genreFontClass[genreKeyFor(nodeKey)]||'gf-ui';
+      var refs=(qObj.refs||[]).slice().sort(function(a,b){return b.length-a.length;});
+      var tokens=[];
+      refs.forEach(function(phrase){
+        var idx=text.indexOf(phrase);
+        if(idx>=0){
+          var token='@@'+tokens.length+'@@';
+          tokens.push('<span class="ref '+cls+'">'+escHTML(phrase)+'</span>');
+          text=text.slice(0,idx)+token+text.slice(idx+phrase.length);
+        }
+      });
+      var out=escHTML(text);
+      tokens.forEach(function(htmlPiece,i){ out=out.split('@@'+i+'@@').join(htmlPiece); });
+      return out;
+    }
+
+    function renderInfographic(node,accentVar){
+      var info=node.infographic;
+      var rows=info.rows.map(function(r,i){return '<div class="ig-row '+(i%2?'alt':'')+'"><span class="ig-key">'+escHTML(r[0])+'</span><span class="ig-val">'+escHTML(r[1])+'</span></div>';}).join('');
+      return '<div class="render infographic" style="--genre:'+accentVar+'"><div class="ig-card"><div class="ig-title">'+escHTML(info.title)+'</div><div class="ig-rule"></div>'+rows+'<div class="ig-footer">'+escHTML(info.footer)+'</div></div></div>';
+    }
+    function renderBulletin(node){
+      var lines=node.passage.split('\n').filter(function(x){return x.trim();});
+      var body=lines.slice(1).map(function(l){return '<p>'+fmtPassage(l)+'</p>';}).join('');
+      var strips=''; for(var i=0;i<6;i++){strips+='<span>jobs@<br>sunshine<br>.co</span>';}
+      return '<div class="render bulletin"><div class="cork"><div class="flyer"><span class="pin"></span><div class="flyer-tag">NOW HIRING</div><h3>'+fmtPassage(lines[0])+'</h3>'+body+'<div class="tear-strips">'+strips+'</div></div></div></div>';
+    }
+    function renderNewspaper(node){
+      var lines=node.passage.split('\n').filter(function(x){return x.trim();});
+      var body=lines.slice(1).map(function(l){return '<p>'+fmtPassage(l)+'</p>';}).join('');
+      return '<div class="render newspaper"><div class="paper"><div class="paper-masthead"><span class="paper-section">CLASSIFIEDS \u00b7 SITUATIONS VACANT</span><span class="paper-date">The Daily Chronicle</span></div><div class="paper-cols"><h3>'+fmtPassage(lines[0])+'</h3>'+body+'</div></div></div>';
+    }
+    function renderChat(node,meta){
+      var lines=node.passage.split('\n').filter(function(x){return x.trim();});
+      var turns=lines.map(function(l){var m=l.match(/^<b>(.*?):<\/b>\s*([\s\S]*)$/);return m?{who:m[1],text:m[2]}:{who:'',text:l};});
+      var lastWho=null;
+      var rows=turns.map(function(t){
+        var p=meta.people[t.who];
+        var showHeader=t.who!==lastWho; lastWho=t.who;
+        var header=showHeader?'<div class="ln-name">'+escHTML(p.display)+'</div>':'';
+        var avatar=showHeader?'<img class="ln-av" src="'+p.avatar+'" alt="">':'<span class="ln-av spacer"></span>';
+        return '<div class="ln-row '+p.side+'">'+avatar+'<div class="ln-stack">'+header+'<div class="ln-bubble '+p.side+'">'+fmtPassage(t.text)+'</div></div></div>';
+      }).join('');
+      return '<div class="render chat"><div class="ln-window"><div class="ln-titlebar"><span class="ln-back">\u2039</span><span class="ln-chatname">'+escHTML(meta.title)+'</span><span class="ln-menu">\u22ef</span></div><div class="ln-feed">'+rows+'</div></div></div>';
+    }
+    function renderReview(node,meta){
+      var paras=node.passage.split('\n').filter(function(x){return x.trim();}).map(function(p){return '<p>'+fmtPassage(p)+'</p>';}).join('');
+      return '<div class="render webreview"><div class="rv-card"><div class="rv-head"><div class="rv-avatar">'+escHTML(meta.initials)+'</div><div class="rv-meta"><span class="rv-name">'+escHTML(meta.name)+' <span class="rv-verified">\u2713 Verified</span></span><span class="rv-sub">Reviewing <b>'+escHTML(meta.subject)+'</b> \u00b7 '+escHTML(meta.when)+'</span></div></div><div class="rv-stars">\u2605\u2605\u2605\u2606\u2606<span class="rv-score">3.0 / 5</span></div><div class="rv-title">'+escHTML(meta.headline)+'</div><div class="rv-body">'+paras+'</div><div class="rv-foot"><span>\ud83d\udc4d Helpful ('+meta.helpful+')</span><span>\ud83d\udcac Reply</span><span>\u2691 Report</span></div></div></div>';
+    }
+    function renderJournal(node,meta){
+      var paras=node.passage.split('\n').filter(function(x){return x.trim();});
+      var body='<p class="dropcap">'+fmtPassage(paras[0])+'</p>'+paras.slice(1).map(function(p){return '<p>'+fmtPassage(p)+'</p>';}).join('');
+      return '<div class="render journal"><div class="jr-page"><div class="jr-runhead"><span>'+escHTML(meta.journal)+'</span><span>Vol. '+meta.vol+', No. '+meta.no+' (2024), pp. '+meta.pp+'</span></div><div class="jr-doi">https://doi.org/10.'+meta.doi+'</div><h3 class="jr-title">'+escHTML(meta.title)+'</h3><div class="jr-authors">'+escHTML(meta.authors)+'</div><div class="jr-affil">'+escHTML(meta.affil)+'</div><div class="jr-abstract-label">Abstract</div><div class="jr-body">'+body+'</div></div></div>';
+    }
+    function renderReference(nodeKey){
+      var n=testBank[nodeKey];
+      switch(n.genre){
+        case 'Infographic': return renderInfographic(n, nodeKey==='A1_Route'?'var(--g-green)':'var(--g-teal)');
+        case 'Job advertisement': return nodeKey.indexOf('Route')>=0 ? renderBulletin(n):renderNewspaper(n);
+        case 'Dialogue': return renderChat(n, chatMeta[nodeKey]);
+        case 'Review': return renderReview(n, reviewMeta[nodeKey]);
+        case 'Academic article': return renderJournal(n, journalMeta[nodeKey]);
+        default: return '<div class="passage-box"><p>'+fmtPassage(n.passage||'')+'</p></div>';
+      }
+    }
 
     const routingMatrix = {
         'B1_Route': { pass: 'B2_Route', fail: 'A2_Route' },
@@ -402,14 +1171,15 @@
         renderPips();
 
         const pc = document.getElementById('passage-container');
-        pc.innerHTML = '<p>' + data.passage + '</p>';
+        pc.className = 'render-host';
+        pc.innerHTML = renderReference(level);
 
         let qHTML = '';
         const letters = ['A', 'B', 'C', 'D'];
         data.questions.forEach((qObj, index) => {
             qHTML += '<div class="question-block">'
                 + '<div class="qhead"><span class="qnum">' + (index + 1) + '</span>'
-                + '<span class="qtext">' + styleInlineCode(qObj.q) + '</span></div>'
+                + '<span class="qtext">' + renderQuestionText(level, qObj) + '</span></div>'
                 + '<div class="options">';
             qObj.options.forEach((opt, optIndex) => {
                 qHTML += '<label class="opt" data-q="' + index + '">'
