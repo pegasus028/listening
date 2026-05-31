@@ -48,20 +48,63 @@
     .prompt-tag{display:inline-block;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);background:var(--accent-wash);border:1px solid #f0d3c4;padding:4px 11px;border-radius:14px;font-weight:600;margin-bottom:14px;}
     .prompt-box{background:linear-gradient(180deg,#fffefb,#fdfaf4);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:22px 26px;margin:0 0 22px;}
     .prompt-box p{font-family:"Newsreader",Georgia,serif;font-size:1.18rem;line-height:1.6;color:#2a2722;margin:0;}
+    .prompt-box ol{font-family:"Newsreader",Georgia,serif;font-size:1.06rem;color:#2a2722;margin:12px 0 0;padding-left:22px;}
+    .prompt-box ol li{margin-bottom:5px;}
     .task-meta{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:.88rem;color:var(--ink-faint);margin:0 0 16px;}
     .task-meta b{color:var(--ink-soft);font-weight:600;}
+
+    /* ===== Grammar-round item styles ===== */
+    .instructions{font-size:.95rem;color:var(--ink-soft);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 15px;margin:0 0 24px;}
+    .gitem{margin-bottom:26px;padding-bottom:22px;border-bottom:1px dashed var(--line);}
+    .gitem:last-of-type{border-bottom:none;}
+    .ihead{display:flex;gap:10px;align-items:baseline;margin-bottom:9px;}
+    .inum{font-family:"Fraunces",serif;font-weight:600;color:#fff;background:var(--accent);min-width:25px;height:25px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:.86rem;flex:none;}
+    .iq{font-size:1.04rem;font-weight:500;flex:1;}
+    .ihelp{font-size:.78rem;color:var(--ink-faint);margin:0 0 10px;}
+    /* drag trays */
+    .tray{display:flex;flex-wrap:wrap;gap:9px;padding:12px;border:1.5px dashed var(--line-strong);border-radius:12px;background:#fdf8ef;min-height:54px;align-content:flex-start;}
+    .tray.answer{border-style:solid;border-color:var(--accent-soft);background:#fffaf3;margin-bottom:9px;}
+    .tray-label{width:100%;font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-weight:600;margin-bottom:2px;}
+    .chip{padding:9px 13px;background:#fff;border:1.5px solid var(--line-strong);border-radius:9px;font-size:.95rem;cursor:grab;user-select:none;touch-action:none;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:.12s;}
+    .chip:hover{border-color:var(--accent-soft);}
+    .chip.dragging{opacity:.4;}
+    .chip.tap-sel{border-color:var(--accent);background:var(--accent-wash);box-shadow:0 0 0 3px var(--accent-wash);}
+    .chip-ghost{position:fixed;z-index:999;pointer-events:none;padding:9px 13px;background:#fff;border:1.5px solid var(--accent);border-radius:9px;font-size:.95rem;box-shadow:0 8px 20px rgba(0,0,0,.18);transform:translate(-50%,-50%);}
+    /* error highlight */
+    .proof{font-size:1.06rem;line-height:2.0;}
+    .word{cursor:pointer;padding:2px 5px;border-radius:6px;transition:.12s;}
+    .word:hover{background:#f1e6d4;}
+    .word.flagged{background:var(--accent);color:#fff;}
+    /* match */
+    .match{display:grid;grid-template-columns:1fr 1fr;gap:9px 20px;align-items:start;}
+    .col-label{font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-weight:600;margin-bottom:6px;}
+    .m-col{display:flex;flex-direction:column;gap:8px;}
+    .m-item{padding:10px 12px;border:1.5px solid var(--line-strong);border-radius:9px;background:#fff;font-size:.92rem;cursor:pointer;transition:.12s;}
+    .m-item.sel{border-color:var(--accent);background:var(--accent-wash);}
+    .m-item.matched{border-color:var(--good);background:var(--good-wash);}
+    .m-pairnum{font-size:.68rem;font-weight:600;color:var(--good);margin-left:6px;}
+    /* dropdown */
+    .inline-select{font:inherit;font-size:1.0rem;color:var(--accent);font-weight:600;background:var(--accent-wash);border:1.5px solid var(--accent-soft);border-radius:8px;padding:3px 8px;cursor:pointer;}
+    /* transform */
+    .morph{display:inline-block;font-size:1.03rem;font-weight:600;color:var(--accent);background:var(--accent-wash);border:1.5px dashed var(--accent-soft);border-radius:8px;padding:2px 11px;cursor:pointer;margin:0 2px;}
+    .morph:hover{background:#fbe3d6;}
+    /* radio */
+    .opts{display:grid;gap:8px;}
+    .opt{display:flex;align-items:center;gap:11px;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);cursor:pointer;transition:.15s;font-size:.96rem;}
+    .opt:hover{border-color:var(--accent-soft);background:#fffaf6;}
+    .opt.sel{border-color:var(--accent);background:var(--accent-wash);}
+    .opt .dot{width:17px;height:17px;border-radius:50%;border:2px solid var(--line-strong);flex:none;display:inline-flex;align-items:center;justify-content:center;}
+    .opt.sel .dot::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);}
+    .opt .ltr{font-size:.72rem;font-weight:600;color:var(--ink-faint);}
 
     textarea{width:100%;min-height:240px;font-family:"Newsreader",Georgia,serif;font-size:1.1rem;line-height:1.7;color:var(--ink);
         background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:18px 20px;resize:vertical;transition:border-color .18s;}
     textarea:focus{outline:none;border-color:var(--accent-soft);}
     textarea:disabled{background:var(--paper);color:var(--ink-faint);}
     .wc-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:12px 2px 0;font-size:.9rem;color:var(--ink-faint);}
-    .wc-row .timer{margin:0 auto;}
     .wc-count{font-weight:600;font-variant-numeric:tabular-nums;}
     .wc-count b{color:var(--accent);}
-    .wc-meter{flex:1;height:6px;background:var(--line);border-radius:4px;overflow:hidden;max-width:240px;margin:0 4px;}
-    .wc-fill{height:100%;width:0;background:var(--accent-soft);border-radius:4px;transition:width .3s ease;}
-    .wc-fill.met{background:var(--good);}
+    .wc-hint b{color:var(--accent);}
 
     button{font-family:"Inter",sans-serif;background:var(--ink);color:#fff;border:none;padding:16px 28px;font-size:1.02rem;border-radius:11px;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:24px;transition:background .2s,transform .08s;letter-spacing:.01em;}
     button:hover{background:var(--accent);}
@@ -82,32 +125,30 @@
     .scale .step{flex:1;text-align:center;font-size:.74rem;font-weight:600;color:var(--ink-faint);padding:7px 2px;border-radius:7px;background:var(--paper);border:1px solid var(--line);}
     .scale .step.on{background:var(--accent);color:#fff;border-color:var(--accent);}
 
-    .traits{text-align:left;margin:34px 0 0;padding:26px;background:var(--paper);border:1px solid var(--line);border-radius:14px;}
+    .summary{text-align:left;margin:30px 0 0;padding:22px 24px;background:var(--good-wash);border:1px solid #d8e4bf;border-radius:14px;}
+    .summary h3{color:var(--good);margin-bottom:10px;}
+    .summary p{margin:0 0 7px;font-size:.98rem;color:var(--ink-soft);}
+    .summary p b{color:var(--ink);}
+
+    .traits{text-align:left;margin:22px 0 0;padding:26px;background:var(--paper);border:1px solid var(--line);border-radius:14px;}
     .traits h3{margin-bottom:14px;}
-    .trait{margin-bottom:16px;}
-    .trait:last-child{margin-bottom:0;}
+    .trait{margin-bottom:16px;}.trait:last-child{margin-bottom:0;}
     .trait-head{display:flex;justify-content:space-between;align-items:baseline;font-size:.92rem;margin-bottom:5px;}
     .trait-head .tname{font-weight:600;color:var(--ink);}
     .trait-head .tval{color:var(--ink-faint);font-size:.82rem;}
     .trait-bar{height:7px;background:var(--line);border-radius:4px;overflow:hidden;}
     .trait-bar i{display:block;height:100%;background:var(--accent-soft);border-radius:4px;}
 
-    .improve{text-align:left;margin:22px 0 0;padding:28px 26px;background:var(--paper);border:1px solid var(--line);border-radius:14px;}
-    .improve-sub{font-size:.96rem;color:var(--ink-soft);margin:0 0 18px;}
-    .focus-list{list-style:none;margin:0;padding:0;display:grid;gap:14px;}
-    .focus-list li{display:flex;gap:13px;align-items:flex-start;}
-    .focus-list .fnum{flex:none;width:24px;height:24px;border-radius:7px;background:var(--accent-wash);color:var(--accent);font-weight:600;font-size:.82rem;display:inline-flex;align-items:center;justify-content:center;margin-top:2px;}
-    .focus-list .fbody{font-size:.96rem;color:var(--ink);line-height:1.55;}
-    .focus-list .fbody b{font-weight:600;}.focus-list .fbody span{color:var(--ink-soft);}
+    .admin{text-align:left;margin:22px 0 0;padding:22px 24px;background:#fff;border:1px dashed var(--accent-soft);border-radius:14px;}
+    .admin h3{color:var(--accent);font-size:1.05rem;margin-bottom:6px;}
+    .admin .arow{display:flex;justify-content:space-between;gap:14px;font-size:.86rem;padding:4px 0;border-bottom:1px dotted var(--line);}
+    .admin .arow span:last-child{font-weight:600;color:var(--ink);text-align:right;}
+    .admin .anote{font-size:.8rem;color:var(--ink-faint);margin-top:10px;}
+    .admin details{margin-top:10px;}
+    .admin summary{cursor:pointer;font-size:.86rem;color:var(--accent);font-weight:600;}
+    .admin .essay-readout{white-space:pre-wrap;font-family:"Newsreader",Georgia,serif;font-size:.95rem;color:var(--ink-soft);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-top:8px;}
 
-    .contact{text-align:left;margin:22px 0 0;padding:24px 26px;background:linear-gradient(180deg,#fffdf9,#fbeee6);border:1px solid #f0d9cb;border-radius:14px;}
-    .contact-lead{font-family:"Fraunces",serif;font-weight:600;font-size:1.12rem;margin:0 0 6px;color:var(--accent);}
-    .contact-body{font-size:.98rem;color:var(--ink-soft);margin:0;line-height:1.6;}
-    .contact-body a{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:1px solid var(--accent-soft);}
-    .contact-body a:hover{color:var(--accent-soft);}
-    .contact-body b{color:var(--ink);font-weight:600;}
-    .disclaimer{font-size:.82rem;color:var(--ink-faint);margin:20px auto 0;max-width:52ch;line-height:1.5;}
-
+    .disclaimer{font-size:.82rem;color:var(--ink-faint);margin:20px auto 0;max-width:52ch;line-height:1.5;text-align:center;}
     .restart{margin-top:26px;}
     .restart button{background:transparent;color:var(--ink-soft);border:1.5px solid var(--line-strong);}
     .restart button:hover{background:var(--paper);color:var(--accent);border-color:var(--accent-soft);}
@@ -115,7 +156,7 @@
     .fade{animation:fade .45s ease both;}
     @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
     .hidden{display:none;}
-    @media(max-width:520px){.inner{padding:26px 20px;}.prompt-box{padding:18px;}}
+    @media(max-width:520px){.inner{padding:26px 20px;}.prompt-box{padding:18px;}.match{grid-template-columns:1fr;}}
 </style>
 <style id="theme-upgrade">
   :root{
@@ -136,7 +177,6 @@
   .container{position:relative;}
   .container::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
     background:linear-gradient(90deg,var(--gold-soft),var(--gold),var(--gold-soft));z-index:5;}
-
   button{background:var(--accent) !important;}
   button:hover{background:var(--accent-soft) !important;}
   .restart button{background:transparent !important;color:var(--ink-soft) !important;}
@@ -149,28 +189,43 @@
     <div id="intro-screen" class="inner fade">
         <p class="eyebrow">Writing Proficiency · CEFR A1–C1</p>
         <h1>Adaptive Writing Assessment</h1>
-        <p class="lede">You will complete three short writing tasks. Each task adapts to your previous response — the topic and length change based on how you write. Your text is analysed automatically.</p>
+        <p class="lede">You will complete three short grammar rounds followed by one writing task. The grammar rounds adapt to how you do — they get harder or easier based on your answers. Your final writing is analysed automatically.</p>
         <div class="meta-note">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8a827a" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
-            <span>Each task has its own time limit, shown by a countdown timer. When time runs out, your work is submitted automatically — so keep writing until you are happy with it.</span>
+            <span>Rounds 1–3 are short tasks: build sentences, fix mistakes, match, and choose. The final writing task has its own countdown timer — when time runs out, your work is submitted automatically.</span>
         </div>
         <ul class="rules">
-            <li>Write in full sentences and develop your ideas as much as you can.</li>
-            <li>Aim to reach the suggested word count for each task.</li>
-            <li>Please write on your own, without dictionaries, translators, or other help.</li>
+            <li>In the grammar rounds, complete all five tasks, then press Check.</li>
+            <li>In the writing task, develop your ideas and aim for the suggested word count.</li>
+            <li>Please work on your own, without dictionaries, translators, or other help.</li>
         </ul>
         <button onclick="startTest()">Begin assessment <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </div>
 
-    <!-- Test -->
-    <div id="test-screen" class="hidden">
+    <!-- Grammar rounds -->
+    <div id="round-screen" class="hidden">
         <div class="topbar">
-            <span class="stage-label">Task <b id="stage-num">1</b> of 3</span>
+            <span class="stage-label">Round <b id="stage-num">1</b> of 4 · <b id="lvl-num">B1</b></span>
             <div class="pips" id="pips"></div>
         </div>
         <div class="inner">
-            <span class="prompt-tag" id="prompt-tag">Task</span>
-            <div class="prompt-box" id="prompt-box"></div>
+            <span class="prompt-tag">Grammar in use</span>
+            <div class="instructions" id="round-instructions"></div>
+            <div id="items"></div>
+            <button id="check-btn" onclick="submitRound()">Check round <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            <div class="instructions" id="round-result" style="display:none;margin-top:18px;"></div>
+        </div>
+    </div>
+
+    <!-- Essay (round 4) -->
+    <div id="essay-screen" class="hidden">
+        <div class="topbar">
+            <span class="stage-label">Round <b>4</b> of 4 · <b id="essay-lvl">B1</b></span>
+            <div class="pips" id="pips2"></div>
+        </div>
+        <div class="inner">
+            <span class="prompt-tag" id="essay-tag">Writing task</span>
+            <div class="prompt-box" id="essay-prompt"></div>
             <div class="task-meta">
                 <span>Suggested length: <b id="word-target"></b></span>
                 <span>Time limit: <b id="time-limit"></b></span>
@@ -182,18 +237,15 @@
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>
                     <span id="timer-text">00:00</span>
                 </div>
-                <span id="wc-hint" class="wc-hint">target <b id="wc-target">0</b></span>
+                <span class="wc-hint" id="wc-hint">target <b>0</b></span>
             </div>
-            <button id="submit-btn" onclick="submitEssay(false)">Submit &amp; continue <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            <button id="submit-btn" onclick="submitEssay(false)">Submit writing <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
         </div>
     </div>
 
     <!-- Grading -->
     <div id="grading-screen" class="hidden">
-        <div class="grading">
-            <div class="spinner"></div>
-            <p id="grading-text">Analysing your writing…</p>
-        </div>
+        <div class="grading"><div class="spinner"></div><p id="grading-text">Analysing your writing…</p></div>
     </div>
 
     <!-- Results -->
@@ -203,335 +255,278 @@
         <div id="final-level" class="final-score"></div>
         <p id="feedback-text" class="feedback-text"></p>
         <div class="scale" id="scale"></div>
-
-        <div class="traits">
-            <h3>How your writing was assessed</h3>
-            <div id="trait-list"></div>
-        </div>
-
-        <p class="disclaimer">This automated estimate is based on measurable features of your writing (vocabulary range, sentence structure, cohesion, and task length). It is a guide, not a formal qualification — a teacher's review gives the most accurate placement.</p>
+        <div class="summary" id="summary"></div>
+        <div class="traits"><h3>How your writing was assessed</h3><div id="trait-list"></div></div>
+        <div class="admin" id="admin"></div>
+        <p class="disclaimer">This automated estimate combines your grammar-round performance with measurable features of your writing. It is a guide, not a formal qualification — a teacher's review gives the most accurate placement.</p>
+        <div class="restart"><button onclick="restart()">Take the assessment again</button></div>
     </div>
 </div>
 
 <script>
-// === CEFR Writing Scorer (client-side, no AI/API needed) ===
-const WORDBANK_B2 = new Set("furthermore moreover consequently nevertheless significant substantial particularly essentially demonstrate establish contribute perspective implication considerable framework approach factor impact analyse analyze evaluate maintain sufficient relevant tendency whereas alternatively notably crucial benefit environment society develop decision however although therefore productivity collaboration flexibility organisation organization cohesion balanced uncertain evident advantage disadvantage opportunity convenient priority lifestyle".split(" "));
-const WORDBANK_C1 = new Set("nuanced paradigm albeit notwithstanding insofar pervasive inherent juxtapose ostensibly ramification ramifications underpin discernible cogent salient multifaceted predicated extrapolate dichotomy ubiquitous mitigate intricate compelling profound underscore agency automation unprecedented institutional governance retrospect proponents critics inadvertently uncritical efficiency obscures unpredictable integration".split(" "));
-const CONN_SINGLE = new Set("and but or so because however although therefore thus furthermore moreover consequently nevertheless whereas while since then also additionally firstly secondly finally despite".split(" "));
-const CONN_MULTI = ["for example","such as","in conclusion","on the other hand","as a result","in addition","even though","on one hand"];
+const BANK={"A1_Route":{"level":"A1","instructions":"Five short tasks. Build, find the mistake, match, tap to change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present simple (be)","prompt":"Put the words in order to make a correct sentence.","tiles":["My sister","is","a","teacher"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Articles (a/an)","words":["I","have","a","apple","every","day"],"errorSpan":[2,2],"fix":"an","hint":"Article before a vowel sound."},{"type":"match","level":"A2","target":"Past simple (irregular verbs)","leftLabel":"Present","rightLabel":"Past","pairs":[{"left":"go","right":"went"},{"left":"eat","right":"ate"},{"left":"buy","right":"bought"}]},{"type":"transform","level":"A2","target":"Comparatives","before":"A car is ","after":" than a bicycle.","forms":["fast","faster","fastest","more fast"],"correct":"faster"},{"type":"radio","level":"A2","target":"Going to (future)","prompt":"Look at those clouds! It ____ rain.","options":["is going to","go to","will going","goes to"],"answer":0}]},"A1_Confirm":{"level":"A1","instructions":"Five short tasks. Build, find the mistake, match, tap to change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present simple (have got)","prompt":"Put the words in order to make a correct sentence.","tiles":["They","have","got","two","dogs"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Subject pronoun","words":["Me","like","coffee","in","the","morning"],"errorSpan":[0,0],"fix":"I","hint":"Subject pronoun, not object pronoun."},{"type":"match","level":"A1","target":"Plurals","leftLabel":"Singular","rightLabel":"Plural","pairs":[{"left":"child","right":"children"},{"left":"box","right":"boxes"},{"left":"city","right":"cities"}]},{"type":"transform","level":"A1","target":"Present simple (3rd person)","before":"He ","after":" football every weekend.","forms":["play","plays","playing","is play"],"correct":"plays"},{"type":"radio","level":"A1","target":"Prepositions of place","prompt":"The book is ____ the table.","options":["on","in","at","of"],"answer":0}]},"A2_Route":{"level":"A2","instructions":"Five short tasks. Build, find the mistake, match, tap to change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present continuous","prompt":"Put the words in order to make a correct sentence.","tiles":["She","is","reading","a","book"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Plural agreement","words":["There","are","three","cat","in","the","garden"],"errorSpan":[3,3],"fix":"cats","hint":"After a number greater than one, use the plural."},{"type":"match","level":"B1","target":"Phrasal verbs","leftLabel":"Phrasal verb","rightLabel":"Meaning","pairs":[{"left":"give up","right":"stop doing"},{"left":"look after","right":"take care of"},{"left":"find out","right":"discover"}]},{"type":"transform","level":"B1","target":"Present perfect","before":"I ","after":" my keys. I can't find them.","forms":["lose","had lost","have lost","losing"],"correct":"have lost"},{"type":"radio","level":"B1","target":"First conditional","prompt":"If it rains tomorrow, we ____ at home.","options":["will stay","stay","would stay","stayed"],"answer":0}]},"A2_Confirm":{"level":"A2","instructions":"Five short tasks. Build, find the mistake, match, tap to change a word, or choose.","items":[{"type":"build","level":"A2","target":"Past simple","prompt":"Put the words in order to make a correct sentence.","tiles":["We","watched","a","film last night"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A2","target":"Past simple (irregular)","words":["She","goed","to","the","beach","yesterday"],"errorSpan":[1,1],"fix":"went","hint":"Irregular past form."},{"type":"match","level":"A2","target":"Quantifiers","leftLabel":"Noun","rightLabel":"Quantifier","pairs":[{"left":"water","right":"much"},{"left":"books","right":"many"},{"left":"sugar","right":"a little"}]},{"type":"transform","level":"A2","target":"Superlatives","before":"Everest is the ","after":" mountain in the world.","forms":["high","higher","highest","most high"],"correct":"highest"},{"type":"radio","level":"A2","target":"Should (advice)","prompt":"You look tired. You ____ go to bed early.","options":["should","must to","will","are"],"answer":0}]},"B1_Route":{"level":"B1","instructions":"Five short tasks. Build, find the mistake, match, choose in context, or tap to change a word.","items":[{"type":"build","level":"B2","target":"Future perfect","prompt":"Put the words in order to make a correct sentence.","tiles":["By next June, she","will","have","finished","her degree"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"A2","target":"Comparative","words":["This","box","is","more","heavy","than","that","one"],"errorSpan":[3,4],"fix":"heavier","hint":"Short adjective takes -er, not 'more'."},{"type":"match","level":"A2","target":"First conditional","leftLabel":"If…","rightLabel":"…result","pairs":[{"left":"If it rains tomorrow,","right":"we'll stay at home."},{"left":"If you press this button,","right":"the machine starts."},{"left":"If she studies hard,","right":"she'll pass the exam."}]},{"type":"dropdown","level":"B2","target":"Third conditional","before":"If she had left earlier, she ","after":" the train.","options":["would have caught","would catch","had caught","will catch"],"answer":0},{"type":"transform","level":"B2","target":"Passive (present perfect)","before":"The report ","after":" by the committee.","forms":["has written","has been written","wrote","is writing"],"correct":"has been written"}]},"B1_Confirm":{"level":"B1","instructions":"Five short tasks. Build, find the mistake, match, choose in context, or tap to change a word.","items":[{"type":"build","level":"B1","target":"Passive voice (simple)","prompt":"Put the words in order to make a correct passive sentence.","tiles":["The bridge","was","built in 1932"],"canonicalOrder":[0,1,2],"acceptedOrders":[]},{"type":"error","level":"B1","target":"Present perfect vs past simple","words":["I","have","seen","him","yesterday"],"errorSpan":[1,2],"fix":"saw","hint":"A finished past time ('yesterday') needs the past simple."},{"type":"match","level":"B1","target":"Reported speech (backshift)","leftLabel":"Direct speech","rightLabel":"Reported verb","pairs":[{"left":"“I work here.” → She said she ___ here.","right":"worked"},{"left":"“I am busy.” → She said she ___ busy.","right":"was"},{"left":"“I will leave.” → She said she ___ leave.","right":"would"}]},{"type":"dropdown","level":"B1","target":"Second conditional","before":"If I had more time, I ","after":" the piano.","options":["would learn","will learn","learn","had learned"],"answer":0},{"type":"transform","level":"B1","target":"Used to (past habit)","before":"When I was young, I ","after":" by the sea.","forms":["live","have lived","used to live","am living"],"correct":"used to live"}]},"B2_Route":{"level":"B2","instructions":"Five short tasks. Build, find the mistake, match, choose in context, or tap to change a word.","items":[{"type":"build","level":"C1","target":"Cleft sentence (it-cleft)","prompt":"Put the words in order to make a correct emphatic sentence.","tiles":["It was","her patience","that","impressed","the panel"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"B1","target":"Reported speech (backshift)","words":["He","said","that","he","will","help","us"],"errorSpan":[4,4],"fix":"would","hint":"Backshift after a past reporting verb: will → would."},{"type":"match","level":"B1","target":"Linking words","leftLabel":"Function","rightLabel":"Linker","pairs":[{"left":"contrast","right":"however"},{"left":"reason","right":"because"},{"left":"result","right":"therefore"}]},{"type":"dropdown","level":"C1","target":"Inversion (negative adverbial)","before":"Not only ","after":" late, but he also forgot the documents.","options":["was he","he was","did he was","he did"],"answer":0},{"type":"transform","level":"C1","target":"Causative (have something done)","before":"She ","after":" her car repaired last week.","forms":["had","has","is having","have"],"correct":"had"}]},"B2_Confirm":{"level":"B2","instructions":"Five short tasks. Build, find the mistake, match, choose in context, or tap to change a word.","items":[{"type":"build","level":"B2","target":"Passive (modal)","prompt":"Put the words in order to make a correct sentence.","tiles":["The work","must","be","completed by Friday"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"B2","target":"Mixed conditional","words":["If","I","had","studied","medicine,","I","will","be","a","doctor","now"],"errorSpan":[6,6],"fix":"would","hint":"Mixed conditional: past condition, present result uses 'would', not 'will'."},{"type":"match","level":"B2","target":"Discourse markers","leftLabel":"Marker","rightLabel":"Function","pairs":[{"left":"nevertheless","right":"concession"},{"left":"consequently","right":"result"},{"left":"furthermore","right":"adding a point"}]},{"type":"dropdown","level":"B2","target":"Reduced relative clause","before":"The students ","after":" the exam early can leave.","options":["who finishing","finishing","finished","they finish"],"answer":1},{"type":"transform","level":"B2","target":"Future continuous","before":"This time tomorrow, we ","after":" over the Atlantic.","forms":["fly","flew","will be flying","were flying"],"correct":"will be flying"}]},"C1_Route":{"level":"C1","instructions":"Five short tasks. Build, find the mistake, match, choose in context, or tap to change a word.","items":[{"type":"build","level":"C1","target":"Inversion (conditional)","prompt":"Put the words in order to make a correct formal sentence.","tiles":["Had I known about the delay,","I","would","have","left earlier"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"B2","target":"Passive infinitive","words":["The","problem","needs","to","solve","immediately"],"errorSpan":[4,4],"fix":"be solved","hint":"Passive infinitive after 'needs to': be + past participle."},{"type":"match","level":"B2","target":"Discourse markers","leftLabel":"Marker","rightLabel":"Function","pairs":[{"left":"in contrast","right":"showing difference"},{"left":"as a result","right":"showing consequence"},{"left":"in addition","right":"adding information"}]},{"type":"dropdown","level":"C1","target":"Cleft (what-cleft)","before":"","after":" surprised everyone was the depth of her argument.","options":["What","That","Which","It"],"answer":0},{"type":"transform","level":"C1","target":"Subjunctive","before":"The board recommended that he ","after":" the offer.","forms":["to accept","accept","accepting","was accepted"],"correct":"accept"}]},"C1_Confirm":{"level":"C1","instructions":"Five short tasks. Build, find the mistake, match, choose in context, or tap to change a word.","items":[{"type":"build","level":"C1","target":"Fronting / emphasis","prompt":"Put the words in order to make a correct emphatic sentence.","tiles":["Never before","had we","witnessed","such","a response"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"C1","target":"Inversion agreement","words":["Rarely","do","one","encounter","such","honesty"],"errorSpan":[1,2],"fix":"does one","hint":"After 'rarely' the auxiliary inverts and must agree: does one."},{"type":"match","level":"C1","target":"Advanced connectors","leftLabel":"Connector","rightLabel":"Use","pairs":[{"left":"notwithstanding","right":"in spite of"},{"left":"insofar as","right":"to the extent that"},{"left":"albeit","right":"although (brief)"}]},{"type":"dropdown","level":"C1","target":"Ellipsis / substitution","before":"She finished the project, and her colleagues ","after":" too.","options":["did so","did it make","made so","have did"],"answer":0},{"type":"transform","level":"C1","target":"Unreal past (wish/if only)","before":"I wish I ","after":" more attention in that meeting.","forms":["paid","had paid","have paid","would pay"],"correct":"had paid"}]}};
+const ESSAYS={"A1":{"format":"Social media comment","level":"A1","wordTarget":[30,50],"scenario":"A friend posted a photo of their new pet dog. Leave a friendly comment on the post.","subQuestions":["Say what you think about the dog.","Ask one question about the pet.","Tell your friend one thing you like to do with animals."],"sec":300},"A2":{"format":"Informal letter to a friend","level":"A2","wordTarget":[60,90],"scenario":"Write an informal letter (or message) to a friend about a trip you took recently.","subQuestions":["Describe where you went and who you went with.","Explain how you felt about the trip.","Suggest what your friend should do if they visit the same place."],"sec":360},"B1":{"format":"Formal letter — job application","level":"B1","wordTarget":[120,160],"scenario":"You saw an advertisement for a part-time job at a local café. Write a formal letter applying for the position.","subQuestions":["Discuss why you are interested in the job.","Explain what experience or qualities you would bring to the role.","Say what you would like the employer to do next (e.g. arrange an interview)."],"sec":480},"B2":{"format":"Comparative essay","level":"B2","wordTarget":[180,230],"scenario":"Write a comparative essay on the following topic: “The advantages and disadvantages of social media.”","subQuestions":["Discuss the main benefits of social media.","Explain how you feel about its effect on everyday life.","Recommend what individuals or companies should do to use it responsibly."],"sec":600},"C1":{"format":"Persuasive speech","level":"C1","wordTarget":[250,320],"scenario":"Write a speech calling for action on a serious issue: “It is time to end animal testing.”","subQuestions":["Discuss why this issue matters and who is affected by it.","Explain how you feel about the current situation and why change is urgent.","Argue what governments, companies, or individuals should do about it."],"sec":720}};
+const FULL_ORDER=['Pre-A1','A1','A2','B1','B2','C1'];
 
-function pstdev(arr){ if(arr.length<2) return 0; const m=arr.reduce((a,b)=>a+b,0)/arr.length; return Math.sqrt(arr.reduce((a,b)=>a+(b-m)*(b-m),0)/arr.length); }
+/* ===== adaptive state ===== */
+let state={round:1,node:'B1_Route',levelReached:'B1',scoreHist:[]};
+let timerId=null,secondsLeft=0,currentTarget=0,submitting=false;
 
-function analyzeWriting(text, targetWords){
-  text=(text||"").trim();
-  const words=text.match(/[A-Za-z']+/g)||[];
-  const n=words.length;
-  const sents=text.split(/[.!?]+/).filter(s=>s.trim());
-  const sd=Math.max(1,sents.length);
-  if(n<5) return {band:"Pre-A1", raw:0, words:n, metrics:null};
-  const lw=words.map(w=>w.toLowerCase());
-  const types=new Set(lw).size;
-  const rttr=types/Math.sqrt(n);
-  const ttr=types/n;
-  const adv=lw.filter(w=>WORDBANK_B2.has(w)||WORDBANK_C1.has(w)).length;
-  const c1=lw.filter(w=>WORDBANK_C1.has(w)).length;
-  const longw=lw.filter(w=>w.length>=8).length;
-  const joined=" "+lw.join(" ")+" ";
-  let conn=0;
-  CONN_SINGLE.forEach(c=>{conn+=joined.split(" "+c+" ").length-1;});
-  CONN_MULTI.forEach(c=>{conn+=joined.split(c).length-1;});
-  const sLens=sents.map(s=>(s.match(/[A-Za-z']+/g)||[]).length);
-  const variety=pstdev(sLens);
-  const meanSent=n/sd;
-  const advRate=adv/n, c1Rate=c1/n, longRate=longw/n, connDensity=conn/sd;
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function scrollTopNow(){try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){try{window.scrollTo(0,0);}catch(_){}}try{document.documentElement.scrollTop=0;document.body.scrollTop=0;}catch(e){}try{if(window.parent&&window.parent!==window){window.parent.postMessage({type:'cefr_scrolltop'},'*');}}catch(e){}}
 
-  const sLen=Math.min(meanSent/19,1);
-  const sDiv=Math.min(Math.max((rttr-2.8)/4.2,0),1);
-  const sAdv=Math.min(advRate/0.055,1);
-  const sC1=Math.min(c1Rate/0.018,1);
-  const sLong=Math.min(longRate/0.20,1);
-  const sConn=Math.min(connDensity/1.5,1);
-  const sVar=Math.min(variety/7.0,1);
-  const sTask=Math.min(n/targetWords,1);
-  let raw=100*(0.14*sLen+0.14*sDiv+0.16*sAdv+0.10*sC1+0.12*sLong+0.11*sConn+0.11*sVar+0.12*sTask);
-  if(ttr<0.40) raw*=0.55; else if(ttr<0.50) raw*=0.80;
+function startTest(){document.getElementById('intro-screen').classList.add('hidden');document.getElementById('round-screen').classList.remove('hidden');renderRound();}
+function setPips(elId,active){const p=document.getElementById(elId);if(!p)return;let h='';for(let i=1;i<=4;i++){let c='pip';if(i<active)c+=' done';else if(i===active)c+=' active';h+='<span class="'+c+'"></span>';}p.innerHTML=h;}
 
-  let band;
-  if(raw>=80) band="C1"; else if(raw>=66) band="B2"; else if(raw>=51) band="B1";
-  else if(raw>=34) band="A2"; else if(raw>=16) band="A1"; else band="Pre-A1";
+/* ===== pointer drag (mouse + touch) + tap-to-place ===== */
+let tapSel=null;
+function draggable(chip){
+  chip.addEventListener('click',()=>{if(chip._dragged){chip._dragged=false;return;}if(tapSel===chip){chip.classList.remove('tap-sel');tapSel=null;return;}if(tapSel)tapSel.classList.remove('tap-sel');tapSel=chip;chip.classList.add('tap-sel');});
+  let ghost=null,sx,sy,moved=false;
+  chip.addEventListener('pointerdown',e=>{if(e.button&&e.button!==0)return;sx=e.clientX;sy=e.clientY;moved=false;
+    const mv=ev=>{if(!moved&&(Math.abs(ev.clientX-sx)>4||Math.abs(ev.clientY-sy)>4)){moved=true;chip.classList.add('dragging');ghost=document.createElement('div');ghost.className='chip-ghost';ghost.textContent=chip.textContent;document.body.appendChild(ghost);if(tapSel){tapSel.classList.remove('tap-sel');tapSel=null;}}
+      if(moved&&ghost){ghost.style.left=ev.clientX+'px';ghost.style.top=ev.clientY+'px';document.querySelectorAll('.tray').forEach(t=>t.style.outline='');const tr=trayUnder(ev.clientX,ev.clientY);if(tr)tr.style.outline='2px solid var(--accent-soft)';}};
+    const up=ev=>{document.removeEventListener('pointermove',mv);document.removeEventListener('pointerup',up);document.querySelectorAll('.tray').forEach(t=>t.style.outline='');chip.classList.remove('dragging');if(moved&&ghost){ghost.remove();ghost=null;chip._dragged=true;const tr=trayUnder(ev.clientX,ev.clientY);if(tr)placeInto(chip,tr,ev.clientX,ev.clientY);}};
+    document.addEventListener('pointermove',mv);document.addEventListener('pointerup',up);});
+}
+function trayUnder(x,y){const els=document.elementsFromPoint(x,y);for(const el of els){const t=el.closest&&el.closest('.tray');if(t)return t;}return null;}
+function placeInto(chip,tray,x,y){const chips=[...tray.querySelectorAll('.chip')];let before=null;for(const t of chips){const r=t.getBoundingClientRect();if(x<r.left+r.width/2){before=t;break;}}if(before)tray.insertBefore(chip,before);else tray.appendChild(chip);}
+document.addEventListener('click',e=>{const tray=e.target.closest&&e.target.closest('.tray');if(tray&&tapSel){tray.appendChild(tapSel);tapSel.classList.remove('tap-sel');tapSel=null;}});
 
-  return {band, raw:Math.round(raw*10)/10, words:n,
-    metrics:{meanSent, rttr, ttr, advRate, c1Rate, longRate, connDensity, variety, sd,
-             sub:{sLen,sDiv,sAdv,sC1,sLong,sConn,sVar,sTask}}};
+/* ===== render a grammar round ===== */
+function renderRound(){
+  submitting=false;tapSel=null;
+  const node=BANK[state.node];
+  state.levelReached=node.level;
+  document.getElementById('stage-num').innerText=state.round;
+  document.getElementById('lvl-num').innerText=node.level;
+  setPips('pips',state.round);
+  document.getElementById('round-instructions').innerText=node.instructions;
+  document.getElementById('round-result').style.display='none';
+  const cb=document.getElementById('check-btn');cb.disabled=false;cb.innerHTML='Check round <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';cb.onclick=submitRound;
+  const host=document.getElementById('items');host.innerHTML='';
+  node.items.forEach((it,idx)=>{
+    const w=document.createElement('div');w.className='gitem';w.dataset.idx=idx;
+    let inner='<div class="ihead"><span class="inum">'+(idx+1)+'</span><span class="iq">'+itemQuestion(it)+'</span></div>';
+    if(it.type==='build'){
+      inner+='<div class="ihelp">↔ Drag the words into the answer box, or tap a word then tap where it goes.</div><div class="tray answer" data-role="answer"><span class="tray-label">Your sentence</span></div><div class="tray" data-role="bank"><span class="tray-label">Word bank</span></div>';
+    } else if(it.type==='error'){
+      inner+='<div class="proof">'+it.words.map((wd,i)=>'<span class="word" data-i="'+i+'">'+esc(wd)+'</span>').join(' ')+'</div><div class="ihelp">Hint: '+esc(it.hint)+'</div>';
+    } else if(it.type==='match'){
+      inner+='<div class="match"><div><div class="col-label">'+esc(it.leftLabel)+'</div><div class="m-col" data-side="L"></div></div><div><div class="col-label">'+esc(it.rightLabel)+'</div><div class="m-col" data-side="R"></div></div></div><div class="ihelp">Tap an item on the left, then its match on the right.</div>';
+    } else if(it.type==='dropdown'){
+      // question line already has the select via itemQuestion
+    } else if(it.type==='transform'){
+      // morph inline in itemQuestion
+      inner+='<div class="ihelp">Tap the word to change its form until the sentence is correct.</div>';
+    } else if(it.type==='radio'){
+      inner+='<div class="opts">'+it.options.map((o,oi)=>'<label class="opt" data-oi="'+oi+'"><span class="dot"></span><span class="ltr">'+'ABCD'[oi]+'</span><span>'+esc(o)+'</span></label>').join('')+'</div>';
+    }
+    w.innerHTML=inner;host.appendChild(w);
+    wireItem(w,it);
+  });
+  document.querySelector('#round-screen .inner').classList.remove('fade');void document.querySelector('#round-screen .inner').offsetWidth;document.querySelector('#round-screen .inner').classList.add('fade');
+  scrollTopNow();
 }
 
+function itemQuestion(it){
+  if(it.type==='build')return esc(it.prompt);
+  if(it.type==='error')return 'Tap the word (or words) that are wrong.';
+  if(it.type==='match')return 'Match each item on the left to the right.';
+  if(it.type==='dropdown')return esc(it.before)+'<select class="inline-select"><option value="">— choose —</option></select>'+esc(it.after);
+  if(it.type==='transform')return esc(it.before)+'<span class="morph" data-i="0">'+esc(it.forms[0])+'</span>'+esc(it.after);
+  if(it.type==='radio')return esc(it.prompt).replace('____','<b style="color:var(--accent-soft)">____</b>');
+  return '';
+}
 
-    const PROMPTS = {
-        'A1': { min:30, max:70,  sec:300, tag:'Everyday writing',
-            text:"Write about your daily routine. What do you do every day? Describe your morning, your afternoon, and your evening." },
-        'A2': { min:50, max:90,  sec:360, tag:'Personal message',
-            text:"Write an email to a friend about a trip you took recently. Where did you go? Who did you go with? What did you do, and did you enjoy it?" },
-        'B1': { min:70, max:120, sec:480, tag:'Opinion essay',
-            text:"Some people prefer to live in a big city, while others prefer the countryside. Which do you prefer, and why? Give reasons and examples to support your opinion." },
-        'B2': { min:120,max:180, sec:600, tag:'Discussion essay',
-            text:"Many companies now allow employees to work from home. Discuss the advantages and disadvantages of remote work, and give your own view on whether it is a positive development." },
-        'C1': { min:180,max:260, sec:720, tag:'Argumentative essay',
-            text:"\u201CTechnological progress always comes at a social cost.\u201D To what extent do you agree with this statement? Support your argument with clear reasoning and relevant examples, and address at least one possible counter-argument." }
-    };
-    const ORDER = ['A1','A2','B1','B2','C1'];
-    const FULL_ORDER = ['Pre-A1','A1','A2','B1','B2','C1'];
+function wireItem(w,it){
+  if(it.type==='build'){const bank=w.querySelector('[data-role="bank"]');shuffle(it.tiles.map((_,i)=>i)).forEach(si=>{const c=document.createElement('div');c.className='chip';c.textContent=it.tiles[si];c.dataset.si=si;bank.appendChild(c);draggable(c);});}
+  else if(it.type==='error'){w.querySelectorAll('.word').forEach(wd=>wd.addEventListener('click',()=>{w.querySelectorAll('.word').forEach(x=>x.classList.remove('flagged'));wd.classList.add('flagged');w._flag=parseInt(wd.dataset.i);}));}
+  else if(it.type==='match'){const L=w.querySelector('[data-side="L"]'),R=w.querySelector('[data-side="R"]');it.pairs.forEach((p,pi)=>{const l=document.createElement('div');l.className='m-item';l.textContent=p.left;l.dataset.k=pi;L.appendChild(l);});shuffle(it.pairs.map((p,pi)=>({t:p.right,k:pi}))).forEach(o=>{const r=document.createElement('div');r.className='m-item';r.textContent=o.t;r.dataset.k=o.k;R.appendChild(r);});let sel=null,n=0;const pairs={};L.querySelectorAll('.m-item').forEach(l=>l.addEventListener('click',()=>{if(l.classList.contains('matched'))return;L.querySelectorAll('.m-item').forEach(x=>x.classList.remove('sel'));l.classList.add('sel');sel=l;}));R.querySelectorAll('.m-item').forEach(r=>r.addEventListener('click',()=>{if(!sel||r.classList.contains('matched'))return;n++;sel.classList.remove('sel');sel.classList.add('matched');r.classList.add('matched');sel.innerHTML+=' <span class="m-pairnum">#'+n+'</span>';r.innerHTML+=' <span class="m-pairnum">#'+n+'</span>';pairs[sel.dataset.k]=r.dataset.k;sel=null;}));w._matchPairs=pairs;w._matchTotal=it.pairs.length;}
+  else if(it.type==='dropdown'){const sel=w.querySelector('select');shuffle(it.options.map((o,i)=>({o,i}))).forEach(x=>{const op=document.createElement('option');op.value=String(x.i);op.textContent=x.o;sel.appendChild(op);});}
+  else if(it.type==='transform'){const m=w.querySelector('.morph');m.addEventListener('click',()=>{let i=(parseInt(m.dataset.i)+1)%it.forms.length;m.dataset.i=i;m.textContent=it.forms[i];});}
+  else if(it.type==='radio'){w.querySelectorAll('.opt').forEach(l=>l.addEventListener('click',()=>{w.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));l.classList.add('sel');}));}
+}
 
-    let stage = 1;
-    let promptLevel = 'B1';        // stage 1 anchor
-    let seenLevels = ['B1'];       // prompt levels already shown (prevents repeats)
-    let detectedBands = [];        // band detected at each stage
-    let timerId = null, secondsLeft = 0, currentTarget = 0, submitting = false;
+function gradeItem(w,it){
+  if(it.type==='build'){const ans=w.querySelector('[data-role="answer"]');const ord=[...ans.querySelectorAll('.chip')].map(c=>parseInt(c.dataset.si));if(ord.length!==it.tiles.length)return null;const m=a=>a.length===ord.length&&a.every((v,i)=>v===ord[i]);return m(it.canonicalOrder)||(it.acceptedOrders||[]).some(m);}
+  if(it.type==='error'){if(w._flag==null)return null;return w._flag>=it.errorSpan[0]&&w._flag<=it.errorSpan[1];}
+  if(it.type==='match'){const p=w._matchPairs;if(Object.keys(p).length<w._matchTotal)return null;return Object.keys(p).every(k=>p[k]===k);}
+  if(it.type==='dropdown'){const v=w.querySelector('select').value;if(v==='')return null;return parseInt(v)===it.answer;}
+  if(it.type==='transform'){return w.querySelector('.morph').textContent===it.correct;}
+  if(it.type==='radio'){const s=w.querySelector('.opt.sel');if(!s)return null;return parseInt(s.dataset.oi)===it.answer;}
+  return null;
+}
 
-    function startTest(){
-        document.getElementById('intro-screen').classList.add('hidden');
-        document.getElementById('test-screen').classList.remove('hidden');
-        loadTask();
+/* ===== routing ===== */
+const UPMAP={A1_Route:'A2_Route',A2_Route:'B1_Route',B1_Route:'B2_Route',B2_Route:'C1_Route',C1_Route:'C1_Route'};
+const DOWNMAP={C1_Route:'B2_Route',B2_Route:'B1_Route',B1_Route:'A2_Route',A2_Route:'A1_Route',A1_Route:'A1_Route'};
+const CONFIRM={A1:'A1_Confirm',A2:'A2_Confirm',B1:'B1_Confirm',B2:'B2_Confirm',C1:'C1_Confirm'};
+
+function submitRound(){
+  if(submitting)return;submitting=true;
+  const node=BANK[state.node];
+  const wraps=[...document.querySelectorAll('.gitem')];
+  let score=0,unfinished=0,detail=[];
+  wraps.forEach((w,i)=>{const r=gradeItem(w,node.items[i]);if(r===null){unfinished++;detail.push('Q'+(i+1)+' — not finished');}else if(r){score++;}});
+  state.scoreHist.push({node:state.node,level:node.level,score:score});
+  const passed=score>=3;
+  const res=document.getElementById('round-result');
+  res.style.display='block';
+  let msg='Round '+state.round+': you scored '+score+' / 5.';
+  if(unfinished)msg+=' ('+unfinished+' not finished.)';
+  res.innerText=msg;
+  const cb=document.getElementById('check-btn');
+
+  if(state.round>=3){
+    // confirm round done -> essay at the level reached
+    cb.innerHTML='Continue to writing task <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+    cb.onclick=()=>startEssay(node.level);
+    submitting=false;
+    return;
+  }
+  // determine next node
+  let next;
+  const lvl=node.level;
+  if(state.round===2){
+    // round 3 should CONFIRM at the level we're settling on
+    const settleLevel = passed ? stepLevel(lvl,1) : stepLevel(lvl,-1);
+    next = CONFIRM[settleLevel] || CONFIRM[lvl];
+  } else {
+    next = passed ? (UPMAP[state.node]||state.node) : (DOWNMAP[state.node]||state.node);
+  }
+  cb.innerHTML='Next round <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  cb.onclick=()=>{state.round++;state.node=next;renderRound();};
+  submitting=false;
+}
+function stepLevel(lvl,dir){const o=['A1','A2','B1','B2','C1'];let i=o.indexOf(lvl);i=Math.max(0,Math.min(4,i+dir));return o[i];}
+
+/* ===== round 4 essay (timed) ===== */
+function fmt(s){const m=Math.floor(s/60),ss=s%60;return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0');}
+function startEssay(level){
+  state.round=4;state.essayLevel=level;
+  document.getElementById('round-screen').classList.add('hidden');
+  document.getElementById('essay-screen').classList.remove('hidden');
+  const e=ESSAYS[level]||ESSAYS['B1'];
+  setPips('pips2',4);
+  document.getElementById('essay-lvl').innerText=level;
+  document.getElementById('essay-tag').innerText='Writing task · '+e.format;
+  document.getElementById('essay-prompt').innerHTML='<p>'+esc(e.scenario)+'</p><ol>'+e.subQuestions.map(q=>'<li>'+esc(q)+'</li>').join('')+'</ol>';
+  document.getElementById('word-target').innerText=e.wordTarget[0]+'–'+e.wordTarget[1]+' words';
+  document.getElementById('time-limit').innerText=Math.round(e.sec/60)+' minutes';
+  currentTarget=e.wordTarget[0];
+  const ta=document.getElementById('essay');ta.value='';ta.disabled=false;
+  document.getElementById('wc-hint').innerHTML='target <b>'+currentTarget+'</b>';
+  updateWordCount();
+  const sb=document.getElementById('submit-btn');sb.disabled=false;
+  scrollTopNow();startTimer(e.sec);ta.focus();
+}
+function startTimer(sec){
+  clearInterval(timerId);secondsLeft=sec;
+  const tEl=document.getElementById('timer'),txt=document.getElementById('timer-text');
+  tEl.classList.remove('warn','danger');txt.innerText=fmt(secondsLeft);
+  timerId=setInterval(()=>{secondsLeft--;if(secondsLeft<0)secondsLeft=0;txt.innerText=fmt(secondsLeft);tEl.classList.remove('warn','danger');if(secondsLeft<=30)tEl.classList.add('danger');else if(secondsLeft<=60)tEl.classList.add('warn');if(secondsLeft<=0){clearInterval(timerId);timerId=null;submitEssay(true);}},1000);
+}
+function countWords(t){const m=(t||'').trim().match(/[A-Za-z'’-]+/g);return m?m.length:0;}
+function updateWordCount(){const n=countWords(document.getElementById('essay').value);document.getElementById('wc-now').innerText=n;const hint=document.getElementById('wc-hint');if(n>=currentTarget)hint.innerHTML='<b style="color:var(--good);">target reached</b>';else hint.innerHTML='target <b>'+currentTarget+'</b>';}
+
+const LINKERS=['however','therefore','because','although','moreover','furthermore','in addition','as a result','for example','on the other hand','firstly','secondly','finally','nevertheless','consequently','so','but','and','also','while','whereas','despite','thus'];
+function analyseEssay(text){
+  const words=(text.trim().match(/[A-Za-z'’-]+/g)||[]);const wc=words.length;
+  const sentences=(text.match(/[.!?]+/g)||[]).length||(wc>0?1:0);
+  const avgLen=sentences?Math.round(wc/sentences*10)/10:0;
+  const lower=' '+text.toLowerCase()+' ';
+  const used=LINKERS.filter(l=>lower.includes(' '+l+' ')||lower.includes(' '+l+','));
+  const uniq=new Set(words.map(w=>w.toLowerCase())).size;const ttr=wc?Math.round(uniq/wc*100):0;
+  return {wc,sentences,avgLen,used,uniq,ttr};
+}
+
+function submitEssay(timedOut){
+  if(submitting)return;submitting=true;
+  clearInterval(timerId);
+  const ta=document.getElementById('essay');ta.disabled=true;
+  const text=ta.value;
+  document.getElementById('submit-btn').disabled=true;
+  document.getElementById('essay-screen').classList.add('hidden');
+  const gs=document.getElementById('grading-screen');gs.classList.remove('hidden');
+  document.getElementById('grading-text').innerText=timedOut?"Time's up — analysing your writing…":"Analysing your writing…";
+  scrollTopNow();
+  setTimeout(()=>{gs.classList.add('hidden');finish(text);},1100);
+}
+
+/* ===== results ===== */
+const feedbackMap={
+  'C1':'Excellent. You handled advanced grammar and produced complex, well-structured writing.',
+  'B2':'Very good. You manage upper-intermediate grammar and write clearly on abstract topics.',
+  'B1':'Good work. You handle independent-level grammar and express ideas in connected writing.',
+  'A2':'A solid foundation. You manage everyday grammar and write simple connected text.',
+  'A1':'A promising start. You handle basic grammar and can write short, simple sentences.',
+  'Pre-A1':'You are at the very beginning. Focus on core words and short, simple sentences.'
+};
+
+function finish(essayText){
+  const level=state.essayLevel||state.levelReached;
+  const e=ESSAYS[level]||ESSAYS['B1'];
+  const a=analyseEssay(essayText);
+  document.getElementById('results-screen').classList.remove('hidden');
+  document.getElementById('results-screen').classList.add('fade');
+  document.getElementById('final-level').innerText=level;
+  document.getElementById('feedback-text').innerText=feedbackMap[level]||'';
+  document.getElementById('scale').innerHTML=FULL_ORDER.map(s=>'<span class="step'+(s===level?' on':'')+'">'+s+'</span>').join('');
+
+  // student-facing summary
+  const inRange=a.wc>=e.wordTarget[0]&&a.wc<=e.wordTarget[1];
+  let sum='<h3>Nice work — a quick summary</h3>';
+  sum+='<p>You wrote <b>'+a.wc+' words</b> (target '+e.wordTarget[0]+'–'+e.wordTarget[1]+').'+(inRange?' Right on target!':a.wc<e.wordTarget[0]?' A little more next time would help.':' A bit over — that\'s fine.')+'</p>';
+  sum+='<p>You used <b>'+a.used.length+'</b> different linking word'+(a.used.length===1?'':'s')+(a.used.length>=3?' — great for connecting your ideas.':'.')+'</p>';
+  if(a.ttr>=55)sum+='<p>Good range of vocabulary.</p>';
+  document.getElementById('summary').innerHTML=sum;
+
+  // trait bars (light, derived from indicators)
+  const traits=[
+    ['Task length', Math.min(a.wc/e.wordTarget[0],1)],
+    ['Sentence development', Math.min(a.avgLen/16,1)],
+    ['Cohesion & linking', Math.min(a.used.length/4,1)],
+    ['Vocabulary range', Math.min(a.ttr/60,1)]
+  ];
+  document.getElementById('trait-list').innerHTML=traits.map(([name,v])=>{const pct=Math.round(Math.min(Math.max(v,0),1)*100);const word=pct>=75?'Strong':pct>=45?'Developing':'Emerging';return '<div class="trait"><div class="trait-head"><span class="tname">'+name+'</span><span class="tval">'+word+'</span></div><div class="trait-bar"><i style="width:'+pct+'%"></i></div></div>';}).join('');
+
+  // admin detail
+  const hist=state.scoreHist.map(h=>h.level+':'+h.score).join('  ');
+  let admin='<h3>Examiner detail</h3>';
+  admin+='<div class="arow"><span>Grammar level reached (R1–R3)</span><span>'+state.levelReached+'</span></div>';
+  admin+='<div class="arow"><span>Round scores</span><span>'+hist+'</span></div>';
+  admin+='<div class="arow"><span>Essay prompt</span><span>'+esc(e.format)+'</span></div>';
+  admin+='<div class="arow"><span>Word count</span><span>'+a.wc+' ('+(inRange?'in range':'out of range')+')</span></div>';
+  admin+='<div class="arow"><span>Sentences</span><span>'+a.sentences+'</span></div>';
+  admin+='<div class="arow"><span>Avg sentence length</span><span>'+a.avgLen+' words</span></div>';
+  admin+='<div class="arow"><span>Distinct linkers</span><span>'+(a.used.join(', ')||'none')+'</span></div>';
+  admin+='<div class="arow"><span>Vocabulary range (type-token)</span><span>'+a.ttr+'% ('+a.uniq+' unique)</span></div>';
+  admin+='<details><summary>View submitted writing</summary><div class="essay-readout">'+(esc(essayText.trim())||'(no text submitted)')+'</div></details>';
+  admin+='<p class="anote">These indicators assist manual CEFR rating; they are not an automatic grade.</p>';
+  document.getElementById('admin').innerHTML=admin;
+
+  reportToHub(level,essayText);
+  scrollTopNow();
+}
+
+function reportToHub(level,essayText){
+  try{
+    if(window.parent&&window.parent!==window&&location.hash.indexOf('hub=1')>=0){
+      window.parent.postMessage({type:'cefr_result',level:String(level||''),responses:[(essayText||'').trim()],scores:state.scoreHist},'*');
     }
+  }catch(e){}
+}
 
-    function renderPips(){
-        let h='';
-        for(let i=1;i<=3;i++){
-            let c='pip'; if(i<stage)c+=' done'; else if(i===stage)c+=' active';
-            h+='<span class="'+c+'"></span>';
-        }
-        document.getElementById('pips').innerHTML=h;
-        document.getElementById('stage-num').innerText=stage;
-    }
-
-    function fmt(s){ const m=Math.floor(s/60), ss=s%60; return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0'); }
-
-    function loadTask(){
-        submitting=false;
-        const p=PROMPTS[promptLevel];
-        currentTarget=p.min;
-        renderPips();
-        document.getElementById('prompt-tag').innerText='Task '+stage+' · '+p.tag;
-        document.getElementById('prompt-box').innerHTML='<p>'+p.text+'</p>';
-        document.getElementById('word-target').innerText=p.min+'–'+p.max+' words';
-        document.getElementById('time-limit').innerText=Math.round(p.sec/60)+' minutes';
-        const ta=document.getElementById('essay');
-        ta.value=''; ta.disabled=false;
-        document.getElementById('wc-hint').innerHTML='target <b id="wc-target">'+p.min+'</b>';
-        updateWordCount();
-        document.querySelector('#test-screen .inner').classList.remove('fade');
-        void document.querySelector('#test-screen .inner').offsetWidth;
-        document.querySelector('#test-screen .inner').classList.add('fade');
-        scrollTopNow();
-        startTimer(p.sec);
-        ta.focus();
-    }
-
-    function startTimer(sec){
-        clearInterval(timerId);
-        secondsLeft=sec;
-        const tEl=document.getElementById('timer'), txt=document.getElementById('timer-text');
-        tEl.classList.remove('warn','danger');
-        txt.innerText=fmt(secondsLeft);
-        timerId=setInterval(()=>{
-            secondsLeft--;
-            if(secondsLeft<0) secondsLeft=0;
-            txt.innerText=fmt(secondsLeft);
-            tEl.classList.remove('warn','danger');
-            if(secondsLeft<=30) tEl.classList.add('danger');
-            else if(secondsLeft<=60) tEl.classList.add('warn');
-            if(secondsLeft<=0){
-                clearInterval(timerId);
-                timerId=null;
-                submitEssay(true);
-            }
-        },1000);
-    }
-
-    function countWords(t){ const m=(t||'').trim().match(/[A-Za-z']+/g); return m?m.length:0; }
-
-    function updateWordCount(){
-        const n=countWords(document.getElementById('essay').value);
-        document.getElementById('wc-now').innerText=n;
-        const met = n>=currentTarget;
-        const hint=document.getElementById('wc-hint');
-        if(met){
-            hint.innerHTML='<b style="color:var(--good);">target reached</b>';
-        } else {
-            hint.innerHTML='target <b id="wc-target">'+currentTarget+'</b>';
-        }
-    }
-
-    function nextPromptLevel(current, band){
-        const ci0 = ORDER.indexOf(current)>=0 ? ORDER.indexOf(current) : 2;
-        const di = band==='Pre-A1' ? 0 : (ORDER.indexOf(band)>=0 ? ORDER.indexOf(band) : ci0);
-        let target;
-        if(di>ci0) target = ci0+1;        // wrote above prompt level -> step up
-        else if(di<ci0) target = ci0-1;   // struggled -> step down
-        else target = ci0<4 ? ci0+1 : ci0-1; // matched -> probe the unseen side
-        target = Math.max(0, Math.min(4, target));
-        // never repeat a level already shown
-        let guard=0;
-        while(seenLevels.includes(ORDER[target]) && guard++<5){
-            if(di>=ci0 && target<4) target++;
-            else if(target>0) target--;
-            else if(target<4) target++;
-            else break;
-        }
-        return ORDER[target];
-    }
-
-    function submitEssay(timedOut){
-        if(submitting) return; submitting=true;
-        clearInterval(timerId);
-        const ta=document.getElementById('essay'); ta.disabled=true;
-        const text=ta.value;
-        const target=PROMPTS[promptLevel].min;
-        const result=analyzeWriting(text, target);  // {band, raw, words, metrics}
-        // blank / time-out with nothing written => lowest level
-        const band = (result.words<5) ? 'Pre-A1' : result.band;
-        detectedBands.push({band, result, text});
-
-        document.getElementById('test-screen').classList.add('hidden');
-        const gs=document.getElementById('grading-screen');
-        gs.classList.remove('hidden');
-        document.getElementById('grading-text').innerText = timedOut
-            ? "Time's up — analysing your writing…" : "Analysing your writing…";
-
-        setTimeout(()=>{
-            gs.classList.add('hidden');
-            if(stage>=3){ finish(); }
-            else {
-                promptLevel=nextPromptLevel(promptLevel, band);
-                seenLevels.push(promptLevel);
-                stage++;
-                document.getElementById('test-screen').classList.remove('hidden');
-                loadTask();
-            }
-        }, 1100);
-    }
-
-    function finalLevel(){
-        const idx=detectedBands.map(d=>FULL_ORDER.indexOf(d.band));
-        const w=[0.25,0.35,0.40];
-        let score=0; idx.forEach((v,i)=>score+=v*w[i]);
-        const final=FULL_ORDER[Math.round(score)];
-        const last2=idx.slice(1);
-        const spread=Math.max(...last2)-Math.min(...last2);
-        return {final, spread, idx};
-    }
-
-    const feedbackMap={
-        'C1':'Excellent. Across the tasks you produced complex, well-structured writing with a wide vocabulary and strong cohesion.',
-        'B2':'Very good. You write clearly on abstract topics, link ideas effectively, and use a broad range of vocabulary.',
-        'B1':'Good work. You express opinions and give reasons in connected, mostly accurate writing on familiar topics.',
-        'A2':'A solid foundation. You write simple, connected text about everyday topics and personal experience.',
-        'A1':'A promising start. You can write short, simple phrases and sentences about yourself and familiar things.',
-        'Pre-A1':'You are at the very beginning. Focus on building a core of words and writing short, simple sentences.'
-    };
-    const improvementMap={
-        'Pre-A1':{sub:'Your priority is to build basic words and produce short, correct sentences.',focus:[
-            ['Core vocabulary','Learn everyday words (family, food, places, numbers) so you can write about your own life.'],
-            ['Simple sentences','Practise the pattern subject + verb + object, e.g. "I have a dog."'],
-            ['Capitals and full stops','Start sentences with a capital letter and end them with a full stop.'],
-            ['Write daily','Write two or three sentences about your day, every day, to build the habit.']
-        ]},
-        'A1':{sub:'You can write simple sentences. To reach A2, join your ideas and write a little more.',focus:[
-            ['Linking words','Use "and", "but", "because" and "then" to connect short sentences.'],
-            ['Verb tenses','Practise the past simple so you can write about things that already happened.'],
-            ['Everyday topics','Write short messages — an invitation, a thank-you note, a description of your room.'],
-            ['Word count','Build up to writing 50–70 connected words on one topic.']
-        ]},
-        'A2':{sub:'You write connected everyday text. To reach B1, give opinions and reasons on familiar topics.',focus:[
-            ['Express opinions','Practise phrases like "I think…", "In my opinion…", "I prefer… because…".'],
-            ['Paragraphing','Group related ideas together and start a new paragraph for a new idea.'],
-            ['Wider connectors','Use "however", "for example", and "therefore" to structure your ideas.'],
-            ['Range of tenses','Mix present, past, and future to add detail and time references.']
-        ]},
-        'B1':{sub:'You give opinions clearly. To reach B2, discuss both sides and write longer, more developed texts.',focus:[
-            ['Balanced argument','Present advantages and disadvantages before giving your own view.'],
-            ['Advanced cohesion','Use "furthermore", "consequently", "on the other hand" to link paragraphs.'],
-            ['Precise vocabulary','Replace simple words with more exact ones (e.g. "important" → "significant").'],
-            ['Complex sentences','Combine ideas using relative clauses ("which", "who") and subordination.']
-        ]},
-        'B2':{sub:'You write well on abstract topics. To reach C1, aim for precision, nuance, and sophisticated structure.',focus:[
-            ['Nuance and hedging','Use "tends to", "arguably", "to some extent" to express careful judgement.'],
-            ['Counter-arguments','Acknowledge an opposing view and respond to it within your essay.'],
-            ['Lexical sophistication','Use less common, precise vocabulary and avoid repetition.'],
-            ['Cohesive flow','Vary sentence openings and use referencing to make ideas flow seamlessly.']
-        ]},
-        'C1':{sub:'You write at an advanced level. To consolidate toward C2, refine style, tone, and subtlety.',focus:[
-            ['Stylistic control','Adapt tone and register precisely to purpose and audience.'],
-            ['Idiomatic range','Incorporate idiomatic and figurative language naturally.'],
-            ['Sophisticated structure','Use varied rhetorical devices and tightly controlled paragraphing.'],
-            ['Wide reading','Read advanced non-fiction to absorb nuance and broaden expression.']
-        ]}
-    };
-
-    function reportToHub(level){
-        try{
-            if(window.parent && window.parent!==window && location.hash.indexOf('hub=1')>=0){
-                // include the student's written responses (one per stage)
-                const responses = detectedBands.map(d => (d.text||"").trim());
-                window.parent.postMessage({type:'cefr_result', level:String(level||''), responses:responses}, '*');
-            }
-        }catch(e){}
-    }
-
-    function finish(){
-        const {final}=finalLevel();
-        // boundary label if final stages disagree
-        let levelLabel=final;
-        document.getElementById('results-screen').classList.remove('hidden');
-        document.getElementById('results-screen').classList.add('fade');
-        document.getElementById('final-level').innerText=levelLabel;
-        document.getElementById('feedback-text').innerText=feedbackMap[final];
-        reportToHub(levelLabel);
-
-        document.getElementById('scale').innerHTML=FULL_ORDER.map(s=>
-            '<span class="step'+(s===final?' on':'')+'">'+s+'</span>').join('');
-
-        // trait bars from the LAST substantive submission's metrics
-        const lastWithMetrics=[...detectedBands].reverse().find(d=>d.result.metrics);
-        const traitEl=document.getElementById('trait-list');
-        if(lastWithMetrics){
-            const sub=lastWithMetrics.result.metrics.sub;
-            const traits=[
-                ['Sentence development', sub.sLen],
-                ['Vocabulary range', Math.max(sub.sAdv,sub.sLong)],
-                ['Lexical variety', sub.sDiv],
-                ['Cohesion & linking', sub.sConn],
-                ['Sentence variety', sub.sVar],
-                ['Task completion', sub.sTask]
-            ];
-            traitEl.innerHTML=traits.map(([name,v])=>{
-                const pct=Math.round(Math.min(Math.max(v,0),1)*100);
-                const word = pct>=75?'Strong':pct>=45?'Developing':'Emerging';
-                return '<div class="trait"><div class="trait-head"><span class="tname">'+name+
-                    '</span><span class="tval">'+word+'</span></div>'+
-                    '<div class="trait-bar"><i style="width:'+pct+'%"></i></div></div>';
-            }).join('');
-        } else {
-            traitEl.innerHTML='<p style="color:var(--ink-faint);font-size:.95rem;margin:0;">No text was submitted, so detailed traits are unavailable.</p>';
-        }
-
-        scrollTopNow();
-    }
-
-    function restart(){
-        stage=1; promptLevel='B1'; seenLevels=['B1']; detectedBands=[]; submitting=false;
-        clearInterval(timerId);
-        document.getElementById('results-screen').classList.add('hidden');
-        document.getElementById('test-screen').classList.remove('hidden');
-        loadTask();
-    }
-
-    // robust scroll-to-top: scrolls this window AND asks the hub (parent) to scroll its view
-    function scrollTopNow(){
-        try{ window.scrollTo({top:0,behavior:'smooth'}); }catch(e){ try{window.scrollTo(0,0);}catch(_){} }
-        try{ document.documentElement.scrollTop=0; document.body.scrollTop=0; }catch(e){}
-        try{ if(window.parent && window.parent!==window){ window.parent.postMessage({type:'cefr_scrolltop'}, '*'); } }catch(e){}
-    }
-
+function restart(){
+  state={round:1,node:'B1_Route',levelReached:'B1',scoreHist:[]};
+  submitting=false;clearInterval(timerId);tapSel=null;
+  document.getElementById('results-screen').classList.add('hidden');
+  document.getElementById('essay-screen').classList.add('hidden');
+  document.getElementById('round-screen').classList.remove('hidden');
+  renderRound();
+}
 </script>
 </body>
 </html>
