@@ -19,7 +19,7 @@
     body{font-family:"Inter",system-ui,sans-serif;background:var(--paper);
         background-image:radial-gradient(circle at 18% 12%,#fff 0,transparent 38%),radial-gradient(circle at 85% 88%,#f4ede1 0,transparent 45%);
         color:var(--ink);line-height:1.65;margin:0;padding:32px 18px 64px;min-height:100vh;}
-    .container{max-width:720px;margin:0 auto;background:var(--card);border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;}
+    .container{max-width:720px;margin:0 auto;background:var(--card);border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;position:relative;}.container::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-soft),var(--gold),var(--gold-soft));z-index:5;}
     .inner{padding:clamp(26px,5vw,52px);}
     .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 14px;}
     h1{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(2rem,6vw,2.9rem);line-height:1.05;letter-spacing:-.01em;margin:0 0 18px;}
@@ -116,6 +116,31 @@
     .hidden{display:none;}
     @media(max-width:520px){.inner{padding:26px 20px;}.player{padding:24px 18px;}}
 </style>
+<style id="theme-upgrade">
+  :root{
+    --ink:#211c14;--ink-soft:#5c5343;--ink-faint:#8a8068;--paper:#f6f0e4;--card:#fffdf7;
+    --line:#e9e0cc;--line-strong:#d8cbac;
+    --gold:#b08d3e;--gold-soft:#c9a85c;--gold-wash:#f5ecd6;
+    --shadow:0 1px 2px rgba(70,55,20,.05),0 10px 36px rgba(70,55,20,.10);
+  }
+  body{
+    background:var(--paper) !important;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23b08d3e' stroke-opacity='0.07' stroke-width='1'%3E%3Cpath d='M28 2 L54 28 L28 54 L2 28 Z'/%3E%3Ccircle cx='28' cy='28' r='5'/%3E%3C/g%3E%3C/svg%3E"),
+      radial-gradient(circle at 16% 10%,rgba(255,253,247,.9) 0,transparent 42%),
+      radial-gradient(circle at 84% 90%,rgba(201,168,92,.16) 0,transparent 46%),
+      radial-gradient(circle at 50% 50%,rgba(245,236,214,.5) 0,transparent 70%) !important;
+    background-attachment:fixed !important;
+  }
+  .container{position:relative;}
+  .container::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--gold-soft),var(--gold),var(--gold-soft));z-index:5;}
+
+  button.next,button.start{background:var(--accent) !important;}
+  button.next:hover,button.start:hover{background:var(--accent-soft) !important;}
+  .restart button{background:transparent !important;color:var(--ink-soft) !important;}
+  .ov-bar button{background:transparent !important;color:var(--ink-soft) !important;}
+</style>
 </head>
 <body>
 <div class="container">
@@ -139,7 +164,7 @@
     <!-- Test -->
     <div id="test-screen" class="hidden">
         <div class="topbar">
-            <span class="stage-label">Clip <b id="stage-num">1</b> of 3</span>
+            <span class="stage-label">Clip <b id="stage-num">1</b> of 4</span>
             <div class="pips" id="pips"></div>
         </div>
         <div class="inner">
@@ -185,21 +210,21 @@
             audioBase: "a1_route",
             transcript: "Hello everyone. The museum is now open. Tickets are five dollars for adults and free for children. The museum closes at six o'clock. Please do not touch the paintings. Thank you and enjoy your visit.",
             questions: [
-                { q: "Where are you?", options: ["A shop", "A school", "A museum", "A train station"], answer: 2 },
-                { q: "How much is a ticket for adults?", options: ["Free", "Six dollars", "Ten dollars", "Five dollars"], answer: 3 },
-                { q: "What time does it close?", options: ["Six o'clock", "At midnight", "Five o'clock", "In the morning"], answer: 0 },
-                { q: "What can children do?", options: ["Enter for free", "Buy a painting", "Touch paintings", "Pay five dollars"], answer: 0 },
-                { q: "What must you NOT do?", options: ["Visit", "Enjoy art", "Buy tickets", "Touch the paintings"], answer: 3 }
+                { q: "Where are you?", options: ["A shop", "A school", "An art gallery", "A train station"], answer: 2 },
+                { q: "How much is a ticket for adults?", options: ["Free", "Ten dollars", "Six dollars", "Five dollars"], answer: 3 },
+                { q: "What time does it close?", options: ["At noon", "At midnight", "In the morning", "At six in the evening"], answer: 3 },
+                { q: "What can children do?", options: ["Touch the art", "Buy a painting", "Pay five dollars", "Go in at no cost"], answer: 3 },
+                { q: "What must you NOT do?", options: ["Pay", "Leave", "Take photos", "Touch the artwork"], answer: 3 }
             ]
         },
         'A1_Confirm': {
             audioBase: "a1_confirm",
             transcript: "Good morning. This is a message for Tom. Your bus to the airport leaves at nine o'clock, not eight. Please wait at the blue bus stop near the hotel. Bring your passport. See you soon.",
             questions: [
-                { q: "Who is the message for?", options: ["Tom", "A pilot", "The hotel", "A bus driver"], answer: 0 },
-                { q: "What time does the bus leave?", options: ["Eight", "At noon", "Nine o'clock", "In the evening"], answer: 2 },
+                { q: "Who is the message for?", options: ["A pilot", "The hotel", "A traveller", "A bus driver"], answer: 2 },
+                { q: "What time does the bus leave?", options: ["At noon", "At nine", "At eight", "In the evening"], answer: 1 },
                 { q: "Where should he wait?", options: ["The airport", "At the hotel", "A train station", "The blue bus stop"], answer: 3 },
-                { q: "What must Tom bring?", options: ["A bus", "A ticket", "His passport", "Some blue paint"], answer: 2 },
+                { q: "What must Tom bring?", options: ["A bus", "A ticket", "Some blue paint", "Travel documents"], answer: 3 },
                 { q: "Where is Tom going?", options: ["Home", "A hotel", "The airport", "The bus stop"], answer: 2 }
             ]
         },
@@ -207,88 +232,88 @@
             audioBase: "a2_route",
             transcript: "Attention shoppers. The supermarket will close early today at four o'clock because of staff training. The bakery is offering fresh bread at half price after two o'clock. Remember to collect your loyalty points at the checkout. We apologise for any inconvenience.",
             questions: [
-                { q: "Why is the shop closing early?", options: ["A holiday", "Bad weather", "Staff training", "Not enough bread"], answer: 2 },
+                { q: "Why is the shop closing early?", options: ["A holiday", "Bad weather", "Not enough bread", "Employee training"], answer: 3 },
                 { q: "What time will it close?", options: ["Two", "Four o'clock", "Half past one", "In the evening"], answer: 1 },
-                { q: "What is half price?", options: ["Points", "Fresh bread", "All the food", "The checkout"], answer: 1 },
-                { q: "When does the bread offer start?", options: ["At four", "Right now", "In the morning", "After two o'clock"], answer: 3 },
-                { q: "Where do you collect points?", options: ["Bakery", "At home", "The checkout", "The car park"], answer: 2 }
+                { q: "What is half price?", options: ["Points", "All the food", "The checkout", "Freshly baked bread"], answer: 3 },
+                { q: "When does the bread offer start?", options: ["At four", "Right now", "In the morning", "From two onward"], answer: 3 },
+                { q: "Where do you collect points?", options: ["Bakery", "At home", "The car park", "The pay point"], answer: 3 }
             ]
         },
         'A2_Confirm': {
             audioBase: "a2_confirm",
             transcript: "Hi Sarah, it's Mike. I can't come to the cinema tonight because I have to work late. Can we go on Saturday afternoon instead? The film starts at three. Let me know if that works for you. Call me back. Bye.",
             questions: [
-                { q: "Why can't Mike come tonight?", options: ["He is ill", "He is busy", "He has no money", "He must work late"], answer: 3 },
-                { q: "What does Mike suggest?", options: ["A new film", "Going Saturday", "Staying at home", "Working together"], answer: 1 },
-                { q: "What time does the film start?", options: ["Tonight", "At three", "On Saturday", "In the morning"], answer: 1 },
-                { q: "What does Mike want Sarah to do?", options: ["Work late", "Buy a ticket", "Call him back", "Go to the cinema now"], answer: 2 },
-                { q: "How does Mike feel about tonight?", options: ["Happy", "Angry", "Sorry he can't go", "Excited about work"], answer: 2 }
+                { q: "Why can't Mike come tonight?", options: ["He is ill", "He is busy", "He has no money", "He has to stay at work"], answer: 3 },
+                { q: "What does Mike suggest?", options: ["A new film", "Staying at home", "Working together", "Meeting on the weekend"], answer: 3 },
+                { q: "What time does the film start?", options: ["Tonight", "On Saturday", "In the morning", "At three o'clock"], answer: 3 },
+                { q: "What does Mike want Sarah to do?", options: ["Work late", "Buy a ticket", "Phone him back", "Go to the cinema now"], answer: 2 },
+                { q: "How does Mike feel about tonight?", options: ["Happy", "Angry", "Apologetic", "Excited about work"], answer: 2 }
             ]
         },
         'B1_Route': {
             audioBase: "b1_route",
             transcript: "Welcome to the city tour. Our first stop is the old castle, which was built over five hundred years ago. We'll spend about forty minutes there before walking to the river. Please stay with the group, as the streets can get crowded. If you get lost, call the number on your ticket. Lunch will be at a local restaurant around one o'clock.",
             questions: [
-                { q: "What is the first stop?", options: ["A river", "A castle", "A restaurant", "The city centre"], answer: 1 },
-                { q: "How old is the castle?", options: ["Forty years", "One year old", "Over 500 years", "Fifty years old"], answer: 2 },
-                { q: "Why should people stay together?", options: ["It is cold", "The guide is tired", "Streets get crowded", "The castle is closed"], answer: 2 },
-                { q: "What should you do if lost?", options: ["Wait", "Go home", "Find the river", "Call the number"], answer: 3 },
-                { q: "What time is lunch?", options: ["Forty minutes", "Early morning", "Late at night", "Around one o'clock"], answer: 3 }
+                { q: "What is the first stop?", options: ["A river", "A restaurant", "The city centre", "An old fortress"], answer: 3 },
+                { q: "How old is the castle?", options: ["Forty years", "One year old", "Fifty years old", "More than five centuries"], answer: 3 },
+                { q: "Why should people stay together?", options: ["It is cold", "The guide is tired", "The castle is closed", "The streets get busy"], answer: 3 },
+                { q: "What should you do if lost?", options: ["Wait", "Go home", "Find the river", "Phone the listed number"], answer: 3 },
+                { q: "What time is lunch?", options: ["Forty minutes", "Early morning", "Late at night", "Around midday"], answer: 3 }
             ]
         },
         'B1_Confirm': {
             audioBase: "b1_confirm",
             transcript: "In today's class we'll talk about recycling. Many people think recycling is difficult, but it's actually quite simple. The key is to separate your waste correctly. Paper, glass, and plastic should go in different bins. One common mistake is putting dirty food containers in with clean paper, which can ruin the whole batch. So always rinse your containers first.",
             questions: [
-                { q: "What is the class about?", options: ["Cooking", "Recycling", "Buying bins", "Cleaning paper"], answer: 1 },
-                { q: "What does the speaker say about recycling?", options: ["It is costly", "It is simple", "It wastes time", "It is impossible"], answer: 1 },
-                { q: "What is the key to recycling?", options: ["Buy new bins", "Use less paper", "Separate the waste", "Rinse all the glass"], answer: 2 },
-                { q: "What common mistake is mentioned?", options: ["Using one bin", "Recycling glass", "Cleaning too much", "Mixing dirty food with paper"], answer: 3 },
-                { q: "What should you do first?", options: ["Buy bins", "Throw it away", "Rinse containers", "Separate the paper"], answer: 2 }
+                { q: "What is the class about?", options: ["Cooking", "Buying bins", "Cleaning paper", "Sorting rubbish"], answer: 3 },
+                { q: "What does the speaker say about recycling?", options: ["It is costly", "It wastes time", "It is impossible", "It is straightforward"], answer: 3 },
+                { q: "What is the key to recycling?", options: ["Buy new bins", "Use less paper", "Rinse all the glass", "Sort the waste apart"], answer: 3 },
+                { q: "What common mistake is mentioned?", options: ["Using one bin", "Recycling glass", "Cleaning too much", "Putting food waste with paper"], answer: 3 },
+                { q: "What should you do first?", options: ["Buy bins", "Throw it away", "Separate the paper", "Wash the containers"], answer: 3 }
             ]
         },
         'B2_Route': {
             audioBase: "b2_route",
             transcript: "The debate over remote working continues to divide opinion. Supporters argue that it boosts productivity and improves work-life balance. However, critics point out that it can lead to isolation and weaker team relationships. Interestingly, recent research suggests the truth lies somewhere in between: while individual output often rises, creativity and collaboration tend to suffer. Most experts now recommend a hybrid model as a sensible compromise.",
             questions: [
-                { q: "What is the main topic?", options: ["Office design", "Remote working", "Team friendships", "Research methods"], answer: 1 },
-                { q: "What do supporters say?", options: ["It is lonely", "It harms teams", "It reduces creativity", "It boosts productivity"], answer: 3 },
-                { q: "What is one criticism mentioned?", options: ["Lower pay", "It raises output", "It is too popular", "It causes isolation"], answer: 3 },
-                { q: "What does the research suggest?", options: ["Remote is best", "Offices are better", "Nobody likes working", "The truth is in between"], answer: 3 },
-                { q: "What do most experts recommend?", options: ["Working alone", "A hybrid model", "Closing offices", "Banning remote work"], answer: 1 }
+                { q: "What is the main topic?", options: ["Office design", "Team friendships", "Research methods", "Working from home"], answer: 3 },
+                { q: "What do supporters say?", options: ["It is lonely", "It harms teams", "It raises output", "It reduces creativity"], answer: 2 },
+                { q: "What is one criticism mentioned?", options: ["Lower pay", "It raises output", "It is too popular", "It leaves people isolated"], answer: 3 },
+                { q: "What does the research suggest?", options: ["Remote is best", "Offices are better", "Nobody likes working", "The reality lies in the middle"], answer: 3 },
+                { q: "What do most experts recommend?", options: ["Working alone", "Closing offices", "Banning remote work", "A mix of home and office"], answer: 3 }
             ]
         },
         'B2_Confirm': {
             audioBase: "b2_confirm",
             transcript: "I've just finished reading about the rise of electric cars, and the picture is more complicated than I expected. On the surface, they seem perfectly clean. But you have to consider where the electricity comes from. If it's generated by burning coal, the environmental benefit shrinks considerably. Add to that the difficulty of recycling the batteries, and it becomes clear that electric vehicles are a step forward, not a complete solution.",
             questions: [
-                { q: "What is the speaker discussing?", options: ["Coal mining", "Electric cars", "Battery shops", "Cleaning products"], answer: 1 },
-                { q: "What does the speaker imply about them?", options: ["They are perfect", "They are useless", "They are too expensive", "They are not fully clean"], answer: 3 },
-                { q: "Why does electricity source matter?", options: ["It costs more", "Cars need more power", "Batteries charge slowly", "Coal reduces the benefit"], answer: 3 },
-                { q: "What problem with batteries is mentioned?", options: ["They are heavy", "They are cheap", "They are easy to make", "They are hard to recycle"], answer: 3 },
-                { q: "What is the speaker's overall view?", options: ["A perfect fix", "A total failure", "A waste of money", "A step in the right direction"], answer: 3 }
+                { q: "What is the speaker discussing?", options: ["Coal mining", "Battery shops", "Cleaning products", "Electric vehicles"], answer: 3 },
+                { q: "What does the speaker imply about them?", options: ["They are perfect", "They are useless", "They are too expensive", "They are not entirely green"], answer: 3 },
+                { q: "Why does electricity source matter?", options: ["It costs more", "Cars need more power", "Batteries charge slowly", "Coal-based power cuts the gain"], answer: 3 },
+                { q: "What problem with batteries is mentioned?", options: ["They are heavy", "They are cheap", "They are easy to make", "They are difficult to reuse"], answer: 3 },
+                { q: "What is the speaker's overall view?", options: ["A perfect fix", "A total failure", "A waste of money", "Progress but not the whole answer"], answer: 3 }
             ]
         },
         'C1_Route': {
             audioBase: "c1_route",
             transcript: "What fascinates me about human memory is how unreliable it can be. We tend to think of our memories as recordings, faithfully preserved and replayed on demand. In reality, every time we recall an event, we subtly reconstruct it, often incorporating details that were never there. This is why eyewitness testimony, once considered the gold standard in court, is now treated with considerable caution. The implications for our sense of identity are profound, since we are, in a sense, the sum of stories we continually rewrite.",
             questions: [
-                { q: "What is the speaker's main point?", options: ["People tell lies", "Courts are unfair", "Memory is unreliable", "Recordings are useful"], answer: 2 },
-                { q: "How do we wrongly think of memories?", options: ["As stories", "As court evidence", "As things we forget", "As faithful recordings"], answer: 3 },
-                { q: "What happens when we recall an event?", options: ["We forget it", "We reconstruct it", "We record it exactly", "We ignore the details"], answer: 1 },
-                { q: "Why is eyewitness testimony now doubted?", options: ["It costs money", "Courts dislike it", "Witnesses are dishonest", "Memory can be reconstructed"], answer: 3 },
-                { q: "What does the speaker suggest about identity?", options: ["It is fixed", "It cannot change", "It is based on rewritten stories", "It has nothing to do with memory"], answer: 2 }
+                { q: "What is the speaker's main point?", options: ["People tell lies", "Courts are unfair", "Recordings are useful", "Memory is not dependable"], answer: 3 },
+                { q: "How do we wrongly think of memories?", options: ["As stories", "As court evidence", "As things we forget", "As accurate recordings"], answer: 3 },
+                { q: "What happens when we recall an event?", options: ["We forget it", "We record it exactly", "We ignore the details", "We rebuild it each time"], answer: 3 },
+                { q: "Why is eyewitness testimony now doubted?", options: ["It costs money", "Courts dislike it", "Witnesses are dishonest", "Recollection can be reshaped"], answer: 3 },
+                { q: "What does the speaker suggest about identity?", options: ["It is fixed", "It cannot change", "It has nothing to do with memory", "It rests on stories we keep revising"], answer: 3 }
             ]
         },
         'C1_Confirm': {
             audioBase: "c1_confirm",
             transcript: "The notion that money buys happiness is both true and misleading. Research consistently shows that beyond a certain income, additional wealth yields diminishing returns in terms of life satisfaction. What matters more, it seems, is how money is spent. Spending on experiences rather than possessions, and on others rather than oneself, reliably produces greater contentment. The paradox, then, is that the relentless pursuit of more may actively undermine the very happiness it promises to deliver.",
             questions: [
-                { q: "What is the speaker's central argument?", options: ["Money is evil", "Wealth is useless", "Rich people are unhappy", "Money's link to happiness is complex"], answer: 3 },
-                { q: "What does research show about high incomes?", options: ["Returns diminish", "They cause misery", "Money loses all value", "Happiness keeps rising"], answer: 0 },
-                { q: "What matters more than the amount?", options: ["Saving it all", "How it is spent", "Hiding your wealth", "Earning it quickly"], answer: 1 },
-                { q: "What kind of spending brings contentment?", options: ["On luxury goods", "On oneself only", "On expensive houses", "On experiences and others"], answer: 3 },
-                { q: "What is the paradox mentioned?", options: ["Money is fake", "The poor are happier", "Happiness cannot be studied", "Chasing more can reduce happiness"], answer: 3 }
+                { q: "What is the speaker's central argument?", options: ["Money is evil", "Wealth is useless", "Rich people are unhappy", "Wealth and happiness link in a complex way"], answer: 3 },
+                { q: "What does research show about high incomes?", options: ["They cause misery", "Money loses all value", "Happiness keeps rising", "The added benefit falls off"], answer: 3 },
+                { q: "What matters more than the amount?", options: ["Saving it all", "Hiding your wealth", "Earning it quickly", "The way it is used"], answer: 3 },
+                { q: "What kind of spending brings contentment?", options: ["On luxury goods", "On oneself only", "On expensive houses", "On others and experiences"], answer: 3 },
+                { q: "What is the paradox mentioned?", options: ["Money is fake", "The poor are happier", "Happiness cannot be studied", "Pursuing more can lower happiness"], answer: 3 }
             ]
         }
     };
@@ -318,7 +343,7 @@
 
     function renderPips(){
         let h='';
-        for(let i=1;i<=3;i++){let c='pip';if(i<stage)c+=' done';else if(i===stage)c+=' active';h+='<span class="'+c+'"></span>';}
+        for(let i=1;i<=4;i++){let c="pip";if(i<stage)c+=' done';else if(i===stage)c+=' active';h+='<span class="'+c+'"></span>';}
         document.getElementById('pips').innerHTML=h;
         document.getElementById('stage-num').innerText=stage;
     }
@@ -326,7 +351,7 @@
     function loadNode(level){
         document.getElementById('validation-error').classList.add('hidden');
         document.getElementById('audio-error').classList.add('hidden');
-        window.scrollTo({top:0,behavior:'smooth'});
+        scrollTopNow();
         const data=testBank[level];
         currentQuestions=data.questions;
         renderPips();
@@ -525,7 +550,7 @@
         document.getElementById('feedback-text').innerText=f.text;
         reportToHub(f.level);
         document.getElementById('scale').innerHTML=FULL_ORDER.map(s=>'<span class="step'+(s===f.band?' on':'')+'">'+s+'</span>').join('');
-        window.scrollTo({top:0,behavior:'smooth'});
+        scrollTopNow();
     }
 
     function restart(){
@@ -535,6 +560,14 @@
         document.getElementById('test-screen').classList.remove('hidden');
         loadNode(currentNode);
     }
+
+    // robust scroll-to-top: scrolls this window AND asks the hub (parent) to scroll its view
+    function scrollTopNow(){
+        try{ window.scrollTo({top:0,behavior:'smooth'}); }catch(e){ try{window.scrollTo(0,0);}catch(_){} }
+        try{ document.documentElement.scrollTop=0; document.body.scrollTop=0; }catch(e){}
+        try{ if(window.parent && window.parent!==window){ window.parent.postMessage({type:'cefr_scrolltop'}, '*'); } }catch(e){}
+    }
+
 </script>
 </body>
 </html>

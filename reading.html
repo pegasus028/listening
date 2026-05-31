@@ -176,6 +176,31 @@
         .inner { padding: 26px 20px; }
     }
 </style>
+<style id="theme-upgrade">
+  :root{
+    --ink:#211c14;--ink-soft:#5c5343;--ink-faint:#8a8068;--paper:#f6f0e4;--card:#fffdf7;
+    --line:#e9e0cc;--line-strong:#d8cbac;
+    --gold:#b08d3e;--gold-soft:#c9a85c;--gold-wash:#f5ecd6;
+    --shadow:0 1px 2px rgba(70,55,20,.05),0 10px 36px rgba(70,55,20,.10);
+  }
+  body{
+    background:var(--paper) !important;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23b08d3e' stroke-opacity='0.07' stroke-width='1'%3E%3Cpath d='M28 2 L54 28 L28 54 L2 28 Z'/%3E%3Ccircle cx='28' cy='28' r='5'/%3E%3C/g%3E%3C/svg%3E"),
+      radial-gradient(circle at 16% 10%,rgba(255,253,247,.9) 0,transparent 42%),
+      radial-gradient(circle at 84% 90%,rgba(201,168,92,.16) 0,transparent 46%),
+      radial-gradient(circle at 50% 50%,rgba(245,236,214,.5) 0,transparent 70%) !important;
+    background-attachment:fixed !important;
+  }
+  .container{position:relative;}
+  .container::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--gold-soft),var(--gold),var(--gold-soft));z-index:5;}
+
+  button{background:var(--accent) !important;}
+  button:hover{background:var(--accent-soft) !important;}
+  .restart button{background:transparent !important;color:var(--ink-soft) !important;}
+  .restart button:hover{background:var(--paper) !important;color:var(--accent) !important;}
+</style>
 </head>
 <body>
 
@@ -225,101 +250,101 @@
         'A1_Route': {
             passage: "Welcome to the Grand Hotel. Breakfast is served in the dining room from seven until ten in the morning. Please do not take food to your bedrooms. The swimming pool is open all day, but children must have an adult with <b>them</b>. If you need <b>clean</b> towels, please call the front desk. Enjoy your stay!",
             questions: [
-                { q: "What is this text?", options: ["A map", "A menu", "Hotel rules", "A train ticket"], answer: 2 },
-                { q: "When does breakfast end?", options: ["7:00 AM", "10:00 AM", "At noon today", "Late in the day"], answer: 1 },
-                { q: "What must children have at the pool?", options: ["A toy", "A towel", "An adult", "Some warm food"], answer: 2 },
-                { q: "In the text, who does the word 'them' refer to?", options: ["Adults", "The towels", "The children", "People working"], answer: 2 },
-                { q: "What does the word 'clean' mean in this text?", options: ["Wet", "Cold", "Not dirty", "Very expensive"], answer: 2 }
+                { q: "What is this text?", options: ["A map", "A menu", "A train ticket", "Guest information"], answer: 3 },
+                { q: "When does breakfast end?", options: ["Midday", "7:00 AM", "10:00 AM", "Late evening"], answer: 2 },
+                { q: "What must children have at the pool?", options: ["A toy", "A towel", "A grown-up", "Some warm food"], answer: 2 },
+                { q: "In the text, who does the word 'them' refer to?", options: ["Adults", "The towels", "People working", "The young guests"], answer: 3 },
+                { q: "What does the word 'clean' mean in this text?", options: ["Wet", "Cold", "Fresh", "Very expensive"], answer: 2 }
             ]
         },
         'A1_Confirm': {
             passage: "The city library is closing early today. <b>We</b> will close at 4:00 PM because of heavy snow. All afternoon reading groups are <b>canceled</b>. Please return your books to the box outside the front door. <b>We</b> will open again tomorrow morning at 9:00 AM. Thank you and stay safe!",
             questions: [
-                { q: "What is the main purpose of this message?", options: ["A storm", "Buying books", "Closing early", "Morning groups"], answer: 2 },
-                { q: "What time will the library close today?", options: ["4:00 PM", "Next day", "Afternoon", "At 9:00 AM"], answer: 0 },
-                { q: "What should people do with their books?", options: ["Keep them", "Bring inside", "Give to staff", "Put in the box"], answer: 3 },
-                { q: "Who does the word 'We' refer to in the text?", options: ["The snow", "The library", "Library users", "The front door"], answer: 1 },
-                { q: "What does the word 'canceled' mean here?", options: ["Late", "Moved", "Stopped", "Finished"], answer: 2 }
+                { q: "What is the main purpose of this message?", options: ["A snowstorm", "Buying books", "Morning groups", "An early closure"], answer: 3 },
+                { q: "What time will the library close today?", options: ["4:00 PM", "At 9:00 AM", "The next day", "This afternoon"], answer: 0 },
+                { q: "What should people do with their books?", options: ["Keep them", "Take them home", "Hand them to staff", "Drop them in the box"], answer: 3 },
+                { q: "Who does the word 'We' refer to in the text?", options: ["The snow", "Library users", "The front door", "The library staff"], answer: 3 },
+                { q: "What does the word 'canceled' mean here?", options: ["Late", "Moved", "Finished", "Called off"], answer: 3 }
             ]
         },
         'A2_Route': {
             passage: "All staff must attend a short safety meeting on Wednesday afternoon at 2:00 PM. We will meet in the staff kitchen because the main conference room is <b>currently</b> being painted. The manager will explain the new fire alarm system. Please bring a pen to sign the attendance sheet. You do not need to bring your laptops. If you are sick on Wednesday, you must email <b>Sarah</b> before noon.",
             questions: [
-                { q: "What is the purpose of this text?", options: ["Buy paint", "Test an alarm", "Meeting notice", "Laptop complaints"], answer: 2 },
-                { q: "Where will the meeting take place?", options: ["At home", "In the kitchen", "Near front door", "In conference room"], answer: 1 },
-                { q: "Why was the location of the meeting changed?", options: ["Locked", "Too cold", "Being painted", "Alarms ringing"], answer: 2 },
-                { q: "In the final sentence, who is 'Sarah'?", options: ["A cook", "A painter", "Someone to email", "The kitchen cleaner"], answer: 2 },
-                { q: "What does the word 'currently' mean in this text?", options: ["Later", "Right now", "In the past", "Very quickly"], answer: 1 }
+                { q: "What is the purpose of this text?", options: ["Buy paint", "Test an alarm", "Laptop complaints", "A meeting announcement"], answer: 3 },
+                { q: "Where will the meeting take place?", options: ["At home", "Near the front door", "In the staff kitchen", "In the conference room"], answer: 2 },
+                { q: "Why was the location of the meeting changed?", options: ["Locked", "Too cold", "Alarms ringing", "It is being decorated"], answer: 3 },
+                { q: "In the final sentence, who is 'Sarah'?", options: ["A cook", "A painter", "The kitchen cleaner", "The person to notify"], answer: 3 },
+                { q: "What does the word 'currently' mean in this text?", options: ["Later", "At present", "In the past", "Very quickly"], answer: 1 }
             ]
         },
         'A2_Confirm': {
             passage: "Hi David. I left my blue winter jacket in your car yesterday. I think it is in the back seat. My house keys are in the pocket, so I cannot <b>get inside</b> my apartment. Can you please check your car and call me? I can walk to your office to get <b>it</b> this afternoon. Thanks, Sarah.",
             questions: [
-                { q: "What is the main topic of this message?", options: ["Buying a car", "A lost jacket", "Walking to work", "Fixing an apartment"], answer: 1 },
-                { q: "Where exactly are the writer's keys?", options: ["At home", "In the car", "In a pocket", "At the office"], answer: 2 },
-                { q: "Who lost the item?", options: ["David", "Her boss", "The writer", "Work friends"], answer: 2 },
-                { q: "In the final sentence, what does 'it' refer to?", options: ["The car", "The keys", "The jacket", "The building"], answer: 2 },
-                { q: "What does the phrase 'get inside' mean here?", options: ["See", "Walk", "Enter", "Tidy up"], answer: 2 }
+                { q: "What is the main topic of this message?", options: ["Buying a car", "Walking to work", "A missing jacket", "Fixing an apartment"], answer: 2 },
+                { q: "Where exactly are the writer's keys?", options: ["At home", "In the car", "At the office", "Inside the jacket"], answer: 3 },
+                { q: "Who lost the item?", options: ["David", "Her boss", "The sender", "Work friends"], answer: 2 },
+                { q: "In the final sentence, what does 'it' refer to?", options: ["The car", "The keys", "The coat", "The building"], answer: 2 },
+                { q: "What does the phrase 'get inside' mean here?", options: ["See", "Walk", "Go in", "Tidy up"], answer: 2 }
             ]
         },
         'B1_Route': {
             passage: "Urban beekeeping has become a popular hobby for city residents who want to support local ecosystems. Rather than needing a large farm, people are placing small wooden hives on apartment balconies and rooftops. Bees travel up to three miles to find nectar in city parks and window boxes. While some neighbors worry about bee stings, experienced keepers state that honeybees are generally calm and only attack if they feel <b>their</b> hive is <b>threatened</b>. This practice not only provides owners with fresh honey but also helps pollinate urban gardens.",
             questions: [
-                { q: "What is the text primarily about?", options: ["Selling honey", "City beekeeping", "Designing gardens", "Treating bee stings"], answer: 1 },
-                { q: "How far will the bees fly to find food?", options: ["Three miles", "Just the roof", "Across country", "Outside the hive"], answer: 0 },
-                { q: "What can we guess about urban gardens based on the text?", options: ["Very dry", "Benefit from bees", "Are mostly crowded", "Have zero live plants"], answer: 1 },
-                { q: "What does the word 'their' refer to in the fourth sentence?", options: ["The parks", "The honeybees", "City neighbors", "Skilled beekeepers"], answer: 1 },
-                { q: "What does the word 'threatened' mean in this context?", options: ["Lost", "Asleep", "In danger", "Very hungry"], answer: 2 }
+                { q: "What is the text primarily about?", options: ["Selling honey", "Designing gardens", "Treating bee stings", "Keeping bees in cities"], answer: 3 },
+                { q: "How far will the bees fly to find food?", options: ["Three miles", "Just the rooftop", "Outside the hive", "Across the country"], answer: 0 },
+                { q: "What can we guess about urban gardens based on the text?", options: ["Very dry", "Gain from the bees", "Are mostly crowded", "Have no live plants"], answer: 1 },
+                { q: "What does the word 'their' refer to in the fourth sentence?", options: ["The bees", "The parks", "City neighbours", "Skilled beekeepers"], answer: 0 },
+                { q: "What does the word 'threatened' mean in this context?", options: ["Lost", "Asleep", "At risk", "Very hungry"], answer: 2 }
             ]
         },
         'B1_Confirm': {
             passage: "Recent studies suggest that taking micro-breaks during intense study sessions can significantly improve focus. A micro-break is a brief pause, lasting between thirty seconds and five minutes, taken every hour. Instead of checking social media, experts advise students to stand up, stretch, or look at a distant object. Doing <b>this</b> reduces eye strain and prevents mental fatigue. While some students worry that frequent pauses will disrupt their workflow, researchers found the opposite to be true. Those who <b>used</b> the strategy completed their assignments faster than those who studied without stopping.",
             questions: [
-                { q: "What is the main purpose of the text?", options: ["Eye exercises", "Warning students", "Banning social media", "Value of micro-breaks"], answer: 3 },
-                { q: "According to the text, how long can a micro-break last?", options: ["One hour", "Thirty minutes", "At least one hour", "Up to five minutes"], answer: 3 },
-                { q: "In the fourth sentence, what does the word 'this' refer to?", options: ["Eye strain", "Mental fatigue", "Checking phones", "Taking a short break"], answer: 3 },
-                { q: "What does the word 'used' replace from the previous sentence?", options: ["Worried", "Disrupted", "Studied hard", "Applied the method"], answer: 3 },
-                { q: "What can be inferred about students who study without stopping?", options: ["Finish faster", "Get top grades", "Avoid all mobile use", "Take longer to finish"], answer: 3 }
+                { q: "What is the main purpose of the text?", options: ["Eye exercises", "Warning students", "Banning social media", "The benefit of short breaks"], answer: 3 },
+                { q: "According to the text, how long can a micro-break last?", options: ["One hour", "Thirty minutes", "At least an hour", "No more than five minutes"], answer: 3 },
+                { q: "In the fourth sentence, what does the word 'this' refer to?", options: ["Eye strain", "Mental fatigue", "Checking phones", "Pausing briefly"], answer: 3 },
+                { q: "What does the word 'used' replace from the previous sentence?", options: ["Worried", "Disrupted", "Studied hard", "Used the technique"], answer: 3 },
+                { q: "What can be inferred about students who study without stopping?", options: ["Finish faster", "Earn top grades", "Avoid all phones", "Need more time to finish"], answer: 3 }
             ]
         },
         'B2_Route': {
             passage: "The transition toward a cashless society has accelerated rapidly, largely driven by the convenience of contactless mobile payments. For consumers, the appeal lies in <b>frictionless</b> transactions and the elimination of physical wallets. Retailers also benefit, as digital systems streamline accounting and reduce the risk of on-site theft. However, this shift heavily marginalizes vulnerable groups, particularly the elderly and unbanked individuals <b>who</b> rely exclusively on physical currency. Furthermore, privacy advocates warn that abandoning cash completely allows financial institutions to track and record every single purchase, effectively ending anonymous commerce.",
             questions: [
-                { q: "What is the primary focus of the passage?", options: ["Banking history", "Stopping card theft", "How to teach the elderly to pay", "A balanced look at digital money"], answer: 3 },
-                { q: "What is one advantage digital systems give retailers?", options: ["More foot traffic", "Stops all online crime", "Protects customer privacy", "Simplifies their accounting"], answer: 3 },
-                { q: "In the fourth sentence, who does the word 'who' refer to?", options: ["Retailers", "Privacy advocates", "Wealthy business owners", "Elderly and unbanked people"], answer: 3 },
-                { q: "What does the word 'frictionless' mean in this context?", options: ["Unsafe", "Very slow", "Smooth and easy", "Expensive to use"], answer: 2 },
-                { q: "What is a likely consequence of ending anonymous commerce?", options: ["People will buy less", "Banks will lose money", "Spending will be monitored", "Cash will become popular again"], answer: 2 }
+                { q: "What is the primary focus of the passage?", options: ["Banking history", "Stopping card theft", "Teaching elders to pay", "An even-handed view of digital money"], answer: 3 },
+                { q: "What is one advantage digital systems give retailers?", options: ["More foot traffic", "Halts all online crime", "Protects buyer privacy", "Streamlines their bookkeeping"], answer: 3 },
+                { q: "In the fourth sentence, who does the word 'who' refer to?", options: ["Retailers", "Privacy advocates", "Wealthy business owners", "The old and those without bank accounts"], answer: 3 },
+                { q: "What does the word 'frictionless' mean in this context?", options: ["Unsafe", "Very slow", "Effortless", "Costly to use"], answer: 2 },
+                { q: "What is a likely consequence of ending anonymous commerce?", options: ["People will buy less", "Banks will lose money", "Purchases will be tracked", "Cash will return to favour"], answer: 2 }
             ]
         },
         'B2_Confirm': {
             passage: "Urban agriculture is transforming cityscapes through vertical farming, where crops are <b>cultivated</b> in stacked layers within climate-controlled warehouses. Unlike traditional farming, this hydroponic method uses nutrient-rich water rather than soil, significantly reducing resource consumption. Proponents highlight that this enclosed system eliminates the need for harmful chemical pesticides. Because the food is grown directly <b>where it will be consumed</b>, transportation costs and the associated carbon emissions are drastically cut. However, the immense electricity required to artificially replicate sunlight can cancel out these environmental benefits if the local grid relies on fossil fuels.",
             questions: [
-                { q: "What is the primary topic of the passage?", options: ["Solar power", "City pollution", "Selling fresh food", "Modern indoor farming"], answer: 3 },
-                { q: "Why does this system avoid chemical pesticides?", options: ["Water use", "It is too costly", "It is fully enclosed", "Government regulation"], answer: 2 },
-                { q: "What does the word 'cultivated' mean in the first sentence?", options: ["Sold", "Grown", "Eaten", "Thrown out"], answer: 1 },
-                { q: "What does 'where it will be consumed' refer to?", options: ["In the soil", "The warehouses", "The city itself", "The power grids"], answer: 2 },
-                { q: "What is the main environmental drawback mentioned?", options: ["Insects", "No farm jobs", "Heavy energy use", "Produce tastes bad"], answer: 2 }
+                { q: "What is the primary topic of the passage?", options: ["Solar power", "City pollution", "Selling fresh food", "Farming indoors in cities"], answer: 3 },
+                { q: "Why does this system avoid chemical pesticides?", options: ["Water use", "It is too costly", "Government regulation", "It is a sealed environment"], answer: 3 },
+                { q: "What does the word 'cultivated' mean in the first sentence?", options: ["Sold", "Eaten", "Raised", "Thrown out"], answer: 2 },
+                { q: "What does 'where it will be consumed' refer to?", options: ["In the soil", "The warehouses", "The urban area", "The power grids"], answer: 2 },
+                { q: "What is the main environmental drawback mentioned?", options: ["Insects", "No farm jobs", "Large power demand", "Poor-tasting produce"], answer: 2 }
             ]
         },
         'C1_Route': {
             passage: "The phenomenon of decision fatigue suggests that the human brain's capacity for self-regulation is a finite resource, steadily depleted by the sheer volume of choices made throughout the day. Unlike physical exhaustion, cognitive depletion is highly <b>insidious</b>; individuals rarely recognize they are impaired. Instead, they begin to default to the path of least resistance, <b>which</b> manifests either as impulsive risk-taking or severe <b>choice paralysis</b>. This explains why corporate executives often adopt uniform wardrobes to eliminate trivial morning decisions, thereby conserving mental bandwidth for high-stakes strategic planning. Ultimately, willpower is less an enduring personality trait than a fluctuating physiological resource.",
             questions: [
-                { q: "What is the central argument of the text?", options: ["People are lazy", "Executives need rest", "Willpower is a limited resource", "Quick choices boost brain health"], answer: 2 },
-                { q: "What does the word 'insidious' imply about cognitive depletion?", options: ["It is loud", "It is easily fixed", "It happens unnoticed", "It causes physical pain"], answer: 2 },
-                { q: "Why do some people experience 'choice paralysis'?", options: ["They feel angry", "They lack schooling", "They enjoy taking wild risks", "Their mental energy is drained"], answer: 3 },
-                { q: "In the third sentence, what does the word 'which' refer to?", options: ["Physical exhaustion", "A corporate executive", "Defaulting to the easy path", "A fluctuating physiological resource"], answer: 2 },
-                { q: "According to the passage, how is willpower best described?", options: ["A fixed trait", "A business tactic", "An unpredictable mood", "A changeable energy supply"], answer: 3 }
+                { q: "What is the central argument of the text?", options: ["People are lazy", "Executives need rest", "Self-control is finite", "Fast choices aid the brain"], answer: 2 },
+                { q: "What does the word 'insidious' imply about cognitive depletion?", options: ["It is loud", "It is easily fixed", "It causes physical pain", "It creeps up undetected"], answer: 3 },
+                { q: "Why do some people experience 'choice paralysis'?", options: ["They feel angry", "They lack schooling", "They crave wild risks", "Their mental reserves are spent"], answer: 3 },
+                { q: "In the third sentence, what does the word 'which' refer to?", options: ["Physical exhaustion", "A corporate executive", "A fluctuating resource", "Choosing the easiest option"], answer: 3 },
+                { q: "According to the passage, how is willpower best described?", options: ["A fixed trait", "A business tactic", "An unpredictable mood", "A variable store of energy"], answer: 3 }
             ]
         },
         'C1_Confirm': {
             passage: "The Sapir-Whorf hypothesis <b>postulates</b> that a person's native language shapes their cognitive processes, influencing what they most readily conceptualize. While extreme linguistic determinism is largely discredited, a more nuanced version retains empirical support. It suggests that language habitually directs attention toward particular features of the environment. For instance, speakers who rely on absolute directional coordinates consistently demonstrate superior spatial orientation. Conversely, lacking specific vocabulary for colour shades does not render individuals physiologically unable to see differences, but it measurably increases the cognitive effort required to categorize <b>them</b>. Ultimately, language appears to carve preferred mental pathways, subtly influencing perception.",
             questions: [
-                { q: "What is the main topic of the passage?", options: ["Memory limits", "Language and thought", "Causes of colour blindness", "Learning to give directions"], answer: 1 },
-                { q: "What advantage do speakers using absolute coordinates have?", options: ["They read faster", "They walk more quickly", "They have better memory", "They orient themselves well"], answer: 3 },
-                { q: "What does the word 'postulates' mean in the first sentence?", options: ["Hides", "Proposes", "Disproves", "Forgets about"], answer: 1 },
-                { q: "In the fifth sentence, what does 'them' refer to?", options: ["The speakers", "Colour shades", "Mental pathways", "Directional terms"], answer: 1 },
-                { q: "What is the effect of lacking words for specific shades?", options: ["Total blindness", "Dislike of colour", "A need for glasses", "Harder to sort them"], answer: 3 }
+                { q: "What is the main topic of the passage?", options: ["Memory limits", "Colour blindness", "Giving directions", "How language shapes thinking"], answer: 3 },
+                { q: "What advantage do speakers using absolute coordinates have?", options: ["They read faster", "They walk more quickly", "They recall words better", "They have a strong sense of direction"], answer: 3 },
+                { q: "What does the word 'postulates' mean in the first sentence?", options: ["Hides", "Suggests", "Disproves", "Forgets about"], answer: 1 },
+                { q: "In the fifth sentence, what does 'them' refer to?", options: ["The speakers", "Mental pathways", "Shades of colour", "Directional terms"], answer: 2 },
+                { q: "What is the effect of lacking words for specific shades?", options: ["Total blindness", "Dislike of colour", "A need for glasses", "More effort to classify them"], answer: 3 }
             ]
         }
     };
@@ -370,7 +395,7 @@
 
     function loadNode(level) {
         document.getElementById('validation-error').classList.add('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        scrollTopNow();
 
         const data = testBank[level];
         currentQuestions = data.questions;
@@ -545,6 +570,14 @@
         document.getElementById('test-screen').classList.remove('hidden');
         loadNode(currentNode);
     }
+
+    // robust scroll-to-top: scrolls this window AND asks the hub (parent) to scroll its view
+    function scrollTopNow(){
+        try{ window.scrollTo({top:0,behavior:'smooth'}); }catch(e){ try{window.scrollTo(0,0);}catch(_){} }
+        try{ document.documentElement.scrollTop=0; document.body.scrollTop=0; }catch(e){}
+        try{ if(window.parent && window.parent!==window){ window.parent.postMessage({type:'cefr_scrolltop'}, '*'); } }catch(e){}
+    }
+
 </script>
 
 </body>
