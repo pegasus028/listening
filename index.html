@@ -33,8 +33,9 @@
     .meta-note svg{flex:none;margin-top:2px;}
 
     /* dashboard */
-    .greeting{position:relative;margin-bottom:8px;min-height:32px;}
-    .greeting-title{text-align:center;}
+    .greeting{position:relative;margin-bottom:8px;}
+    .greeting-title{text-align:left;}
+    .greeting-title .eyebrow{font-size:.62rem;letter-spacing:.16em;margin:0 0 10px;padding-right:90px;}
     .greeting .signout{position:absolute;top:0;right:0;z-index:2;}
     .greeting > div{min-width:0;}
     .signout{font-size:.78rem;color:var(--ink-soft);background:var(--card);border:1.5px solid var(--line-strong);width:auto;padding:7px 13px;cursor:pointer;font-weight:600;border-radius:8px;transition:background .2s,color .2s,border-color .2s;flex:none;white-space:nowrap;}
@@ -46,7 +47,7 @@
     .avg-label b{color:var(--ink);font-weight:600;}
     .avg-cta{font-size:.95rem;color:var(--ink-soft);margin-top:6px;display:none;}
     .avg-card.expanded .avg-cta{display:block;}
-    .avg-contact-btn{flex:none;display:none;align-items:center;gap:8px;background:#06C755;color:#fff;border:none;width:auto;padding:12px 20px;font-size:.95rem;border-radius:10px;cursor:pointer;font-weight:600;font-family:"Inter",sans-serif;transition:filter .2s,transform .08s;}
+    .avg-contact-btn{flex:none;display:none;align-items:center;justify-content:center;gap:8px;background:#06C755;color:#fff;border:none;width:auto;min-width:120px;padding:11px 22px;font-size:.94rem;border-radius:11px;cursor:pointer;font-weight:600;font-family:"Inter",sans-serif;transition:filter .2s,transform .08s;}
     .avg-contact-btn:hover{filter:brightness(.94);background:#06C755;}
     .avg-contact-btn:active{transform:scale(.98);}
     .avg-card.expanded .avg-contact-btn{display:inline-flex;}
@@ -169,10 +170,7 @@
                 <div class="avg-label" id="avg-label"></div>
                 <div class="avg-cta">พร้อมสำหรับขั้นตอนต่อไปหรือยัง? โปรดติดต่อคุณพ่อสุชินเพื่อสอบถามข้อมูลเพิ่มเติม</div>
             </div>
-            <button class="avg-contact-btn" onclick="addLineContact()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.74 2 10.35c0 4.13 3.58 7.59 8.42 8.24.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1.01.89.55s5.86-3.45 8-5.91c1.47-1.61 2.18-3.25 2.18-5.16C22 5.74 17.52 2 12 2z"/></svg>
-                Contact
-            </button>
+            <button class="avg-contact-btn" onclick="addLineContact()">Contact</button>
         </div>
         <div class="tests" id="tests"></div>
     </div>
@@ -205,7 +203,7 @@
 
 <script>
     // ---- CONFIG ----
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBFNRu8U9F1a-VwvFJKtpXit-R3zF4hlbXBFU5r33uUl7XFV8xdBZCxZ49v3cT13mZjQ/exec"; // ends in /exec
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBFNRu8U9F1a-VwvFJKtpXit-R3zF4hlbXBFU5r33uUl7XFV8xdBZCxZ49v3cT13mZjQ/exec";
     const TEST_FILES = { Reading:"reading.html", Writing:"writing.html", Listening:"listening.html" };
     const LINE_ID = "pegasus028";
     const LINE_ID_CONTACT = "suchin170200";
@@ -218,9 +216,9 @@
     const ORDER=['Pre-A1','A1','A2','B1','B2','C1'];
     // speaking icon = speech bubble with sound lines (symbolic of speaking)
     const TEST_META=[
-        ['Reading','Approx. 6-12 minutes','M4 7h16M4 12h16M4 17h10'],
-        ['Writing','Approx. 10-30 minutes','M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18zM2 2l7.586 7.586'],
-        ['Listening','Approx. 6-12 minutes','M3 18v-6a9 9 0 0118 0v6M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z']
+        ['Reading','<i>(6-12min)</i>','M4 7h16M4 12h16M4 17h10'],
+        ['Writing','<i>(10-30min)</i>','M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18zM2 2l7.586 7.586'],
+        ['Listening','<i>(6-12min)</i>','M3 18v-6a9 9 0 0118 0v6M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z']
     ];
 
     // For the "Where to focus next" popup, keyed by band.
@@ -359,7 +357,7 @@
         + '<div class="test-row speaking-row">'
         + '<div class="test-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h11a2 2 0 012 2z"/><path d="M9 9h6M9 12.5h4"/></svg></div>'
         + '<div class="test-info"><div class="test-name">Speaking</div>'
-        + '<div class="test-state"><span class="speaking-msg">Contact T.Chris to make an appointment<br>Approx. 15 min</span></div>'
+        + '<div class="test-state"><span class="speaking-msg">Contact T.Chris for an appointment. <i>(15min)</i></span></div>'
         + '</div>'
         + '<div class="test-cta"><button class="appt-btn" onclick="addLineFriend()">Contact</button></div>'
         + '</div>';
