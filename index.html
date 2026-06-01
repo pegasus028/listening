@@ -406,6 +406,10 @@
             try{ const ov=document.getElementById('test-overlay'); if(ov) ov.scrollTop=0; }catch(e){}
             return;
         }
+        if(d && d.type==='cefr_return_dashboard'){
+            try{ exitTest(); }catch(e){}
+            return;
+        }
         if(!d || d.type!=='cefr_result' || !activeTest) return;
         const level=String(d.level||"");
         // optimistic update
