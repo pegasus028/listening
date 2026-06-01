@@ -51,8 +51,8 @@ ul.rules{margin:0 0 30px;padding-left:18px;color:var(--ink-soft);font-size:.96re
 .tray.answer{border-style:solid;border-color:var(--accent-soft);background:#fffaf3;margin-bottom:9px;}
 .tray.vert{flex-direction:column;}
 .tray-label{width:100%;font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-weight:600;margin-bottom:2px;}
-.chip{padding:9px 13px;background:#fff;border:1.5px solid var(--line-strong);border-radius:9px;font-size:.95rem;cursor:grab;user-select:none;touch-action:none;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:.12s;}
-.chip.seg{display:block;width:100%;cursor:pointer;}
+.chip{padding:9px 13px;background:#fff;border:1.5px solid var(--line-strong);border-radius:9px;font-size:.95rem;cursor:pointer;user-select:none;touch-action:none;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:.12s;}
+.chip.seg{display:block;width:100%;}
 .chip:hover{border-color:var(--accent-soft);}
 .chip.dragging{opacity:.4;}
 .chip.tap-sel{border-color:var(--accent);background:var(--accent-wash);box-shadow:0 0 0 3px var(--accent-wash);}
@@ -200,6 +200,7 @@ button.main:active{transform:scale(.99);}
   </div>
 </div>
 
+<!-- pop-up round result tile -->
 <div class="overlay hidden" id="overlay"><div class="tile">
   <div class="tile-top"><span class="tile-badge" id="tile-badge"></span><div class="tile-score" id="tile-score">0/5</div><p class="tile-msg" id="tile-msg"></p></div>
   <div class="tile-items" id="tile-items"></div>
@@ -256,7 +257,7 @@ function draggable(chip){
         if(tapSel){tapSel.classList.remove('tap-sel');tapSel=null;}
       }
       if(moved&&ghost){
-        if(ev.cancelable)ev.preventDefault(); // Prevents iPhone scrolling during drag
+        if(ev.cancelable)ev.preventDefault(); 
         ghost.style.left=mpt.clientX+'px';ghost.style.top=mpt.clientY+'px';
         document.querySelectorAll('.tray').forEach(t=>t.style.outline='');
         const tr=trayUnder(mpt.clientX,mpt.clientY);
@@ -294,7 +295,9 @@ function draggable(chip){
 document.addEventListener('click',e=>{
   const tray=e.target.closest&&e.target.closest('.tray');
   if(tray&&tapSel&&tapSel.closest('.gitem')===tray.closest('.gitem')){
-    tray.appendChild(tapSel);
+    if(tapSel.parentElement !== tray) {
+        tray.appendChild(tapSel);
+    }
     tapSel.classList.remove('tap-sel');
     tapSel=null;
   }else if(tapSel){
@@ -320,7 +323,7 @@ function renderRound(){
   node.items.forEach((it,idx)=>{
     const w=document.createElement('div');w.className='gitem';w.dataset.idx=idx;
     let inner='<div class="ihead"><span class="inum">'+(idx+1)+'</span><span class="iq">'+itemQuestion(it)+'</span></div>';
-    if(it.type==='build'){inner+='<div class="ihelp">↔ Drag the words into the answer box, or tap a word then tap where it goes.</div><div class="tray answer" data-role="answer"><span class="tray-label">Your sentence</span></div><div class="tray" data-role="bank"><span class="tray-label">Word bank</span></div>';}
+    if(it.type==='build'){inner+='<div class="ihelp">Tap a word to move it to your sentence. Tap again to return it.</div><div class="tray answer" data-role="answer"><span class="tray-label">Your sentence</span></div><div class="tray" data-role="bank"><span class="tray-label">Word bank</span></div>';}
     else if(it.type==='paraorg'){inner+='<div class="ihelp">Tap each sentence to move it to the Ordered Paragraph section. Tap again to return it.</div><div class="tray answer vert" data-role="answer"><span class="tray-label">Ordered paragraph</span></div><div class="tray vert" data-role="bank"><span class="tray-label">Sentences (wrong order)</span></div>';}
     else if(it.type==='error'){inner+='<div class="proof">'+it.tiles.map((wd,i)=>'<span class="word etile" data-i="'+i+'">'+esc(wd)+'</span>').join(' ')+'</div>';}
     else if(it.type==='match'){inner+='<div class="match"><div><div class="col-label">'+esc(it.leftLabel)+'</div><div class="m-col" data-side="L"></div></div><div><div class="col-label">'+esc(it.rightLabel)+'</div><div class="m-col" data-side="R"></div></div></div><div class="ihelp">Tap an item on the left, then its match on the right.</div><button class="reset-btn" data-reset>Reset matches</button>';}
@@ -344,13 +347,18 @@ function itemQuestion(it){
 function wireItem(w,it){
   if(it.type==='build'){
     const bank=w.querySelector('[data-role="bank"]');
+    const ans=w.querySelector('[data-role="answer"]');
     shuffle(it.tiles.map((_,i)=>i)).forEach(si=>{
       const c=document.createElement('div');
       c.className='chip';
       c.textContent=it.tiles[si];
       c.dataset.si=si;
+      c.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (c.parentElement === bank) ans.appendChild(c);
+        else bank.appendChild(c);
+      });
       bank.appendChild(c);
-      draggable(c);
     });
   }
   else if(it.type==='paraorg'){
@@ -361,7 +369,6 @@ function wireItem(w,it){
       c.className='chip seg';
       c.textContent=it.segments[si];
       c.dataset.si=si;
-      // Click-to-move logic directly implemented, bypassing draggable
       c.addEventListener('click', (e) => {
         e.stopPropagation();
         if (c.parentElement === bank) ans.appendChild(c);
@@ -441,7 +448,7 @@ function showTile(score,passed,detail,isLast){
   else{msg=passed?'You move up to a higher level.':'We will adjust to a more comfortable level.';}
   document.getElementById('tile-msg').textContent=msg;
   document.getElementById('tile-items').innerHTML=detail.map((d,i)=>{const m=d==='ok'?'ok':(d==='no'?'no':'un');const sym=d==='ok'?'✓':(d==='no'?'✕':'–');const lab=d==='un'?'Not finished':(d==='ok'?'Correct':'Not correct');return '<div class="tile-q"><span class="mark '+m+'">'+sym+'</span><span class="qlabel">Question '+(i+1)+' — '+lab+'</span></div>';}).join('');
-  document.getElementById('tile-next').innerHTML=(isLast?'Continue to writing task':'Next round')+' <svg width="18" height="18" viewBox="0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  document.getElementById('tile-next').innerHTML=(isLast?'Continue to writing task':'Next round')+' <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
   document.getElementById('overlay').classList.remove('hidden');
 }
 function hideTile(){document.getElementById('overlay').classList.add('hidden');}
@@ -522,8 +529,6 @@ function essayMeetsLevel(a,e){
   const bars=ESSAY_BARS[e.level]||ESSAY_BARS.B1;
   let checks=0,met=0;const detail={};
   
-  // Rule 1 removed: Hard Gatekeeper on Word Count is gone. The assessment will no longer block or instantly fail students for being under the word limit.
-  
   checks++; detail.wordCount=a.wc>=e.wordTarget[0]; if(detail.wordCount)met++;
   checks++; let cohesion=false;
   if(e.level==='C1'||e.level==='B2'){cohesion=a.usedLinkers.C.length>=2||(a.usedLinkers.C.length>=1&&a.usedLinkers.B.length>=2);}
@@ -588,7 +593,7 @@ function finish(essayText){
   admin+='<div class="arow"><span>Grammar level reached (R1–R3)</span><span>'+state.levelReached+'</span></div>';
   admin+='<div class="arow"><span>Round scores</span><span>'+hist+'</span></div>';
   admin+='<div class="arow"><span>Essay prompt level</span><span>'+provisional+' ('+esc(e.format)+')</span></div>';
-  admin+='<div class="arow"><span>Essay check (≥3/5 to retain)</span><span>'+check.met+'/'+check.checks+' — '+(check.pass?'retained':'dropped one')+'</span></div>';
+  admin+='<div class="arow"><span>Essay check (≥3/5 to retain)</span><span>'+(check.gated?'GATED — under length':check.met+'/'+check.checks)+' — '+(check.pass?'retained':'dropped one')+'</span></div>';
   admin+='<div class="arow"><span>Final level</span><span>'+finalLevel+'</span></div>';
   admin+='<div class="arow"><span>Word count</span><span>'+a.wc+' ('+(inRange?'in range':'under limit')+')</span></div>';
   admin+='<div class="arow"><span>Sentences (abbrev-safe)</span><span>'+a.sentences+'</span></div>';
