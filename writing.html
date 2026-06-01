@@ -413,7 +413,8 @@ const DOWNMAP={C1_Route:'B2_Route',B2_Route:'B1_Route',B1_Route:'A2_Route',A2_Ro
 const CONFIRM={A1:'A1_Confirm',A2:'A2_Confirm',B1:'B1_Confirm',B2:'B2_Confirm',C1:'C1_Confirm'};
 
 function submitRound(){
-  if(submitting)return;submitting=true;
+  if(submitting)return;
+  submitting=true;
   const node=BANK[state.node];
   const wraps=[...document.querySelectorAll('.gitem')];
   let score=0,detail=[];
@@ -457,6 +458,7 @@ function hideTile(){document.getElementById('overlay').classList.add('hidden');}
 function fmt(s){const m=Math.floor(s/60),ss=s%60;return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0');}
 function startEssay(level){
   state.round=4;state.essayLevel=level;
+  submitting=false;
   document.getElementById('round-screen').classList.add('hidden');
   document.getElementById('essay-screen').classList.remove('hidden');
   const promptLevel=(level==='Pre-A1')?'A1':level;
@@ -549,11 +551,17 @@ function essayMeetsLevel(a,e){
 }
 
 function submitEssay(timedOut){
-  if(submitting)return;submitting=true;clearInterval(timerId);stopAntiCheat();
-  const ta=document.getElementById('essay');ta.disabled=true;const text=ta.value;
+  if(submitting)return;
+  submitting=true;
+  clearInterval(timerId);
+  stopAntiCheat();
+  const ta=document.getElementById('essay');
+  ta.disabled=true;
+  const text=ta.value;
   document.getElementById('submit-btn').disabled=true;
   document.getElementById('essay-screen').classList.add('hidden');
-  const gs=document.getElementById('grading-screen');gs.classList.remove('hidden');
+  const gs=document.getElementById('grading-screen');
+  gs.classList.remove('hidden');
   document.getElementById('grading-text').innerText=timedOut?"Time's up — analysing your writing…":"Analysing your writing…";
   scrollTopNow();
   setTimeout(()=>{gs.classList.add('hidden');finish(text);},1100);
@@ -617,7 +625,19 @@ function logToSheet(report){
     window.__lastWritingReport=report; 
   }catch(e){}
 }
-function reportToHub(level,essayText){try{if(window.parent&&window.parent!==window&&location.hash.indexOf('hub=1')>=0){window.parent.postMessage({type:'cefr_result',level:String(level||''),responses:[(essayText||'').trim()],scores:state.scoreHist,report:window.__lastWritingReport||null},'*');}}catch(e){}}
+function reportToHub(level,essayText){
+  try{
+    if(window.parent&&window.parent!==window&&location.hash.indexOf('hub=1')>=0){
+      window.parent.postMessage({
+        type:'cefr_result',
+        level:String(level||''),
+        responses:[(essayText||'').trim()],
+        scores:state.scoreHist,
+        info:JSON.stringify(window.__lastWritingReport||{})
+      },'*');
+    }
+  }catch(e){}
+}
 
 function returnToDashboard(){
   try{
