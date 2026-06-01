@@ -52,7 +52,7 @@ ul.rules{margin:0 0 30px;padding-left:18px;color:var(--ink-soft);font-size:.96re
 .tray.vert{flex-direction:column;}
 .tray-label{width:100%;font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-weight:600;margin-bottom:2px;}
 .chip{padding:9px 13px;background:#fff;border:1.5px solid var(--line-strong);border-radius:9px;font-size:.95rem;cursor:grab;user-select:none;touch-action:none;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:.12s;}
-.chip.seg{display:block;width:100%;}
+.chip.seg{display:block;width:100%;cursor:pointer;}
 .chip:hover{border-color:var(--accent-soft);}
 .chip.dragging{opacity:.4;}
 .chip.tap-sel{border-color:var(--accent);background:var(--accent-wash);box-shadow:0 0 0 3px var(--accent-wash);}
@@ -200,7 +200,6 @@ button.main:active{transform:scale(.99);}
   </div>
 </div>
 
-<!-- pop-up round result tile -->
 <div class="overlay hidden" id="overlay"><div class="tile">
   <div class="tile-top"><span class="tile-badge" id="tile-badge"></span><div class="tile-score" id="tile-score">0/5</div><p class="tile-msg" id="tile-msg"></p></div>
   <div class="tile-items" id="tile-items"></div>
@@ -228,10 +227,13 @@ function stepGrammar(lvl,dir){let l=stepLevel(lvl,dir);if(l==='Pre-A1')l='A1';re
 function startTest(){document.getElementById('intro-screen').classList.add('hidden');document.getElementById('round-screen').classList.remove('hidden');renderRound();}
 function setPips(elId,active){const p=document.getElementById(elId);if(!p)return;let h='';for(let i=1;i<=4;i++){let c='pip';if(i<active)c+=' done';else if(i===active)c+=' active';h+='<span class="'+c+'"></span>';}p.innerHTML=h;}
 
-/* drag */
+function trayUnder(x,y){const els=document.elementsFromPoint(x,y);for(const el of els){const t=el.closest&&el.closest('.tray');if(t)return t;}return null;}
+function placeInto(chip,tray,x,y){const chips=[...tray.querySelectorAll('.chip')].filter(c=>c!==chip);let before=null;const vert=tray.classList.contains('vert');for(const t of chips){const r=t.getBoundingClientRect();if(vert?(y<r.top+r.height/2):(x<r.left+r.width/2)){before=t;break;}}if(before)tray.insertBefore(chip,before);else tray.appendChild(chip);}
+
 let tapSel=null;
 function draggable(chip){
-  chip.addEventListener('click',()=>{
+  chip.addEventListener('click',(e)=>{
+    e.stopPropagation();
     if(chip._dragged){chip._dragged=false;return;}
     if(tapSel===chip){chip.classList.remove('tap-sel');tapSel=null;return;}
     if(tapSel)tapSel.classList.remove('tap-sel');
@@ -239,53 +241,63 @@ function draggable(chip){
   });
   
   let ghost=null,sx,sy,moved=false;
-  chip.addEventListener('pointerdown',e=>{
-    if(e.button&&e.button!==0)return;
-    sx=e.clientX;sy=e.clientY;moved=false;
-    const mv=ev=>{
-      if(!moved&&(Math.abs(ev.clientX-sx)>4||Math.abs(ev.clientY-sy)>4)){
+  
+  function startDrag(e){
+    if(e.type==='mousedown'&&e.button!==0)return;
+    const pt=e.touches?e.touches[0]:e;
+    sx=pt.clientX;sy=pt.clientY;moved=false;
+    
+    const moveDrag=ev=>{
+      const mpt=ev.touches?ev.touches[0]:ev;
+      if(!moved&&(Math.abs(mpt.clientX-sx)>4||Math.abs(mpt.clientY-sy)>4)){
         moved=true;chip.classList.add('dragging');
         ghost=document.createElement('div');ghost.className='chip-ghost';ghost.textContent=chip.textContent;
         document.body.appendChild(ghost);
         if(tapSel){tapSel.classList.remove('tap-sel');tapSel=null;}
       }
       if(moved&&ghost){
-        ghost.style.left=ev.clientX+'px';ghost.style.top=ev.clientY+'px';
+        if(ev.cancelable)ev.preventDefault(); // Prevents iPhone scrolling during drag
+        ghost.style.left=mpt.clientX+'px';ghost.style.top=mpt.clientY+'px';
         document.querySelectorAll('.tray').forEach(t=>t.style.outline='');
-        const tr=trayUnder(ev.clientX,ev.clientY);
-        if(tr && chip.closest('.gitem') === tr.closest('.gitem')) tr.style.outline='2px solid var(--accent-soft)';
+        const tr=trayUnder(mpt.clientX,mpt.clientY);
+        if(tr&&chip.closest('.gitem')===tr.closest('.gitem'))tr.style.outline='2px solid var(--accent-soft)';
       }
     };
-    const up=ev=>{
-      document.removeEventListener('pointermove',mv);
-      document.removeEventListener('pointerup',up);
+    
+    const endDrag=ev=>{
+      document.removeEventListener('mousemove',moveDrag);
+      document.removeEventListener('touchmove',moveDrag);
+      document.removeEventListener('mouseup',endDrag);
+      document.removeEventListener('touchend',endDrag);
       document.querySelectorAll('.tray').forEach(t=>t.style.outline='');
       chip.classList.remove('dragging');
       if(moved&&ghost){
         ghost.remove();ghost=null;chip._dragged=true;
-        const tr=trayUnder(ev.clientX,ev.clientY);
-        if(tr && chip.closest('.gitem') === tr.closest('.gitem')) {
-            placeInto(chip,tr,ev.clientX,ev.clientY);
+        const ept=ev.changedTouches?ev.changedTouches[0]:ev;
+        const tr=trayUnder(ept.clientX,ept.clientY);
+        if(tr&&chip.closest('.gitem')===tr.closest('.gitem')){
+            placeInto(chip,tr,ept.clientX,ept.clientY);
         }
       }
     };
-    document.addEventListener('pointermove',mv);
-    document.addEventListener('pointerup',up);
-  });
+    
+    document.addEventListener('mousemove',moveDrag);
+    document.addEventListener('touchmove',moveDrag,{passive:false});
+    document.addEventListener('mouseup',endDrag);
+    document.addEventListener('touchend',endDrag);
+  }
+  
+  chip.addEventListener('mousedown',startDrag);
+  chip.addEventListener('touchstart',startDrag,{passive:false});
 }
-
-function trayUnder(x,y){const els=document.elementsFromPoint(x,y);for(const el of els){const t=el.closest&&el.closest('.tray');if(t)return t;}return null;}
-function placeInto(chip,tray,x,y){const chips=[...tray.querySelectorAll('.chip')].filter(c=>c!==chip);let before=null;const vert=tray.classList.contains('vert');for(const t of chips){const r=t.getBoundingClientRect();if(vert?(y<r.top+r.height/2):(x<r.left+r.width/2)){before=t;break;}}if(before)tray.insertBefore(chip,before);else tray.appendChild(chip);}
 
 document.addEventListener('click',e=>{
   const tray=e.target.closest&&e.target.closest('.tray');
-  if(tray&&tapSel && tapSel.closest('.gitem') === tray.closest('.gitem')){
-    if(tapSel.parentElement !== tray) {
-        tray.appendChild(tapSel);
-    }
+  if(tray&&tapSel&&tapSel.closest('.gitem')===tray.closest('.gitem')){
+    tray.appendChild(tapSel);
     tapSel.classList.remove('tap-sel');
     tapSel=null;
-  } else if (tray && tapSel) {
+  }else if(tapSel){
     tapSel.classList.remove('tap-sel');
     tapSel=null;
   }
@@ -299,7 +311,6 @@ function renderRound(){
   document.getElementById('lvl-num').innerText=node.level;
   setPips('pips',state.round);
   
-  // Method 1 dynamic image loading
   document.getElementById('scene').innerHTML='<img src="images/' + node.scene + '.jpg" alt=""><div class="scene-cap">'+esc(node.theme)+'</div>';
   
   document.getElementById('round-tag').innerText='Scenario · '+node.theme;
@@ -310,7 +321,7 @@ function renderRound(){
     const w=document.createElement('div');w.className='gitem';w.dataset.idx=idx;
     let inner='<div class="ihead"><span class="inum">'+(idx+1)+'</span><span class="iq">'+itemQuestion(it)+'</span></div>';
     if(it.type==='build'){inner+='<div class="ihelp">↔ Drag the words into the answer box, or tap a word then tap where it goes.</div><div class="tray answer" data-role="answer"><span class="tray-label">Your sentence</span></div><div class="tray" data-role="bank"><span class="tray-label">Word bank</span></div>';}
-    else if(it.type==='paraorg'){inner+='<div class="ihelp">Drag each tile to the ‘Ordered Paragraph’ section in the correct order.</div><div class="tray answer vert" data-role="answer"><span class="tray-label">Ordered paragraph</span></div><div class="tray vert" data-role="bank"><span class="tray-label">Sentences (wrong order)</span></div>';}
+    else if(it.type==='paraorg'){inner+='<div class="ihelp">Tap each sentence to move it to the Ordered Paragraph section. Tap again to return it.</div><div class="tray answer vert" data-role="answer"><span class="tray-label">Ordered paragraph</span></div><div class="tray vert" data-role="bank"><span class="tray-label">Sentences (wrong order)</span></div>';}
     else if(it.type==='error'){inner+='<div class="proof">'+it.tiles.map((wd,i)=>'<span class="word etile" data-i="'+i+'">'+esc(wd)+'</span>').join(' ')+'</div>';}
     else if(it.type==='match'){inner+='<div class="match"><div><div class="col-label">'+esc(it.leftLabel)+'</div><div class="m-col" data-side="L"></div></div><div><div class="col-label">'+esc(it.rightLabel)+'</div><div class="m-col" data-side="R"></div></div></div><div class="ihelp">Tap an item on the left, then its match on the right.</div><button class="reset-btn" data-reset>Reset matches</button>';}
     else if(it.type==='transform'){inner+='<div class="ihelp">Tap the word to change its form until the sentence is correct.</div>';}
@@ -331,8 +342,34 @@ function itemQuestion(it){
   return '';
 }
 function wireItem(w,it){
-  if(it.type==='build'){const bank=w.querySelector('[data-role="bank"]');shuffle(it.tiles.map((_,i)=>i)).forEach(si=>{const c=document.createElement('div');c.className='chip';c.textContent=it.tiles[si];c.dataset.si=si;bank.appendChild(c);draggable(c);});}
-  else if(it.type==='paraorg'){const bank=w.querySelector('[data-role="bank"]');shuffleParaorg(it).forEach(si=>{const c=document.createElement('div');c.className='chip seg';c.textContent=it.segments[si];c.dataset.si=si;bank.appendChild(c);draggable(c);});}
+  if(it.type==='build'){
+    const bank=w.querySelector('[data-role="bank"]');
+    shuffle(it.tiles.map((_,i)=>i)).forEach(si=>{
+      const c=document.createElement('div');
+      c.className='chip';
+      c.textContent=it.tiles[si];
+      c.dataset.si=si;
+      bank.appendChild(c);
+      draggable(c);
+    });
+  }
+  else if(it.type==='paraorg'){
+    const bank=w.querySelector('[data-role="bank"]');
+    const ans=w.querySelector('[data-role="answer"]');
+    shuffleParaorg(it).forEach(si=>{
+      const c=document.createElement('div');
+      c.className='chip seg';
+      c.textContent=it.segments[si];
+      c.dataset.si=si;
+      // Click-to-move logic directly implemented, bypassing draggable
+      c.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (c.parentElement === bank) ans.appendChild(c);
+        else bank.appendChild(c);
+      });
+      bank.appendChild(c);
+    });
+  }
   else if(it.type==='error'){w.querySelectorAll('.word').forEach(wd=>wd.addEventListener('click',()=>{w.querySelectorAll('.word').forEach(x=>x.classList.remove('flagged'));wd.classList.add('flagged');w._flag=parseInt(wd.dataset.i);}));}
   else if(it.type==='match'){
     const L=w.querySelector('[data-side="L"]'),R=w.querySelector('[data-side="R"]');
@@ -404,7 +441,7 @@ function showTile(score,passed,detail,isLast){
   else{msg=passed?'You move up to a higher level.':'We will adjust to a more comfortable level.';}
   document.getElementById('tile-msg').textContent=msg;
   document.getElementById('tile-items').innerHTML=detail.map((d,i)=>{const m=d==='ok'?'ok':(d==='no'?'no':'un');const sym=d==='ok'?'✓':(d==='no'?'✕':'–');const lab=d==='un'?'Not finished':(d==='ok'?'Correct':'Not correct');return '<div class="tile-q"><span class="mark '+m+'">'+sym+'</span><span class="qlabel">Question '+(i+1)+' — '+lab+'</span></div>';}).join('');
-  document.getElementById('tile-next').innerHTML=(isLast?'Continue to writing task':'Next round')+' <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  document.getElementById('tile-next').innerHTML=(isLast?'Continue to writing task':'Next round')+' <svg width="18" height="18" viewBox="0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
   document.getElementById('overlay').classList.remove('hidden');
 }
 function hideTile(){document.getElementById('overlay').classList.add('hidden');}
@@ -484,6 +521,9 @@ const ESSAY_BARS={'Pre-A1':{avgLen:4,ttr:45,sents:1},A1:{avgLen:6,ttr:50,sents:3
 function essayMeetsLevel(a,e){
   const bars=ESSAY_BARS[e.level]||ESSAY_BARS.B1;
   let checks=0,met=0;const detail={};
+  
+  // Rule 1 removed: Hard Gatekeeper on Word Count is gone. The assessment will no longer block or instantly fail students for being under the word limit.
+  
   checks++; detail.wordCount=a.wc>=e.wordTarget[0]; if(detail.wordCount)met++;
   checks++; let cohesion=false;
   if(e.level==='C1'||e.level==='B2'){cohesion=a.usedLinkers.C.length>=2||(a.usedLinkers.C.length>=1&&a.usedLinkers.B.length>=2);}
@@ -499,6 +539,7 @@ function essayMeetsLevel(a,e){
   else if(e.level==='B2')vocab=vocab&&a.highVocab.length>=1;
   detail.vocab=vocab; if(vocab)met++;
   checks++; detail.topic=a.usedKeywords.length>=2; if(detail.topic)met++;
+  
   return {met,checks,pass:met>=3,gated:false,detail};
 }
 
@@ -534,9 +575,9 @@ function finish(essayText){
   document.getElementById('feedback-text').innerText=feedbackMap[finalLevel]||'';
   document.getElementById('scale').innerHTML=FULL_ORDER.map(s=>'<span class="step'+(s===finalLevel?' on':'')+'">'+s+'</span>').join('');
 
-  const inRange=a.wc>=e.wordTarget[0]&&a.wc<=e.wordTarget[1];
+  const inRange=a.wc>=e.wordTarget[0];
   let sum='<h3>Nice work — a quick summary</h3>';
-  sum+='<p>You wrote <b>'+a.wc+' words</b> (target '+e.wordTarget[0]+'–'+e.wordTarget[1]+').'+(inRange?' Right on target!':a.wc<e.wordTarget[0]?' A little more next time would help.':' A bit over — that\'s fine.')+'</p>';
+  sum+='<p>You wrote <b>'+a.wc+' words</b> (target '+e.wordTarget[0]+'–'+e.wordTarget[1]+').'+(inRange?' Right on target!':' A little more next time would help.')+'</p>';
   sum+='<p>You used <b>'+allLinkers.length+'</b> different linking word'+(allLinkers.length===1?'':'s')+(allLinkers.length>=3?' — great for connecting your ideas.':'.')+'</p>';
   if(a.usedKeywords.length>=2)sum+='<p>You stayed on topic. </p>';
   if(a.ttr>=55)sum+='<p>Good range of vocabulary.</p>';
@@ -547,9 +588,9 @@ function finish(essayText){
   admin+='<div class="arow"><span>Grammar level reached (R1–R3)</span><span>'+state.levelReached+'</span></div>';
   admin+='<div class="arow"><span>Round scores</span><span>'+hist+'</span></div>';
   admin+='<div class="arow"><span>Essay prompt level</span><span>'+provisional+' ('+esc(e.format)+')</span></div>';
-  admin+='<div class="arow"><span>Essay check (≥3/5 to retain)</span><span>'+(check.gated?'GATED — under length':check.met+'/'+check.checks)+' — '+(check.pass?'retained':'dropped one')+'</span></div>';
+  admin+='<div class="arow"><span>Essay check (≥3/5 to retain)</span><span>'+check.met+'/'+check.checks+' — '+(check.pass?'retained':'dropped one')+'</span></div>';
   admin+='<div class="arow"><span>Final level</span><span>'+finalLevel+'</span></div>';
-  admin+='<div class="arow"><span>Word count</span><span>'+a.wc+' ('+(inRange?'in range':'out of range')+')</span></div>';
+  admin+='<div class="arow"><span>Word count</span><span>'+a.wc+' ('+(inRange?'in range':'under limit')+')</span></div>';
   admin+='<div class="arow"><span>Sentences (abbrev-safe)</span><span>'+a.sentences+'</span></div>';
   admin+='<div class="arow"><span>Avg sentence length</span><span>'+a.avgLen+' words</span></div>';
   admin+='<div class="arow"><span>Linkers — A / B / C tier</span><span>'+a.usedLinkers.A.length+' / '+a.usedLinkers.B.length+' / '+a.usedLinkers.C.length+'</span></div>';
