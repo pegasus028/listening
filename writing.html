@@ -61,6 +61,7 @@ ul.rules{margin:0 0 30px;padding-left:18px;color:var(--ink-soft);font-size:.96re
 .proof .etile{padding:8px 12px;border:1.5px solid var(--line-strong);border-radius:9px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.04);}
 .proof .etile:hover{border-color:var(--accent-soft);background:#fffaf6;}
 .proof .etile.flagged{background:var(--accent);color:#fff;border-color:var(--accent);}
+/* match: narrow boxes, side-by-side even on iPhone */
 .match{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;align-items:start;}
 .col-label{font-size:.64rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);font-weight:600;margin-bottom:5px;}
 .m-col{display:flex;flex-direction:column;gap:7px;}
@@ -142,7 +143,7 @@ button.main:disabled{background:var(--line-strong);cursor:not-allowed;transform:
 .restart{margin-top:26px;}
 .restart button{background:transparent;color:var(--ink-soft);border:1.5px solid var(--line-strong);width:100%;padding:14px;border-radius:11px;font-weight:600;font-family:inherit;cursor:pointer;}
 .restart button:hover{background:var(--paper);color:var(--accent);border-color:var(--accent-soft);}
-.fade{animation:fade .45s ease both;}
+.fade{animation:f .45s ease both;}
 @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 .hidden{display:none;}
 @media(max-width:520px){.inner{padding:24px 18px;}.prompt-box{padding:18px;}}
@@ -197,6 +198,7 @@ button.main:disabled{background:var(--line-strong);cursor:not-allowed;transform:
   </div>
 </div>
 
+<!-- pop-up round result tile -->
 <div class="overlay hidden" id="overlay"><div class="tile">
   <div class="tile-top"><span class="tile-badge" id="tile-badge"></span><div class="tile-score" id="tile-score">0/5</div><p class="tile-msg" id="tile-msg"></p></div>
   <div class="tile-items" id="tile-items"></div>
@@ -375,4 +377,227 @@ function startEssay(level){
   updateWordCount();document.getElementById('submit-btn').disabled=false;
   scrollTopNow();startTimer(e.sec);ta.focus();startAntiCheat();
 }
-function startTimer(sec){clearInterval(timerId);secondsLeft=sec;const tEl=document.getElementById('timer
+function startTimer(sec){clearInterval(timerId);secondsLeft=sec;const tEl=document.getElementById('timer'),txt=document.getElementById('timer-text');tEl.classList.remove('warn','danger');txt.innerText=fmt(secondsLeft);timerId=setInterval(()=>{secondsLeft--;if(secondsLeft<0)secondsLeft=0;txt.innerText=fmt(secondsLeft);tEl.classList.remove('warn','danger');if(secondsLeft<=30)tEl.classList.add('danger');else if(secondsLeft<=60)tEl.classList.add('warn');if(secondsLeft<=0){clearInterval(timerId);timerId=null;submitEssay(true);}},1000);}
+function countWords(t){const m=(t||'').trim().match(/[A-Za-z'’-]+/g);return m?m.length:0;}
+function updateWordCount(){const n=countWords(document.getElementById('essay').value);document.getElementById('wc-now').innerText=n;const hint=document.getElementById('wc-hint');if(n>=currentTarget)hint.innerHTML='<b style="color:var(--good);">target reached</b>';else hint.innerHTML='target <b>'+currentTarget+'</b>';}
+
+const LINKER_TIERS={
+  A:['and','but','so','because','then','also'],
+  B:['however','although','for example','while','whereas','first','firstly','secondly','finally'],
+  C:['therefore','moreover','furthermore','in addition','as a result','on the other hand','nevertheless','consequently','despite','thus']
+};
+const HIGH_VOCAB=['significant','evaluate','subsequently','detrimental','consequently','furthermore','nevertheless','substantial','demonstrate','perspective','implication','sufficient','considerable','phenomenon','inevitable','prominent','advocate','undermine','comprehensive','controversial','fundamental','consequence','alternative','establish','perceive','acknowledge','crucial','adverse','beneficial','prioritise','prioritize','mitigate','arguably','notably'];
+
+function countSentences(text){
+  if(!text.trim())return 0;
+  let t=' '+text+' ';
+  const ABBR=['Mr','Mrs','Ms','Dr','Prof','St','vs','etc','eg','ie','Inc','Ltd','Jr','Sr'];
+  ABBR.forEach(ab=>{const re=new RegExp('\\b'+ab+'\\.','g');t=t.replace(re,ab+'\u0001');});
+  t=t.replace(/\b([A-Za-z])\.([A-Za-z])\.([A-Za-z])\.?/g,'$1$2$3');
+  t=t.replace(/(\d)\.(\d)/g,'$1\u0001$2');
+  const m=t.match(/[.!?]+(?=\s|$)/g);
+  let n=m?m.length:0;
+  const words=(text.trim().match(/[A-Za-z'’-]+/g)||[]).length;
+  if(n===0&&words>0)n=1;
+  return n;
+}
+
+function analyseEssay(text,promptLevel){
+  const words=(text.trim().match(/[A-Za-z'’-]+/g)||[]);
+  const wc=words.length;
+  const sentences=countSentences(text);
+  const avgLen=sentences?Math.round(wc/sentences*10)/10:0;
+  const lower=' '+text.toLowerCase().replace(/[\n\r]+/g,' ')+' ';
+  const usedLinkers={A:[],B:[],C:[]};
+  for(const tier in LINKER_TIERS){usedLinkers[tier]=LINKER_TIERS[tier].filter(l=>lower.includes(' '+l+' ')||lower.includes(' '+l+','));}
+  const linkerCount=usedLinkers.A.length+usedLinkers.B.length+usedLinkers.C.length;
+  const e=ESSAYS[promptLevel]||ESSAYS['B1'];
+  const keywords=e.keywords||[];
+  const usedKeywords=keywords.filter(kw=>lower.includes(' '+kw+' ')||lower.includes(' '+kw+'s ')||lower.includes(' '+kw+','));
+  const grammar={
+    passive:/\b(is|are|was|were|be|been|being)\s+(?:[a-z]+ly\s+)?[a-z]+(?:ed|en)\b/i.test(text),
+    perfect:/\b(has|have|had)\s+(?!to\b)(?:[a-z]+ly\s+)?[a-z]+(?:ed|en)\b/i.test(text),
+    conditional:/\b(if|unless)\b[^.?!]*\b(will|would|can|could|might|should)\b/i.test(text),
+    relative:/\b(which|who|whom|whose|that)\b/i.test(text)
+  };
+  const grammarRange=Object.values(grammar).filter(Boolean).length;
+  const highVocab=[...new Set(words.map(w=>w.toLowerCase()))].filter(w=>HIGH_VOCAB.includes(w));
+  const uniq=new Set(words.map(w=>w.toLowerCase())).size;
+  const ttr=wc?Math.round(uniq/wc*100):0;
+  return {wc,sentences,avgLen,usedLinkers,linkerCount,usedKeywords,grammar,grammarRange,highVocab,uniq,ttr};
+}
+
+const ESSAY_BARS={'Pre-A1':{avgLen:4,ttr:45,sents:1},A1:{avgLen:6,ttr:50,sents:3},A2:{avgLen:8,ttr:48,sents:4},B1:{avgLen:10,ttr:48,sents:6},B2:{avgLen:12,ttr:50,sents:8},C1:{avgLen:14,ttr:52,sents:10}};
+
+function essayMeetsLevel(a,e){
+  const bars=ESSAY_BARS[e.level]||ESSAY_BARS.B1;
+  if(a.wc < e.wordTarget[0]*0.6) return {met:0,checks:5,pass:false,gated:true,detail:{}};
+  let checks=0,met=0;const detail={};
+  checks++; detail.wordCount=a.wc>=e.wordTarget[0]; if(detail.wordCount)met++;
+  checks++; let cohesion=false;
+  if(e.level==='C1'||e.level==='B2'){cohesion=a.usedLinkers.C.length>=2||(a.usedLinkers.C.length>=1&&a.usedLinkers.B.length>=2);}
+  else if(e.level==='B1'){cohesion=a.usedLinkers.B.length>=2||a.usedLinkers.C.length>=1;}
+  else{cohesion=a.usedLinkers.A.length>=2||a.usedLinkers.B.length>=1;}
+  detail.cohesion=cohesion; if(cohesion)met++;
+  checks++; let development=a.avgLen>=bars.avgLen;
+  if(e.level==='C1')development=development&&a.grammarRange>=2;
+  else if(e.level==='B2')development=development&&a.grammarRange>=1;
+  detail.development=development; if(development)met++;
+  checks++; let vocab=a.ttr>=bars.ttr;
+  if(e.level==='C1')vocab=vocab&&a.highVocab.length>=2;
+  else if(e.level==='B2')vocab=vocab&&a.highVocab.length>=1;
+  detail.vocab=vocab; if(vocab)met++;
+  checks++; detail.topic=a.usedKeywords.length>=2; if(detail.topic)met++;
+  return {met,checks,pass:met>=3,gated:false,detail};
+}
+
+function finish(essayText){
+  const provisional=state.essayLevel||state.levelReached;
+  const promptLevel=(provisional==='Pre-A1')?'A1':provisional;
+  const e=ESSAYS[promptLevel]||ESSAYS['B1'];
+  const gradeRef={level:provisional,wordTarget:e.wordTarget,keywords:e.keywords};
+  const a=analyseEssay(essayText,promptLevel);
+  const check=essayMeetsLevel(a,gradeRef);
+  const finalLevel = check.pass ? provisional : stepLevel(provisional,-1);
+  const allLinkers=[].concat(a.usedLinkers.A,a.usedLinkers.B,a.usedLinkers.C);
+  const grammarList=Object.keys(a.grammar).filter(k=>a.grammar[k]);
+
+  logToSheet({timestamp:new Date().toISOString(),grammarLevelReached:state.levelReached,roundScores:state.scoreHist.map(h=>h.level+':'+h.score),essayPromptLevel:provisional,essayFormat:e.format,wordCount:a.wc,sentences:a.sentences,avgSentenceLength:a.avgLen,linkersByTier:{A:a.usedLinkers.A,B:a.usedLinkers.B,C:a.usedLinkers.C},topicKeywords:a.usedKeywords,grammarFeatures:grammarList,highTierVocab:a.highVocab,typeTokenPct:a.ttr,essayCheck:check.met+'/'+check.checks,gated:check.gated,essayPassed:check.pass,finalLevel:finalLevel,essayText:essayText.trim()});
+}
+
+function logToSheet(report){
+  try{
+    console.log('[Sheet tracker] writing report:',report);
+    window.__lastWritingReport=report; 
+  }catch(e){}
+}
+function reportToHub(level,essayText){try{if(window.parent&&window.parent!==window&&location.hash.indexOf('hub=1')>=0){window.parent.postMessage({type:'cefr_result',level:String(level||''),responses:[(essayText||'').trim()],scores:state.scoreHist,report:window.__lastWritingReport||null},'*');}}catch(e){}}
+
+function returnToDashboard(){
+  try{
+    if(window.parent&&window.parent!==window){
+      window.parent.postMessage({type:'cefr_return_dashboard'},'*');
+      return;
+    }
+  }catch(e){}
+  restart();
+}
+function restart(){state={round:1,node:'B1_Route',levelReached:'B1',scoreHist:[],essayLevel:null};submitting=false;clearInterval(timerId);hideTile();stopAntiCheat();document.getElementById('results-screen').classList.add('hidden');document.getElementById('essay-screen').classList.add('hidden');document.getElementById('round-screen').classList.remove('hidden');renderRound();}
+
+/* ===== Anti-cheat (essay round only) ===== */
+function blockEvt(e){e.preventDefault();}
+function pasteBlocked(e){e.preventDefault();try{alert('Pasting is disabled. Please type your essay yourself.');}catch(_){}}
+function copyBlocked(e){e.preventDefault();}
+function onVisChange(){
+  if(!acActive)return;
+  if(document.hidden){
+    acWarnings++;
+    if(acWarnings>=3){try{alert('Assessment terminated: you left the test repeatedly. Your work will be submitted.');}catch(_){}submitEssay(true);return;}
+    try{alert('Warning '+acWarnings+' of 3: leaving the test tab is not allowed. Outside help is prohibited.');}catch(_){}
+  }
+}
+function onFsChange(){
+  if(!acActive)return;
+  if(!document.fullscreenElement && !document.webkitFullscreenElement){ onVisChange(); }
+}
+function startAntiCheat(){
+  if(acActive)return; acActive=true; acWarnings=0;
+  document.addEventListener('visibilitychange',onVisChange);
+  document.addEventListener('paste',pasteBlocked,true);
+  document.addEventListener('copy',copyBlocked,true);
+  document.addEventListener('contextmenu',blockEvt);
+  document.addEventListener('fullscreenchange',onFsChange);
+  document.addEventListener('webkitfullscreenchange',onFsChange);
+  try{const el=document.documentElement;const rq=el.requestFullscreen||el.webkitRequestFullscreen;if(rq){const p=rq.call(el);if(p&&p.catch)p.catch(function(){});}}catch(e){}
+}
+function stopAntiCheat(){
+  acActive=false;
+  document.removeEventListener('visibilitychange',onVisChange);
+  document.removeEventListener('paste',pasteBlocked,true);
+  document.removeEventListener('copy',copyBlocked,true);
+  document.removeEventListener('contextmenu',blockEvt);
+  document.removeEventListener('fullscreenchange',onFsChange);
+  document.removeEventListener('webkitfullscreenchange',onFsChange);
+  try{if(document.fullscreenElement&&document.exitFullscreen){const p=document.exitFullscreen();if(p&&p.catch)p.catch(function(){});}}catch(e){}
+}
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBFNRu8U9F1a-VwvFJKtpXit-R3zF4hlbXBFU5r33uUl7XFV8xdBZCxZ49v3cT13mZjQ/exec";
+
+async function submitEssay(timedOut) {
+  const submitBtn = document.getElementById('submit-btn');
+  if (submitBtn.disabled) return; 
+  submitBtn.disabled = true; 
+  
+  clearInterval(timerId); 
+  stopAntiCheat();
+  
+  const ta = document.getElementById('essay');
+  ta.disabled = true; 
+  const essayText = ta.value;
+  
+  document.getElementById('essay-screen').classList.add('hidden');
+  
+  const gs = document.getElementById('grading-screen');
+  gs.classList.remove('hidden');
+  document.getElementById('grading-text').innerText = timedOut ? "Time's up — analysing your writing…" : "Analysing your writing…";
+  scrollTopNow();
+
+  const provisional = state.essayLevel || state.levelReached;
+  const promptLevel = (provisional === 'Pre-A1') ? 'A1' : provisional;
+  
+  // Call the background check function FIRST to ensure report metrics are calculated
+  finish(essayText);
+
+  try {
+    const params = {
+        action: "evaluate_writing",
+        text: essayText,
+        targetLevel: promptLevel
+    };
+    
+    const body = Object.keys(params).map(k => encodeURIComponent(k) + "=" + encodeURIComponent(params[k])).join("&");
+    
+    const response = await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        body: body
+    });
+    
+    const data = await response.json();
+    gs.classList.add('hidden');
+
+    if (data.ok && data.evaluation) {
+        finishWithAI(essayText, data.evaluation.finalLevel, data.evaluation.feedback);
+    } else {
+        // If the API fails, show the EXACT reason on the screen
+        finishWithAI(essayText, "Pending", "API Error: " + (data.error || "Unknown Error") + ". Your submission is saved on the server.");
+    }
+  } catch (e) {
+    gs.classList.add('hidden');
+    finishWithAI(essayText, "Network Error", "Saved locally. " + e.message);
+  }
+}
+
+function finishWithAI(essayText, aiLevel, aiFeedback) {
+  document.getElementById('results-screen').classList.remove('hidden');
+  document.getElementById('results-screen').classList.add('fade');
+  document.getElementById('final-level').innerText = aiLevel;
+  document.getElementById('feedback-text').innerText = aiFeedback;
+  
+  document.getElementById('scale').innerHTML = FULL_ORDER.map(s => '<span class="step'+(s === aiLevel ? ' on' : '')+'">'+s+'</span>').join('');
+  
+  document.getElementById('summary').innerHTML = '';
+  document.getElementById('admin').innerHTML = '';
+  
+  reportToHub(aiLevel, essayText);
+  scrollTopNow();
+}
+
+window.startTest=startTest;
+window.submitRound=submitRound;
+window.submitEssay=submitEssay;
+window.updateWordCount=updateWordCount;
+window.returnToDashboard=returnToDashboard;
+})();
+</script>
+</body></html>
