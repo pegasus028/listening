@@ -117,6 +117,7 @@
 </head>
 <body>
 <div class="container">
+    <!-- LOGIN -->
     <div id="login-screen" class="inner fade">
         <p class="eyebrow" style="text-align:center;">English Proficiency · CEFR</p>
         <h1 style="text-align:center;">English Placement Test</h1>
@@ -137,6 +138,7 @@
         </div>
     </div>
 
+    <!-- LINE ID HELP POPUP -->
     <div id="lineid-pop-bg" class="focus-pop-bg" style="display:none" onclick="closeLineHelp(event)">
         <div class="focus-pop" onclick="event.stopPropagation()">
             <button class="fp-close" onclick="closeLineHelp()" aria-label="Close">
@@ -156,6 +158,7 @@
         </div>
     </div>
 
+    <!-- DASHBOARD -->
     <div id="dash-screen" class="inner hidden">
         <div class="greeting">
             <button class="signout" onclick="signOut()">Sign out</button>
@@ -172,9 +175,11 @@
         <div class="tests" id="tests"></div>
     </div>
 
+    <!-- loading -->
     <div id="load-screen" class="inner hidden"><div class="spin"></div></div>
 </div>
 
+<!-- FOCUS POPUP -->
 <div id="focus-pop-bg" class="focus-pop-bg" style="display:none" onclick="closeFocus(event)">
     <div class="focus-pop" id="focus-pop" onclick="event.stopPropagation()">
         <button class="fp-close" onclick="closeFocus()" aria-label="Close">
@@ -187,6 +192,7 @@
     </div>
 </div>
 
+<!-- TEST OVERLAY -->
 <div id="test-overlay">
     <div class="ov-bar">
         <span class="ov-title" id="ov-title">Test</span>
@@ -208,10 +214,9 @@
     function addLineContact(){ window.open("https://line.me/ti/p/~" + LINE_ID_CONTACT, "_blank", "noopener"); }
 
     const ORDER=['Pre-A1','A1','A2','B1','B2','C1'];
-    // speaking icon = speech bubble with sound lines (symbolic of speaking)
     const TEST_META=[
         ['Reading','<i>(6-12min)</i>','M4 7h16M4 12h16M4 17h10'],
-        ['Writing','<i>(10-30min)</i>','M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18zM2 2l7.586 7.586'],
+        ['Writing','<i>(8-18min)</i>','M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18zM2 2l7.586 7.586'],
         ['Listening','<i>(6-12min)</i>','M3 18v-6a9 9 0 0118 0v6M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z']
     ];
 
@@ -257,7 +262,6 @@
     function bandOf(level){
         if(!level) return null;
         if(level.indexOf('/')>=0){
-            // boundary label -> use the LOWER band for focus guidance
             const parts=level.split('/').map(s=>s.trim()).filter(p=>ORDER.indexOf(p)>=0);
             if(parts.length) return parts.sort((a,b)=>ORDER.indexOf(a)-ORDER.indexOf(b))[0];
         }
@@ -268,7 +272,6 @@
     let activeTest=null;
 
     function api(params){
-        // POST (form-encoded) so long writing responses aren't truncated by URL length limits.
         const body=Object.keys(params).map(k=>encodeURIComponent(k)+"="+encodeURIComponent(params[k])).join("&");
         return fetch(SCRIPT_URL, {
             method:"POST",
@@ -328,7 +331,6 @@
                 ? "Based on 1 test."
                 : "Averaged across <b>"+doneCount+"</b> tests.")
             : "Complete a test to see your average level.";
-        // Expand the average card (show CTA + Contact button) once any test is done.
         document.getElementById('avg-card').classList.toggle('expanded', doneCount>0);
 
         const wrap=document.getElementById('tests');
@@ -347,7 +349,6 @@
                     : '<button class="start-btn" onclick="launchTest(\''+name+'\')">Start</button>')
                 +'</div></div>';
         }).join('')
-        // --- Speaking test tile (online/in-person) ---
         + '<div class="test-row speaking-row">'
         + '<div class="test-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h11a2 2 0 012 2z"/><path d="M9 9h6M9 12.5h4"/></svg></div>'
         + '<div class="test-info"><div class="test-name">Speaking</div>'
@@ -380,7 +381,6 @@
         activeTest=name;
         document.getElementById('ov-title').textContent=name+" Test";
         const frame=document.getElementById('test-frame');
-        // pass identity to the test via hash so it can report back
         frame.src=TEST_FILES[name]+"#hub=1";
         document.getElementById('test-overlay').classList.add('show');
     }
@@ -392,7 +392,6 @@
         renderDash();
     }
 
-    // Receive the final level from a test running in the iframe
     window.addEventListener('message', async (ev)=>{
         const d=ev.data;
         if(d && d.type==='cefr_scrolltop'){
@@ -405,17 +404,15 @@
             return;
         }
         if(!d || d.type!=='cefr_result' || !activeTest) return;
+        
         const level=String(d.level||"");
-        // optimistic update
         student.results[activeTest]=level;
         try{ sessionStorage.setItem('cefr_student', JSON.stringify(student)); }catch(e){}
-        // detailed responses (e.g. writing answers), if the test sent any
-        const responses = Array.isArray(d.responses) ? JSON.stringify(d.responses) : "";
-        // save to sheet
-        try{ await api({action:"submit", lineid:student.lineid, test:activeTest, level, info:d.info||"", responses}); }catch(e){}
         
-        // AUTO-CLOSE TIMER REMOVED HERE. 
-        // The user must now manually click "Return to dashboard" inside the test.
+        const responses = Array.isArray(d.responses) ? JSON.stringify(d.responses) : "";
+        const aiScores = d.aiScores ? JSON.stringify(d.aiScores) : "";
+        
+        try{ await api({action:"submit", lineid:student.lineid, test:activeTest, level, info:d.info||"", responses, aiScores}); }catch(e){}
     });
 
     function signOut(){
@@ -427,7 +424,6 @@
         show('login-screen');
     }
 
-    // restore session on reload
     (function init(){
         try{
             const saved=sessionStorage.getItem('cefr_student');
