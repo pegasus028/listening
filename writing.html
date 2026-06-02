@@ -61,7 +61,6 @@ ul.rules{margin:0 0 30px;padding-left:18px;color:var(--ink-soft);font-size:.96re
 .proof .etile{padding:8px 12px;border:1.5px solid var(--line-strong);border-radius:9px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.04);}
 .proof .etile:hover{border-color:var(--accent-soft);background:#fffaf6;}
 .proof .etile.flagged{background:var(--accent);color:#fff;border-color:var(--accent);}
-/* match: narrow boxes, side-by-side even on iPhone */
 .match{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;align-items:start;}
 .col-label{font-size:.64rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);font-weight:600;margin-bottom:5px;}
 .m-col{display:flex;flex-direction:column;gap:7px;}
@@ -125,25 +124,29 @@ button.main:disabled{background:var(--line-strong);cursor:not-allowed;transform:
 
 #results-screen{text-align:center;}
 .result-badge{display:inline-block;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--good);background:var(--good-wash);border:1px solid #d8e4bf;padding:6px 14px;border-radius:20px;font-weight:600;margin-bottom:8px;}
-.final-score{font-family:"Fraunces",serif;font-size:clamp(3.4rem,14vw,5.2rem);font-weight:600;color:var(--accent);margin:10px 0 14px;line-height:1;}
-.feedback-text{font-size:1.08rem;color:var(--ink-soft);max-width:48ch;margin:0 auto 8px;}
-.scale{display:flex;gap:4px;justify-content:center;margin:30px auto 8px;max-width:400px;}
+
+/* Panes and Table CSS */
+.pane { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 22px; margin: 0 0 24px; text-align: left; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+.pane.overall-pane { border: 2px solid var(--gold-soft); background: var(--card); }
+.pane-title { font-size: 1.1rem; font-weight: 600; color: var(--ink); margin: 0 0 14px; padding-bottom: 10px; border-bottom: 2px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+.pane-title .badge { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 8px; font-size: 1rem; letter-spacing: 0.05em;}
+.pane.overall-pane .pane-title .badge { background: var(--gold); color: #fff; font-size: 1.3rem; padding: 6px 16px;}
+.report-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 0.92rem; }
+.report-table th { background: var(--paper); text-align: left; padding: 12px; border: 1px solid var(--line); color: var(--ink-soft); font-weight: 600; font-size: 0.84rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.report-table td { padding: 12px; border: 1px solid var(--line); color: var(--ink); vertical-align: top; }
+.report-table tr:nth-child(even) { background: #faf8f5; }
+.status-icon { font-size: 1.3rem; text-align: center; }
+.weight-note { font-size: 0.85rem; color: var(--ink-faint); margin-top: 10px; font-style: italic; }
+.feedback-text { font-size: 0.98rem; color: var(--ink-soft); margin: 0 0 14px; line-height: 1.5; background: var(--paper); padding: 12px 14px; border-radius: 8px; border: 1px solid var(--line); }
+
+.scale{display:flex;gap:4px;justify-content:center;margin:30px auto 16px;max-width:400px;}
 .scale .step{flex:1;text-align:center;font-size:.74rem;font-weight:600;color:var(--ink-faint);padding:7px 2px;border-radius:7px;background:var(--paper);border:1px solid var(--line);}
 .scale .step.on{background:var(--accent);color:#fff;border-color:var(--accent);}
-.summary{text-align:left;margin:30px 0 0;padding:22px 24px;background:var(--good-wash);border:1px solid #d8e4bf;border-radius:14px;}
-.summary h3{color:var(--good);margin-bottom:10px;}.summary p{margin:0 0 7px;font-size:.98rem;color:var(--ink-soft);}.summary p b{color:var(--ink);}
-.admin{text-align:left;margin:22px 0 0;padding:22px 24px;background:#fff;border:1px dashed var(--accent-soft);border-radius:14px;}
-.admin h3{color:var(--accent);font-size:1.05rem;margin-bottom:6px;}
-.admin .arow{display:flex;justify-content:space-between;gap:14px;font-size:.86rem;padding:4px 0;border-bottom:1px dotted var(--line);}
-.admin .arow span:last-child{font-weight:600;color:var(--ink);text-align:right;}
-.admin .anote{font-size:.8rem;color:var(--ink-faint);margin-top:10px;}
-.admin details{margin-top:10px;}.admin summary{cursor:pointer;font-size:.86rem;color:var(--accent);font-weight:600;}
-.admin .essay-readout{white-space:pre-wrap;font-family:"Newsreader",Georgia,serif;font-size:.95rem;color:var(--ink-soft);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-top:8px;}
-.disclaimer{font-size:.82rem;color:var(--ink-faint);margin:20px auto 0;max-width:52ch;line-height:1.5;text-align:center;}
+
 .restart{margin-top:26px;}
 .restart button{background:transparent;color:var(--ink-soft);border:1.5px solid var(--line-strong);width:100%;padding:14px;border-radius:11px;font-weight:600;font-family:inherit;cursor:pointer;}
 .restart button:hover{background:var(--paper);color:var(--accent);border-color:var(--accent-soft);}
-.fade{animation:f .45s ease both;}
+.fade{animation:fade .45s ease both;}
 @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 .hidden{display:none;}
 @media(max-width:520px){.inner{padding:24px 18px;}.prompt-box{padding:18px;}}
@@ -187,18 +190,12 @@ button.main:disabled{background:var(--line-strong);cursor:not-allowed;transform:
   <div id="grading-screen" class="hidden"><div class="grading"><div class="spinner"></div><p id="grading-text">Analysing your writing…</p></div></div>
 
   <div id="results-screen" class="hidden inner">
-    <span class="result-badge">Assessment complete</span><h2>Your writing level</h2>
-    <div id="final-level" class="final-score"></div>
-    <p id="feedback-text" class="feedback-text"></p>
-    <div class="scale" id="scale"></div>
-    <div class="summary" id="summary"></div>
-    <div class="admin" id="admin"></div>
-    <p class="disclaimer">This automated estimate combines grammar-round performance with measurable features of your writing. It is a guide, not a formal qualification.</p>
+    <span class="result-badge">Assessment complete</span><h2>Official Assessment Report</h2>
+    <div id="report-panes"></div> <div class="scale" id="scale"></div>
     <div class="restart"><button onclick="returnToDashboard()">Return to dashboard</button></div>
   </div>
 </div>
 
-<!-- pop-up round result tile -->
 <div class="overlay hidden" id="overlay"><div class="tile">
   <div class="tile-top"><span class="tile-badge" id="tile-badge"></span><div class="tile-score" id="tile-score">0/5</div><p class="tile-msg" id="tile-msg"></p></div>
   <div class="tile-items" id="tile-items"></div>
@@ -455,14 +452,15 @@ function finish(essayText){
   const provisional=state.essayLevel||state.levelReached;
   const promptLevel=(provisional==='Pre-A1')?'A1':provisional;
   const e=ESSAYS[promptLevel]||ESSAYS['B1'];
-  const gradeRef={level:provisional,wordTarget:e.wordTarget,keywords:e.keywords};
   const a=analyseEssay(essayText,promptLevel);
+  const gradeRef={level:provisional,wordTarget:e.wordTarget,keywords:e.keywords};
   const check=essayMeetsLevel(a,gradeRef);
-  const finalLevel = check.pass ? provisional : stepLevel(provisional,-1);
+  
   const allLinkers=[].concat(a.usedLinkers.A,a.usedLinkers.B,a.usedLinkers.C);
   const grammarList=Object.keys(a.grammar).filter(k=>a.grammar[k]);
 
-  logToSheet({timestamp:new Date().toISOString(),grammarLevelReached:state.levelReached,roundScores:state.scoreHist.map(h=>h.level+':'+h.score),essayPromptLevel:provisional,essayFormat:e.format,wordCount:a.wc,sentences:a.sentences,avgSentenceLength:a.avgLen,linkersByTier:{A:a.usedLinkers.A,B:a.usedLinkers.B,C:a.usedLinkers.C},topicKeywords:a.usedKeywords,grammarFeatures:grammarList,highTierVocab:a.highVocab,typeTokenPct:a.ttr,essayCheck:check.met+'/'+check.checks,gated:check.gated,essayPassed:check.pass,finalLevel:finalLevel,essayText:essayText.trim()});
+  // Log raw data internally for hub submission
+  logToSheet({timestamp:new Date().toISOString(),grammarLevelReached:state.levelReached,roundScores:state.scoreHist.map(h=>h.level+':'+h.score),essayPromptLevel:provisional,essayFormat:e.format,wordCount:a.wc,sentences:a.sentences,avgSentenceLength:a.avgLen,linkersByTier:{A:a.usedLinkers.A,B:a.usedLinkers.B,C:a.usedLinkers.C},topicKeywords:a.usedKeywords,grammarFeatures:grammarList,highTierVocab:a.highVocab,typeTokenPct:a.ttr,essayCheck:check.met+'/'+check.checks,gated:check.gated,essayPassed:check.pass,essayText:essayText.trim()});
 }
 
 function logToSheet(report){
@@ -569,7 +567,6 @@ async function submitEssay(timedOut) {
     if (data.ok && data.evaluation) {
         finishWithAI(essayText, data.evaluation.finalLevel, data.evaluation.feedback);
     } else {
-        // If the API fails, show the EXACT reason on the screen
         finishWithAI(essayText, "Pending", "API Error: " + (data.error || "Unknown Error") + ". Your submission is saved on the server.");
     }
   } catch (e) {
@@ -578,18 +575,97 @@ async function submitEssay(timedOut) {
   }
 }
 
+// Custom finish function utilizing weighted grading and table generation
 function finishWithAI(essayText, aiLevel, aiFeedback) {
+  // Convert CEFR levels to numerical values for weighting
+  const levelToNum = {'Pre-A1':0, 'A1':1, 'A2':2, 'B1':3, 'B2':4, 'C1':5};
+  const numToLevel = ['Pre-A1','A1','A2','B1','B2','C1'];
+
+  // Ensure AI returned a valid level, default to A1 if pending/error
+  const writingLevel = levelToNum.hasOwnProperty(aiLevel) ? aiLevel : 'A1'; 
+  const grammarLevel = state.levelReached;
+
+  const gScore = levelToNum[grammarLevel];
+  const wScore = levelToNum[writingLevel];
+
+  // Calculate combined score: 70% Grammar, 30% Writing
+  const combinedScore = Math.round((0.7 * gScore) + (0.3 * wScore));
+  const finalCombinedLevel = numToLevel[combinedScore];
+
+  // Regenerate local metrics to populate the UI table
+  const provisional = state.essayLevel || state.levelReached;
+  const promptLevel = (provisional === 'Pre-A1') ? 'A1' : provisional;
+  const e = ESSAYS[promptLevel] || ESSAYS['B1'];
+  const a = analyseEssay(essayText, promptLevel);
+  const gradeRef = {level: provisional, wordTarget: e.wordTarget, keywords: e.keywords};
+  const check = essayMeetsLevel(a, gradeRef);
+  const detail = check.detail;
+
+  // Build the Report HTML Panes
+  let panesHTML = `
+    <div class="pane overall-pane">
+      <div class="pane-title">Overall CEFR Rating <span class="badge">${finalCombinedLevel}</span></div>
+      <p>This is your official combined score for the writing section.</p>
+      <p class="weight-note">Calculation weighting: 70% Grammar Round Logic &nbsp;|&nbsp; 30% Round 4 Writing Analysis.</p>
+    </div>
+
+    <div class="pane">
+      <div class="pane-title">Grammar & Syntax Check <span class="badge" style="background:var(--ink-soft)">${grammarLevel}</span></div>
+      <p style="color:var(--ink-soft); font-size: 0.95rem; margin:0;">Level achieved through the adaptive scenario rounds (Rounds 1–3).</p>
+    </div>
+
+    <div class="pane">
+      <div class="pane-title">Writing Task Analysis (Round 4) <span class="badge" style="background:var(--ink-soft)">${aiLevel}</span></div>
+      <p class="feedback-text"><strong>AI Feedback:</strong> ${aiFeedback}</p>
+      
+      <table class="report-table">
+        <thead>
+          <tr>
+            <th>CEFR Criteria</th>
+            <th>Measured Value</th>
+            <th style="text-align:center;">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Word Count</strong><br><span style="font-size:0.8em;color:var(--ink-faint)">Target: ${e.wordTarget[0]}+ words</span></td>
+            <td>${a.wc} words</td>
+            <td class="status-icon">${detail.wordCount ? '✅' : '❌'}</td>
+          </tr>
+          <tr>
+            <td><strong>Cohesion & Connectives</strong><br><span style="font-size:0.8em;color:var(--ink-faint)">Linking phrases across tiers</span></td>
+            <td>${a.linkerCount} linkers used</td>
+            <td class="status-icon">${detail.cohesion ? '✅' : '❌'}</td>
+          </tr>
+          <tr>
+            <td><strong>Grammatical Complexity</strong><br><span style="font-size:0.8em;color:var(--ink-faint)">Sentence length & advanced structures</span></td>
+            <td>Avg ${a.avgLen} words/sentence, ${a.grammarRange} adv. structures</td>
+            <td class="status-icon">${detail.development ? '✅' : '❌'}</td>
+          </tr>
+          <tr>
+            <td><strong>Vocabulary Variance</strong><br><span style="font-size:0.8em;color:var(--ink-faint)">Lexical diversity (Type-Token Ratio)</span></td>
+            <td>${a.ttr}% unique words</td>
+            <td class="status-icon">${detail.vocab ? '✅' : '❌'}</td>
+          </tr>
+          <tr>
+            <td><strong>Topic Adherence</strong><br><span style="font-size:0.8em;color:var(--ink-faint)">Relevance to prompt scenario</span></td>
+            <td>${a.usedKeywords.length} keywords matched</td>
+            <td class="status-icon">${detail.topic ? '✅' : '❌'}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  `;
+  
+  // Inject into the UI
+  document.getElementById('report-panes').innerHTML = panesHTML;
+  document.getElementById('scale').innerHTML = FULL_ORDER.map(s => '<span class="step'+(s === finalCombinedLevel ? ' on' : '')+'">'+s+'</span>').join('');
+  
   document.getElementById('results-screen').classList.remove('hidden');
   document.getElementById('results-screen').classList.add('fade');
-  document.getElementById('final-level').innerText = aiLevel;
-  document.getElementById('feedback-text').innerText = aiFeedback;
   
-  document.getElementById('scale').innerHTML = FULL_ORDER.map(s => '<span class="step'+(s === aiLevel ? ' on' : '')+'">'+s+'</span>').join('');
-  
-  document.getElementById('summary').innerHTML = '';
-  document.getElementById('admin').innerHTML = '';
-  
-  reportToHub(aiLevel, essayText);
+  // Send the weighted combined score up to the dashboard tracker
+  reportToHub(finalCombinedLevel, essayText);
   scrollTopNow();
 }
 

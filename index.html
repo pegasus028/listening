@@ -117,7 +117,6 @@
 </head>
 <body>
 <div class="container">
-    <!-- LOGIN -->
     <div id="login-screen" class="inner fade">
         <p class="eyebrow" style="text-align:center;">English Proficiency · CEFR</p>
         <h1 style="text-align:center;">English Placement Test</h1>
@@ -138,7 +137,6 @@
         </div>
     </div>
 
-    <!-- LINE ID HELP POPUP -->
     <div id="lineid-pop-bg" class="focus-pop-bg" style="display:none" onclick="closeLineHelp(event)">
         <div class="focus-pop" onclick="event.stopPropagation()">
             <button class="fp-close" onclick="closeLineHelp()" aria-label="Close">
@@ -158,7 +156,6 @@
         </div>
     </div>
 
-    <!-- DASHBOARD -->
     <div id="dash-screen" class="inner hidden">
         <div class="greeting">
             <button class="signout" onclick="signOut()">Sign out</button>
@@ -175,11 +172,9 @@
         <div class="tests" id="tests"></div>
     </div>
 
-    <!-- loading -->
     <div id="load-screen" class="inner hidden"><div class="spin"></div></div>
 </div>
 
-<!-- FOCUS POPUP -->
 <div id="focus-pop-bg" class="focus-pop-bg" style="display:none" onclick="closeFocus(event)">
     <div class="focus-pop" id="focus-pop" onclick="event.stopPropagation()">
         <button class="fp-close" onclick="closeFocus()" aria-label="Close">
@@ -192,7 +187,6 @@
     </div>
 </div>
 
-<!-- TEST OVERLAY -->
 <div id="test-overlay">
     <div class="ov-bar">
         <span class="ov-title" id="ov-title">Test</span>
@@ -419,8 +413,9 @@
         const responses = Array.isArray(d.responses) ? JSON.stringify(d.responses) : "";
         // save to sheet
         try{ await api({action:"submit", lineid:student.lineid, test:activeTest, level, info:d.info||"", responses}); }catch(e){}
-        // close overlay after a brief moment so the student sees their result screen
-        setTimeout(()=>{ exitTest(); }, 2500);
+        
+        // AUTO-CLOSE TIMER REMOVED HERE. 
+        // The user must now manually click "Return to dashboard" inside the test.
     });
 
     function signOut(){
