@@ -498,18 +498,6 @@ function essayMeetsLevel(a,e){
   checks++; detail.topic=a.usedKeywords.length>=2; if(detail.topic)met++;
   return {met,checks,pass:met>=3,gated:false,detail};
 }
-
-function submitEssay(timedOut){
-  if(submitting)return;submitting=true;clearInterval(timerId);stopAntiCheat();
-  const ta=document.getElementById('essay');ta.disabled=true;const text=ta.value;
-  document.getElementById('submit-btn').disabled=true;
-  document.getElementById('essay-screen').classList.add('hidden');
-  const gs=document.getElementById('grading-screen');gs.classList.remove('hidden');
-  document.getElementById('grading-text').innerText=timedOut?"Time's up — analysing your writing…":"Analysing your writing…";
-  scrollTopNow();
-  setTimeout(()=>{gs.classList.add('hidden');finish(text);},1100);
-}
-
 const feedbackMap={'C1':'Excellent. You handled advanced grammar and produced complex, well-structured writing.','B2':'Very good. You manage upper-intermediate grammar and write clearly on abstract topics.','B1':'Good work. You handle independent-level grammar and express ideas in connected writing.','A2':'A solid foundation. You manage everyday grammar and write simple connected text.','A1':'A promising start. You handle basic grammar and can write short, simple sentences.','Pre-A1':'You are at the very beginning. Focus on core words and short, simple sentences.'};
 
 function finish(essayText){
@@ -620,10 +608,14 @@ function stopAntiCheat(){
 // The exact same URL used by your index.html dashboard
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBFNRu8U9F1a-VwvFJKtpXit-R3zF4hlbXBFU5r33uUl7XFV8xdBZCxZ49v3cT13mZjQ/exec";
 
-// This overrides your existing submitEssay function
+// This replaces your existing submitEssay function
 async function submitEssay(timedOut) {
-  if (submitting) return; 
-  submitting = true; 
+  // FIX: Rely on the button state to prevent double-clicks
+  // because the original grammar round forgot to reset the 'submitting' variable!
+  const submitBtn = document.getElementById('submit-btn');
+  if (submitBtn.disabled) return; 
+  submitBtn.disabled = true; 
+  
   clearInterval(timerId); 
   stopAntiCheat();
   
@@ -631,7 +623,6 @@ async function submitEssay(timedOut) {
   ta.disabled = true; 
   const essayText = ta.value;
   
-  document.getElementById('submit-btn').disabled = true;
   document.getElementById('essay-screen').classList.add('hidden');
   
   const gs = document.getElementById('grading-screen');
@@ -643,17 +634,14 @@ async function submitEssay(timedOut) {
   const promptLevel = (provisional === 'Pre-A1') ? 'A1' : provisional;
 
   try {
-    // 1. Package the request to our Apps Script
     const params = {
         action: "evaluate_writing",
         text: essayText,
         targetLevel: promptLevel
     };
     
-    // Format as URL-encoded to match your Hub's standard
     const body = Object.keys(params).map(k => encodeURIComponent(k) + "=" + encodeURIComponent(params[k])).join("&");
     
-    // 2. Fetch the AI Evaluation
     const response = await fetch(SCRIPT_URL, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
@@ -663,15 +651,12 @@ async function submitEssay(timedOut) {
     const data = await response.json();
     gs.classList.add('hidden');
 
-    // 3. Process the results securely
     if (data.ok && data.evaluation) {
         finishWithAI(essayText, data.evaluation.finalLevel, data.evaluation.feedback);
     } else {
-        // Failsafe: if flagged by safety checks
         finishWithAI(essayText, "Pending", "Submission saved. Pending manual instructor review.");
     }
   } catch (e) {
-    // Failsafe: network timeout
     gs.classList.add('hidden');
     finishWithAI(essayText, "Network Error", "Saved locally. Please alert your instructor.");
   }
@@ -679,7 +664,6 @@ async function submitEssay(timedOut) {
 
 // Custom finish function that uses the AI's level and feedback
 function finishWithAI(essayText, aiLevel, aiFeedback) {
-  // Update UI with AI insights
   document.getElementById('results-screen').classList.remove('hidden');
   document.getElementById('results-screen').classList.add('fade');
   document.getElementById('final-level').innerText = aiLevel;
@@ -687,11 +671,9 @@ function finishWithAI(essayText, aiLevel, aiFeedback) {
   
   document.getElementById('scale').innerHTML = FULL_ORDER.map(s => '<span class="step'+(s === aiLevel ? ' on' : '')+'">'+s+'</span>').join('');
   
-  // Hide the old summary metrics, letting the AI feedback shine
   document.getElementById('summary').innerHTML = '';
   document.getElementById('admin').innerHTML = '';
   
-  // Send data back to the dashboard to be recorded in the Google Sheet
   reportToHub(aiLevel, essayText);
   scrollTopNow();
 }
