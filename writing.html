@@ -728,10 +728,18 @@ function finishWithAI(essayText, evaluation) {
     topicAdherence:clampScore(raw.topicAdherence, 0)
   };
 
+  // Safety net: keep each ability dimension within one CEFR band of the overall writing
+  // level, so an over-generous single dimension can't read B2/C1 for an A1 response.
+  const aiAnchor = (cefrToNum[aiLevel] !== undefined) ? cefrToNum[aiLevel] : 20;
+  const dimCap = aiAnchor + 20;   // allow up to one band above the overall writing level
+  const capDim = v => Math.max(0, Math.min(dimCap, v));
+  const sCoh = capDim(s.cohesion), sGra = capDim(s.grammar),
+        sVoc = capDim(s.vocabulary), sTop = capDim(s.topicAdherence);
+
   // ---- Writing sub-score (the only sample of real production) ----
   // The four ability dimensions are weighted; raw length is NOT an ability and is
   // used as a completion CAP (a near-empty essay can't earn a high writing score).
-  const abilityScore = (s.cohesion*0.25 + s.grammar*0.35 + s.vocabulary*0.20 + s.topicAdherence*0.20);
+  const abilityScore = (sCoh*0.25 + sGra*0.35 + sVoc*0.20 + sTop*0.20);
   // completion factor: full credit once length target is essentially met.
   const completion = Math.max(0.4, Math.min(1, s.wordCount/100 * 1)); // wordCount is already a 0–100 adequacy score
   const wScore = Math.round(abilityScore * completion);
@@ -747,6 +755,9 @@ function finishWithAI(essayText, evaluation) {
   // Personalised narrative drawing on BOTH sections.
   const narrative = buildNarrative(grammarLevel, aiLevel, s, finalCombinedLevel);
 
+  // Ability-dimension bar: the score is on the CEFR anchor scale (0=Pre-A1 … 100=C1),
+  // so the fill maps directly onto the Pre-A1…C1 axis. We also snap the displayed band
+  // label so the bar can't visually overshoot the writer's overall level.
   function makeBar(label, sub, score) {
     let w = Math.max(0, Math.min(100, score));
     return `
@@ -755,6 +766,21 @@ function finishWithAI(essayText, evaluation) {
         <td style="vertical-align: middle;">
           <div class="bar-wrap"><div class="bar-fill" style="width: ${w}%;"></div></div>
           <div class="bar-labels"><span>Pre-A1</span><span>A1</span><span>A2</span><span>B1</span><span>B2</span><span>C1</span></div>
+        </td>
+      </tr>`;
+  }
+
+  // Task-completion bar: this is a PERCENTAGE of the word target met, NOT a CEFR level,
+  // so it must not sit on the Pre-A1…C1 axis (that was the source of the false B2/C1 read).
+  function makeCompletionBar(label, sub, pct) {
+    let w = Math.max(0, Math.min(100, pct));
+    return `
+      <tr>
+        <td style="width: 45%;"><strong>${label}</strong><br><span style="font-size:0.8em;color:var(--ink-faint)">${sub}</span></td>
+        <td style="vertical-align: middle;">
+          <div class="bar-wrap"><div class="bar-fill" style="width: ${w}%;background:linear-gradient(90deg,var(--gold-soft),var(--good));"></div></div>
+          <div class="bar-labels"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+          <div style="font-size:0.78rem;color:var(--ink-faint);margin-top:3px;">${w}% of the suggested length for this task</div>
         </td>
       </tr>`;
   }
@@ -805,11 +831,11 @@ function finishWithAI(essayText, evaluation) {
       <p class="feedback-text"><strong>AI Feedback:</strong> ${esc(evaluation.feedback||'')}</p>
       <table class="report-table">
         <tbody>
-          ${makeBar('Cohesion & Connectives', 'Logical flow and linking words', s.cohesion)}
-          ${makeBar('Grammatical Complexity', 'Syntax range and accuracy', s.grammar)}
-          ${makeBar('Vocabulary Variance', 'Lexical diversity and precision', s.vocabulary)}
-          ${makeBar('Topic Adherence', 'Relevance to prompt scenario', s.topicAdherence)}
-          ${makeBar('Task Completion / Length', 'Met the word target for the task', s.wordCount)}
+          ${makeBar('Cohesion & Connectives', 'Logical flow and linking words', sCoh)}
+          ${makeBar('Grammatical Complexity', 'Syntax range and accuracy', sGra)}
+          ${makeBar('Vocabulary Variance', 'Lexical diversity and precision', sVoc)}
+          ${makeBar('Topic Adherence', 'Relevance to prompt scenario', sTop)}
+          ${makeCompletionBar('Task Completion / Length', 'Proportion of the suggested length you reached', s.wordCount)}
         </tbody>
       </table>
     </div>
