@@ -268,7 +268,7 @@
         return ORDER.indexOf(level)>=0 ? level : null;
     }
 
-    let student={ lineid:"", nickname:"", results:{Reading:"",Writing:"",Listening:""} };
+    let student={ lineid:"", nickname:"", results:{Reading:"",Writing:"",Listening:""}, reports:{} };
     let activeTest=null;
 
     function api(params){
@@ -293,7 +293,7 @@
         try{
             const res=await api({action:"login", lineid, nickname});
             if(res.ok){
-                student={ lineid:res.lineid||lineid, nickname:res.nickname||nickname, results:res.results||{Reading:"",Writing:"",Listening:""} };
+                student={ lineid:res.lineid||lineid, nickname:res.nickname||nickname, results:res.results||{Reading:"",Writing:"",Listening:""}, reports:res.reports||{} };
                 try{ sessionStorage.setItem('cefr_student', JSON.stringify(student)); }catch(e){}
                 renderDash();
             } else {
@@ -360,6 +360,24 @@
 
     function openFocus(testName){
         const lvl=student.results[testName];
+        const rep = (student.reports||{})[testName];
+        // Prefer the real, personalised report captured from the test.
+        if(rep && rep.narrative){
+            const n=rep.narrative;
+            document.getElementById('fp-level').textContent=testName+" · Level "+lvl;
+            document.getElementById('fp-sub').textContent=
+                "Grammar section: "+(n.grammarLevel||'—')+"  ·  Writing task: "+(n.writingLevel||'—');
+            const items=[];
+            if(n.strengthsText) items.push(['Your strengths', n.strengthsText]);
+            if(n.weaknessesText) items.push(['Areas to develop', n.weaknessesText]);
+            if(n.grammarMissed && n.grammarMissed.length) items.push(['Grammar to review', n.grammarMissed.join(', ')]);
+            if(n.nextSteps) items.push(['To reach the next level', n.nextSteps]);
+            document.getElementById('fp-list').innerHTML=items.map((f,i)=>
+                '<li><span class="fnum">'+(i+1)+'</span><span class="fbody"><b>'+f[0]+'.</b> '+f[1]+'</span></li>').join('');
+            document.getElementById('focus-pop-bg').style.display='flex';
+            return;
+        }
+        // Fallback: generic band guidance (e.g. Reading/Listening with no stored report yet).
         const band=bandOf(lvl);
         if(!band || !improvementMap[band]) return;
         const imp=improvementMap[band];
@@ -407,17 +425,40 @@
         
         const level=String(d.level||"");
         student.results[activeTest]=level;
+        // Keep the full personalised report so the dashboard "Report" button can show
+        // real, student-specific strengths/weaknesses (not a generic band template).
+        student.reports = student.reports || {};
+        if(d.report) student.reports[activeTest]=d.report;
         try{ sessionStorage.setItem('cefr_student', JSON.stringify(student)); }catch(e){}
         
         const responses = Array.isArray(d.responses) ? JSON.stringify(d.responses) : "";
-        const aiScores = d.aiScores ? JSON.stringify(d.aiScores) : "";
+        const aiScores = d.aiScores ? d.aiScores : "";
+        // Serialise the narrative + integrity telemetry for the Google Sheet.
+        const reportJson = d.report ? JSON.stringify(d.report) : "";
+        const reportText = d.report ? narrativeToText(activeTest, level, d.report) : "";
         
-        try{ await api({action:"submit", lineid:student.lineid, test:activeTest, level, info:d.info||"", responses, aiScores}); }catch(e){}
+        try{ await api({action:"submit", lineid:student.lineid, test:activeTest, level,
+            info:d.info||"", responses, aiScores, report:reportJson, reportText}); }catch(e){}
     });
+
+    // Flatten the structured report into a single human-readable cell for the Sheet.
+    function narrativeToText(test, level, r){
+        const n=r.narrative||{}; const s=(r.scores)||{};
+        const integ=r.integrity||{};
+        const lines=[];
+        lines.push(test+' — Overall: '+level+' (Grammar '+(n.grammarLevel||r.grammarLevel||'?')+', Writing '+(n.writingLevel||r.writingLevel||'?')+')');
+        if(n.strengthsText) lines.push('STRENGTHS: '+n.strengthsText);
+        if(n.weaknessesText) lines.push('DEVELOP: '+n.weaknessesText);
+        if(n.nextSteps) lines.push('NEXT STEPS: '+n.nextSteps);
+        if(n.grammarMissed && n.grammarMissed.length) lines.push('Grammar to review: '+n.grammarMissed.join('; '));
+        if(s && Object.keys(s).length) lines.push('Writing sub-scores — cohesion '+s.cohesion+', grammar '+s.grammar+', vocab '+s.vocabulary+', topic '+s.topicAdherence+', length '+s.wordCount);
+        if(integ && integ.risk) lines.push('Integrity: '+integ.risk+' (left screen '+ (integ.leftScreenCount||0) +'x, ~'+(integ.totalSecondsAway||0)+'s away, pastes '+(integ.pasteCount||0)+')');
+        return lines.join('\n');
+    }
 
     function signOut(){
         try{ sessionStorage.removeItem('cefr_student'); }catch(e){}
-        student={ lineid:"", nickname:"", results:{Reading:"",Writing:"",Listening:""} };
+        student={ lineid:"", nickname:"", results:{Reading:"",Writing:"",Listening:""}, reports:{} };
         document.getElementById('nickname').value="";
         document.getElementById('lineid').value="";
         const btn=document.getElementById('login-btn'); btn.disabled=false; btn.innerHTML='Continue';

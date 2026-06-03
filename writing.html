@@ -91,7 +91,7 @@ ul.rules{margin:0 0 30px;padding-left:18px;color:var(--ink-soft);font-size:.96re
 textarea{width:100%;min-height:240px;font-family:"Newsreader",Georgia,serif;font-size:1.1rem;line-height:1.7;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:18px 20px;resize:vertical;transition:border-color .18s;}
 textarea:focus{outline:none;border-color:var(--accent-soft);}
 textarea:disabled{background:var(--paper);color:var(--ink-faint);}
-.wc-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:12px 2px 0;font-size:.9rem;color:var(--ink-faint);}
+.wc-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:12px 2px 0;font-size:.9rem;color:var(--ink-faint);flex-wrap:wrap;}
 .wc-count{font-weight:600;}.wc-count b{color:var(--accent);}.wc-hint b{color:var(--accent);}
 
 button.main{font-family:"Inter",sans-serif;background:var(--accent);color:#fff;border:none;padding:16px 28px;font-size:1.02rem;border-radius:11px;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:24px;transition:background .2s,transform .08s;}
@@ -165,7 +165,7 @@ button.main:disabled{background:var(--line-strong);cursor:not-allowed;transform:
     <h1>Adaptive Writing Assessment</h1>
     <p class="lede">Three short grammar rounds set in real scenarios, then one writing task. The rounds adapt to how you do, and your final writing is analysed automatically.</p>
     <div class="meta-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8a8068" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span>Each grammar round shows a scene, then five tasks. Press <b>Check answers</b> to see your round result, then continue. The final writing task is timed and submits automatically when time runs out.</span></div>
-    <ul class="rules"><li>Complete all five tasks in each round, then check your answers.</li><li>In the writing task, develop your ideas and aim for the word count.</li><li>Please work on your own, without dictionaries or translators.</li></ul>
+    <ul class="rules"><li>Complete all five tasks in each round, then check your answers.</li><li>In the writing task, develop your ideas and aim for the word count.</li><li>Please work on your own, without dictionaries or translators.</li><li>The writing task notes when the screen is left or text is pasted. A quick interruption (a call or message) is fine — just return to your writing.</li></ul>
     <button class="main" onclick="startTest()">Begin assessment <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   </div>
 
@@ -186,7 +186,7 @@ button.main:disabled{background:var(--line-strong);cursor:not-allowed;transform:
       <span class="prompt-tag" id="essay-tag">Writing task</span>
       <div class="prompt-box" id="essay-prompt"></div>
       <div class="task-meta"><span>Suggested length: <b id="word-target"></b></span><span>Time limit: <b id="time-limit"></b></span></div>
-      <textarea id="essay" placeholder="Start writing your response here..." oninput="updateWordCount()" spellcheck="false"></textarea>
+      <textarea id="essay" placeholder="Start writing your response here..." oninput="updateWordCount()" spellcheck="false" autocorrect="off" autocapitalize="off" autocomplete="off"></textarea>
       <div class="wc-row"><span class="wc-count"><b id="wc-now">0</b> words</span>
         <div class="timer" id="timer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span id="timer-text">00:00</span></div>
         <span class="wc-hint" id="wc-hint">target <b>0</b></span></div>
@@ -211,7 +211,7 @@ button.main:disabled{background:var(--line-strong);cursor:not-allowed;transform:
 </div></div>
 
 <script>
-const BANK={"A1_Route":{"level":"A1","theme":"Morning routine / Getting to school","scene":"A1_Route","instructions":"A school morning. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present simple (be)","prompt":"Put the words in order to make a correct sentence.","tiles":["My sister","is","a student","at Satriwithaya School"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Articles (a/an)","tiles":["She","eats","a","apple","every morning","before school"],"errorTile":2,"fix":"an"},{"type":"match","level":"A2","target":"Past simple (irregular verbs)","leftLabel":"Present","rightLabel":"Past","pairs":[{"left":"leave","right":"left"},{"left":"take","right":"took"},{"left":"ride","right":"rode"}]},{"type":"transform","level":"A2","target":"Comparatives","before":"The bus is ","after":" than the train.","forms":["slow","slower","slowest","more slow"],"correct":"slower"},{"type":"radio","level":"A2","target":"Going to (future)","prompt":"Look at the time! She ____ miss the bus.","options":["is going to","going to","will going","go to"],"answer":0}]},"A1_Confirm":{"level":"A1","theme":"A family afternoon at the park","scene":"A1_Confirm","instructions":"An afternoon in the park. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present simple (have got)","prompt":"Put the words in order to make a correct sentence.","tiles":["They","have","got","a new kite"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Subject pronoun","tiles":["Me","like","walking","in the park"],"errorTile":0,"fix":"I"},{"type":"match","level":"A1","target":"Plurals","leftLabel":"Singular","rightLabel":"Plural","pairs":[{"left":"child","right":"children"},{"left":"leaf","right":"leaves"},{"left":"family","right":"families"}]},{"type":"transform","level":"A1","target":"Present simple (3rd person)","before":"The dog ","after":" across the grass.","forms":["run","runs","running","is run"],"correct":"runs"},{"type":"radio","level":"A1","target":"Prepositions of place","prompt":"The picnic blanket is ____ the grass.","options":["on","into","onto","of"],"answer":0}]},"A2_Route":{"level":"A2","theme":"Searching for a lost item in the classroom","scene":"A2_Route","instructions":"A lost item in the classroom. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present continuous","prompt":"Put the words in order to make a correct sentence.","tiles":["She","is","searching","the classroom"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Plural agreement","tiles":["There","are","three","desk","in the room"],"errorTile":3,"fix":"desks"},{"type":"match","level":"B1","target":"Phrasal verbs","leftLabel":"Phrasal verb","rightLabel":"Meaning","pairs":[{"left":"look for","right":"try to find"},{"left":"give up","right":"stop trying"},{"left":"turn up","right":"appear unexpectedly"}]},{"type":"transform","level":"B1","target":"Present perfect","before":"I ","after":" my keys.","forms":["has lost","have lose","have lost","having lost"],"correct":"have lost"},{"type":"radio","level":"B1","target":"First conditional","prompt":"If anyone ____ it, I hope they will take it to the lost and found office.","options":["finds","find","finding","found"],"answer":0}]},"A2_Confirm":{"level":"A2","theme":"Planning a weekend trip","scene":"A2_Confirm","instructions":"Planning a weekend trip. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A2","target":"Past simple","prompt":"Put the words in order to make a correct sentence.","tiles":["We","bought","the","train","tickets"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"A2","target":"Past simple (irregular)","tiles":["We","goed","to the website","to check prices"],"errorTile":1,"fix":"went"},{"type":"match","level":"A2","target":"Quantifiers / partitives","leftLabel":"Phrase","rightLabel":"Noun","pairs":[{"left":"A bottle of","right":"water"},{"left":"A slice of","right":"cake"},{"left":"A few","right":"tickets"}]},{"type":"transform","level":"A2","target":"Superlatives","before":"It is the ","after":" flight available.","forms":["cheap","cheaper","cheapest","most cheap"],"correct":"cheapest"},{"type":"radio","level":"A2","target":"Should (advice)","prompt":"We want a good seat. We ____ arrive early.","options":["should","must to","ought","has to"],"answer":0}]},"B1_Route":{"level":"B1","theme":"Organizing a school concert","scene":"B1_Route","instructions":"Organizing a school concert. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"B2","target":"Future perfect (passive)","prompt":"Put the words in order to make a correct sentence.","tiles":["By next Friday,","the photos of the concert","will have been","posted online"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A2","target":"Comparative","tiles":["The","main stage","is","more big","than","the one","in the music room"],"errorTile":3,"fix":"bigger"},{"type":"paraorg","level":"A2","target":"Chronological order","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["The band arrived at the hall very early.","First, they built the main music stage.","Then, they set up the food stalls.","Finally, the event started, right on time."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"B2","target":"Third conditional","before":"If the band had missed their train, the concert ","after":" ruined.","options":["would have been","was","had been","will be"],"answer":0},{"type":"transform","level":"B2","target":"Passive (present perfect)","before":"The concert ","after":" by a local charity.","forms":["has sponsor","has been sponsored","was been sponsored","is sponsor"],"correct":"has been sponsored"}]},"B1_Confirm":{"level":"B1","theme":"A disastrous restaurant dinner","scene":"B1_Confirm","instructions":"A disastrous restaurant dinner. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"B1","target":"Passive voice (simple)","prompt":"Put the words in order to make a correct passive sentence.","tiles":["We","were","given","the","wrong bill"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"B1","target":"Present perfect vs past simple","tiles":["When we sat down,","I","have noticed","the dirty glasses"],"errorTile":2,"fix":"noticed"},{"type":"paraorg","level":"B1","target":"Pronouns and sequence","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["Mark ordered the expensive steak for his main course.","When the food arrived, it was completely cold and tasted awful.","He politely called the waiter over to complain about the food.","Because of the terrible service, he decided not to leave a tip."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"B1","target":"Second conditional","before":"If the manager cared about customers, he ","after":" immediately.","options":["would apologize","will apologize","apologizes","had apologized"],"answer":0},{"type":"transform","level":"B1","target":"Used to (past habit)","before":"Before it changed owners, this restaurant ","after":" fantastic.","forms":["uses to be","used be","used to be","was use to"],"correct":"used to be"}]},"B2_Route":{"level":"B2","theme":"A difficult construction project","scene":"B2_Route","instructions":"A difficult construction project. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"C1","target":"Cleft sentence (it-cleft)","prompt":"Put the words in order to make a correct emphatic sentence.","tiles":["It was","the weather","that","delayed","the construction"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"B1","target":"Reported speech (backshift)","tiles":["During yesterday's meeting,","the manager","promised that","the team","will","finish on time"],"errorTile":4,"fix":"would"},{"type":"paraorg","level":"B1","target":"Narrative flow","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["A massive storm suddenly flooded the building site.","Faced with this flood, the chief engineer had to choose a solution quickly.","The first solution she considered was to build a temporary bridge.","If that bridge proved unfeasible, her second option was to redirect the river completely."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"C1","target":"Inversion (negative adverbial)","before":"Not only ","after":" leak, but the walls also cracked.","options":["did the roof","the roof did","the roof","did leak the roof"],"answer":0},{"type":"transform","level":"C1","target":"Causative (have something done)","before":"The company ","after":" the broken pipes replaced yesterday.","forms":["had","has","is having","have"],"correct":"had"}]},"B2_Confirm":{"level":"B2","theme":"A space exploration mission emergency","scene":"B2_Confirm","instructions":"A space mission emergency. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"B2","target":"Passive (modal)","prompt":"Put the words in order to make a correct sentence.","tiles":["The rocket","must","be launched","by tomorrow"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"B2","target":"Mixed conditional","tiles":["If the crew","had packed","enough fuel,","they","will","be safe now"],"errorTile":4,"fix":"would"},{"type":"paraorg","level":"B2","target":"Contrast and linkers","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["The mission was proceeding perfectly until the third day.","On that day, the main engine completely shut down without warning.","Despite this sudden engine shutdown, the commander refused to panic.","Instead, she immediately activated the backup life-support systems."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"B2","target":"Reduced relative clause","before":"The astronauts ","after":" the satellite can return inside.","options":["repairing","who repairing","repaired","they repair"],"answer":0},{"type":"transform","level":"B2","target":"Future continuous","before":"This time next week, the crew ","after":" Mars.","forms":["orbit","orbited","will be orbiting","were orbiting"],"correct":"will be orbiting"}]},"C1_Route":{"level":"C1","theme":"A corporate cybersecurity breach","scene":"C1_Route","instructions":"A corporate cybersecurity breach. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"C1","target":"Inversion (conditional)","prompt":"Put the words in order to make a correct formal sentence.","tiles":["Had they upgraded the firewall,","the data","would be","safe"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"B2","target":"Passive infinitive","tiles":["The","security breach","must","investigate","immediately"],"errorTile":3,"fix":"be investigated"},{"type":"paraorg","level":"B2","target":"Exemplification and result","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["A severe vulnerability was recently discovered in the corporate network.","Specifically, this flaw allowed hackers to easily bypass the outdated password system.","As a result of that breach, the intruders successfully stole sensitive client information.","To prevent any future data leaks, the CEO has now hired a completely new cybersecurity team."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"C1","target":"Cleft (what-cleft)","before":"","after":" shocked the board was the sheer scale of the theft.","options":["What","That","Which","It"],"answer":0},{"type":"transform","level":"C1","target":"Subjunctive","before":"The lawyers recommended that the CEO ","after":" immediately.","forms":["to resign","resign","resigning","was resigned"],"correct":"resign"}]},"C1_Confirm":{"level":"C1","theme":"An archaeological discovery","scene":"C1_Confirm","instructions":"An archaeological discovery. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"C1","target":"Fronting / emphasis","prompt":"Put the words in order to make a correct emphatic sentence.","tiles":["Never before","had archaeologists","unearthed","such a treasure"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"C1","target":"Inversion agreement","tiles":["Rarely","do","this archaeologist","uncover","such preserved ruins"],"errorTile":1,"fix":"does"},{"type":"paraorg","level":"C1","target":"Argumentative structure","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["A recent archaeological excavation has sparked a fierce debate among historians regarding a newly unearthed stone tablet.","Proponents of the discovery claim that the intricate patterns on this artifact represent humanity's earliest known writing system.","Skeptics, however, dismiss this linguistic interpretation, arguing that the supposed symbols are merely natural geological scratches.","Resolving this polarizing academic dispute will ultimately require advanced microscopic analysis of the contested marks."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"C1","target":"Ellipsis / substitution","before":"The researchers verified the findings, and the university ","after":" too.","options":["did so","did it make","made so","have did"],"answer":0},{"type":"transform","level":"C1","target":"Unreal past (wish)","before":"The historian wishes he ","after":" the site decades ago.","forms":["excavated","had excavated","has excavated","would excavate"],"correct":"had excavated"}]}};
+const BANK={"A1_Route":{"level":"A1","theme":"Morning routine / Getting to school","scene":"A1_Route","instructions":"A school morning. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present simple (be)","prompt":"Put the words in order to make a correct sentence.","tiles":["My sister","is","a student","at Satriwithaya School"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Articles (a/an)","tiles":["She","eats","a","apple","every morning","before school"],"errorTile":2,"fix":"an"},{"type":"match","level":"A2","target":"Past simple (irregular verbs)","leftLabel":"Present","rightLabel":"Past","pairs":[{"left":"leave","right":"left"},{"left":"take","right":"took"},{"left":"ride","right":"rode"}]},{"type":"transform","level":"A2","target":"Comparatives","before":"The bus is ","after":" than the train.","forms":["slow","slower","slowest","more slow"],"correct":"slower"},{"type":"radio","level":"A2","target":"Going to (future)","prompt":"Look at the time! She ____ miss the bus.","options":["is going to","going to","will going","go to"],"answer":0}]},"A1_Confirm":{"level":"A1","theme":"A family afternoon at the park","scene":"A1_Confirm","instructions":"An afternoon in the park. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present simple (have got)","prompt":"Put the words in order to make a correct sentence.","tiles":["They","have","got","a new kite"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Subject pronoun","tiles":["Me","like","walking","in the park"],"errorTile":0,"fix":"I"},{"type":"match","level":"A1","target":"Plurals","leftLabel":"Singular","rightLabel":"Plural","pairs":[{"left":"child","right":"children"},{"left":"leaf","right":"leaves"},{"left":"family","right":"families"}]},{"type":"transform","level":"A1","target":"Present simple (3rd person)","before":"The dog ","after":" across the grass.","forms":["run","runs","running","is run"],"correct":"runs"},{"type":"radio","level":"A1","target":"Prepositions of place","prompt":"The picnic blanket is ____ the grass.","options":["on","into","onto","of"],"answer":0}]},"A2_Route":{"level":"A2","theme":"Searching for a lost item in the classroom","scene":"A2_Route","instructions":"A lost item in the classroom. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present continuous","prompt":"Put the words in order to make a correct sentence.","tiles":["She","is","searching","the classroom"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Plural agreement","tiles":["There","are","three","desk","in the room"],"errorTile":3,"fix":"desks"},{"type":"match","level":"B1","target":"Phrasal verbs","leftLabel":"Phrasal verb","rightLabel":"Meaning","pairs":[{"left":"look for","right":"try to find"},{"left":"give up","right":"stop trying"},{"left":"turn up","right":"appear unexpectedly"}]},{"type":"transform","level":"B1","target":"Present perfect","before":"I ","after":" my keys.","forms":["has lost","have lose","have lost","having lost"],"correct":"have lost"},{"type":"radio","level":"B1","target":"First conditional","prompt":"If anyone ____ it, I hope they will take it to the lost and found office.","options":["finds","find","finding","found"],"answer":0}]},"A2_Confirm":{"level":"A2","theme":"Planning a weekend trip","scene":"A2_Confirm","instructions":"Planning a weekend trip. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A2","target":"Past simple","prompt":"Put the words in order to make a correct sentence.","tiles":["We","bought","the","train","tickets"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"A2","target":"Past simple (irregular)","tiles":["We","goed","to the website","to check prices"],"errorTile":1,"fix":"went"},{"type":"match","level":"A2","target":"Quantifiers / partitives","leftLabel":"Phrase","rightLabel":"Noun","pairs":[{"left":"A bottle of","right":"water"},{"left":"A slice of","right":"cake"},{"left":"A few","right":"tickets"}]},{"type":"transform","level":"A2","target":"Superlatives","before":"It is the ","after":" flight available.","forms":["cheap","cheaper","cheapest","most cheap"],"correct":"cheapest"},{"type":"radio","level":"A2","target":"Should (advice)","prompt":"We want a good seat. We ____ arrive early.","options":["should","must to","ought","has to"],"answer":0}]},"B1_Route":{"level":"B1","theme":"Organizing a school concert","scene":"B1_Route","instructions":"Organizing a school concert. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"B2","target":"Future perfect (passive)","prompt":"Put the words in order to make a correct sentence.","tiles":["By next Friday,","the photos of the concert","will have been","posted online"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A2","target":"Comparative","tiles":["The","main stage","is","more big","than","the one","in the music room"],"errorTile":3,"fix":"bigger"},{"type":"paraorg","level":"A2","target":"Chronological order","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["The band arrived at the hall very early.","First, they built the main music stage.","Then, they set up the food stalls.","Finally, the event started, right on time."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"B2","target":"Third conditional","before":"If the band had missed their train, the concert ","after":" ruined.","options":["would have been","was","had been","will be"],"answer":0},{"type":"transform","level":"B2","target":"Passive (present perfect)","before":"The concert ","after":" by a local charity.","forms":["has sponsor","has been sponsored","was been sponsored","is sponsor"],"correct":"has been sponsored"}]},"B1_Confirm":{"level":"B1","theme":"A disastrous restaurant dinner","scene":"B1_Confirm","instructions":"A disastrous restaurant dinner. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"B1","target":"Passive voice (simple)","prompt":"Put the words in order to make a correct passive sentence.","tiles":["We","were","given","the","wrong bill"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"B1","target":"Present perfect vs past simple","tiles":["When we sat down,","I","have noticed","the dirty glasses"],"errorTile":2,"fix":"noticed"},{"type":"paraorg","level":"B1","target":"Pronouns and sequence","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["Mark ordered the expensive steak for his main course.","When the food arrived, it was completely cold and tasted awful.","He politely called the waiter over to complain about the food.","Because of the terrible service, he decided not to leave a tip."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"B1","target":"Second conditional","before":"If the manager cared about customers, he ","after":" immediately.","options":["would apologize","will apologize","apologizes","had apologized"],"answer":0},{"type":"transform","level":"B1","target":"Used to (past habit)","before":"Before it changed owners, this restaurant ","after":" fantastic.","forms":["uses to be","used be","used to be","was use to"],"correct":"used to be"}]},"B2_Route":{"level":"B2","theme":"A difficult construction project","scene":"B2_Route","instructions":"A difficult construction project. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"C1","target":"Cleft sentence (it-cleft)","prompt":"Put the words in order to make a correct emphatic sentence.","tiles":["It was","the weather","that","delayed","the construction"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"B1","target":"Reported speech (backshift)","tiles":["During yesterday's meeting,","the manager","promised that","the team","will","finish on time"],"errorTile":4,"fix":"would"},{"type":"paraorg","level":"B1","target":"Narrative flow","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["A massive storm suddenly flooded the building site.","Faced with this flood, the chief engineer had to choose a solution quickly.","The first solution she considered was to build a temporary bridge.","If that bridge proved unfeasible, her second option was to redirect the river completely."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"C1","target":"Inversion (negative adverbial)","before":"Not only ","after":" leak, but the walls also cracked.","options":["did the roof","the roof did","the roof","did leak the roof"],"answer":0},{"type":"transform","level":"C1","target":"Causative (have something done)","before":"The company ","after":" the broken pipes replaced yesterday.","forms":["had","has","is having","have"],"correct":"had"}]},"B2_Confirm":{"level":"B2","theme":"A space exploration mission emergency","scene":"B2_Confirm","instructions":"A space mission emergency. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"B2","target":"Passive (modal)","prompt":"Put the words in order to make a correct sentence.","tiles":["The rocket","must","be launched","by tomorrow"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"B2","target":"Mixed conditional","tiles":["If the crew","had packed","enough fuel,","they","will","be safe now"],"errorTile":4,"fix":"would"},{"type":"paraorg","level":"B2","target":"Contrast and linkers","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["The mission was proceeding perfectly until the third day.","On that day, the main engine completely shut down without warning.","Despite this sudden engine shutdown, the commander refused to panic.","Instead, she immediately activated the backup life-support systems."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"B2","target":"Reduced relative clause","before":"The astronauts ","after":" the satellite can return inside.","options":["repairing","who repairing","repaired","they repair"],"answer":0},{"type":"transform","level":"B2","target":"Future continuous","before":"This time next week, the crew ","after":" Mars.","forms":["orbit","orbited","will be orbiting","were orbiting"],"correct":"will be orbiting"}]},"C1_Route":{"level":"C1","theme":"A corporate cybersecurity breach","scene":"C1_Route","instructions":"A corporate cybersecurity breach. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"C1","target":"Inversion (conditional)","prompt":"Put the words in order to make a correct formal sentence.","tiles":["Had they upgraded the firewall,","the data","would be","safe"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"B2","target":"Passive infinitive","tiles":["The","security breach","must","investigate","immediately"],"errorTile":3,"fix":"be investigated"},{"type":"paraorg","level":"B2","target":"Exemplification and result","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["A severe vulnerability was recently discovered in the corporate network.","Specifically, this flaw allowed hackers to easily bypass the outdated password system.","As a result of that breach, the intruders successfully stole sensitive client information.","To prevent any future data leaks, the CEO has now hired a completely new cybersecurity team."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"C1","target":"Cleft (what-cleft)","before":"","after":" shocked the board most was the sheer scale of the theft.","options":["What","That","Something","It"],"answer":0},{"type":"transform","level":"C1","target":"Subjunctive","before":"The lawyers recommended that the CEO ","after":" immediately.","forms":["to resign","resign","resigning","was resigned"],"correct":"resign"}]},"C1_Confirm":{"level":"C1","theme":"An archaeological discovery","scene":"C1_Confirm","instructions":"An archaeological discovery. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"C1","target":"Fronting / emphasis","prompt":"Put the words in order to make a correct emphatic sentence.","tiles":["Never before","had archaeologists","unearthed","such a treasure"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"C1","target":"Inversion agreement","tiles":["Rarely","do","this archaeologist","uncover","such preserved ruins"],"errorTile":1,"fix":"does"},{"type":"paraorg","level":"C1","target":"Argumentative structure","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["A recent archaeological excavation has sparked a fierce debate among historians regarding a newly unearthed stone tablet.","Proponents of the discovery claim that the intricate patterns on this artifact represent humanity's earliest known writing system.","Skeptics, however, dismiss this linguistic interpretation, arguing that the supposed symbols are merely natural geological scratches.","Resolving this polarizing academic dispute will ultimately require advanced microscopic analysis of the contested marks."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"C1","target":"Ellipsis / substitution","before":"The researchers verified the findings, and the university ","after":" too.","options":["did so","did it make","made so","have did"],"answer":0},{"type":"transform","level":"C1","target":"Unreal past (wish)","before":"The historian wishes he ","after":" the site decades ago.","forms":["excavated","had excavated","has excavated","would excavate"],"correct":"had excavated"}]}};
 const ESSAYS={"A1":{"format":"Social media comment","level":"A1","wordTarget":[30,50],"scenario":"A friend posted a photo of their new pet dog. Leave a friendly comment on the post.","subQuestions":["Say what you think about the dog.","Ask one question about the pet.","Tell your friend one thing you like to do with animals."],"sec":300},"A2":{"format":"Informal letter to a friend","level":"A2","wordTarget":[60,90],"scenario":"Write an informal letter (or message) to a friend about a trip you took recently.","subQuestions":["Describe where you went and who you went with.","Explain how you felt about the trip.","Suggest what your friend should do if they visit the same place."],"sec":360},"B1":{"format":"Formal letter — job application","level":"B1","wordTarget":[120,160],"scenario":"You saw an advertisement for a part-time job at a local café. Write a formal letter applying for the position.","subQuestions":["Discuss why you are interested in the job.","Explain what experience or qualities you would bring to the role.","Say when you are available for an interview or to start working."],"sec":480},"B2":{"format":"Comparative essay","level":"B2","wordTarget":[180,230],"scenario":"Write a comparative essay on the following topic: “The advantages and disadvantages of social media.”","subQuestions":["Discuss the main benefits of social media.","Explain how you feel about its effect on everyday life.","Recommend what individuals or companies should do to use it responsibly."],"sec":600},"C1":{"format":"Persuasive speech","level":"C1","wordTarget":[250,320],"scenario":"Write a speech calling for action on a serious issue: “It is time to end animal testing.”","subQuestions":["Discuss why this issue matters and who is affected by it.","Explain how you feel about the current situation and why change is urgent.","Argue what governments, companies, or individuals should do about it."],"sec":720}};
 
 const FULL_ORDER=['Pre-A1','A1','A2','B1','B2','C1'];
@@ -220,7 +220,6 @@ const LADDER=['Pre-A1','A1','A2','B1','B2','C1'];
 (function(){
 let state={round:1,node:'B1_Route',levelReached:'B1',scoreHist:[],essayLevel:null};
 let timerId=null,secondsLeft=0,currentTarget=0,submitting=false;
-let acWarnings=0, acActive=false; 
 
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
@@ -276,7 +275,7 @@ function renderRound(){
 function itemQuestion(it){
   if(it.type==='build')return esc(it.prompt);
   if(it.type==='paraorg')return 'Put the sentences in the correct order';
-  if(it.type==='error')return 'Tap the part of the sentence that is incorrect.';
+  if(it.type==='error')return 'One part of this sentence has a mistake. Tap the single part that is wrong.';
   if(it.type==='match')return 'Match each item on the left to the right.';
   if(it.type==='dropdown')return esc(it.before)+'<select class="inline-select"><option value="">— choose —</option></select>'+esc(it.after);
   if(it.type==='transform')return esc(it.before)+'<span class="morph" data-i="0">'+esc(it.forms[0])+'</span>'+esc(it.after);
@@ -325,14 +324,20 @@ function submitRound(){
   if(submitting)return;submitting=true;
   const node=BANK[state.node];
   const wraps=[...document.querySelectorAll('.gitem')];
-  let score=0,detail=[];
-  wraps.forEach((w,i)=>{const r=gradeItem(w,node.items[i]);detail.push(r===null?'un':(r?'ok':'no'));if(r===true)score++;});
+  let score=0,unfinished=0,detail=[];
+  wraps.forEach((w,i)=>{const r=gradeItem(w,node.items[i]);const tag=(r===null?'un':(r?'ok':'no'));detail.push(tag);if(r===true)score++;if(r===null)unfinished++;});
   const passed=score>=3;
-  state.scoreHist.push({node:state.node,level:node.level,score:score,passed:passed});
-  
+  // record richer history (used later for the personalized report and to break the ceiling)
+  state.scoreHist.push({node:state.node,level:node.level,score:score,unfinished:unfinished,passed:passed,
+    targets:node.items.map((it,i)=>({target:it.target,type:it.type,result:detail[i]}))});
+
   let nextAction;
   if(state.round>=3){
-    const essayLevel = passed ? node.level : stepLevel(node.level,-1);
+    // Round 3 = confirmation. Base level on confirm node, then apply a cumulative
+    // correction so a strong overall performer is not capped by one weak early round,
+    // and a weak overall performer is not over-promoted by one lucky round.
+    let essayLevel = passed ? node.level : stepLevel(node.level,-1);
+    essayLevel = applyCumulativeCorrection(essayLevel);
     state.essayLevel=essayLevel;
     nextAction=()=>startEssay(essayLevel);
   } else if(state.round===2){
@@ -345,6 +350,18 @@ function submitRound(){
   }
   showTile(score,passed,detail,state.round>=3);
   document.getElementById('tile-next').onclick=()=>{hideTile();nextAction();};
+}
+
+// Breaks the round-1 ceiling: if every round was passed comfortably (>=4/5) the student
+// may step up one band; if every round was failed badly (<=1/5) they step down one.
+function applyCumulativeCorrection(level){
+  const h=state.scoreHist;
+  if(h.length<3) return level;
+  const allStrong=h.every(r=>r.score>=4);
+  const allWeak=h.every(r=>r.score<=1);
+  if(allStrong) return stepLevel(level,1);
+  if(allWeak)   return stepLevel(level,-1);
+  return level;
 }
 
 /* ===== pop-up tile ===== */
@@ -380,20 +397,21 @@ function startEssay(level){
   const ta=document.getElementById('essay');ta.value='';ta.disabled=false;
   document.getElementById('wc-hint').innerHTML='target <b>'+currentTarget+'</b>';
   updateWordCount();document.getElementById('submit-btn').disabled=false;
-  scrollTopNow();startTimer(e.sec);ta.focus();startAntiCheat();
+  scrollTopNow();startTimer(e.sec);ta.focus();startIntegrityMonitor();
 }
 function startTimer(sec){clearInterval(timerId);secondsLeft=sec;const tEl=document.getElementById('timer'),txt=document.getElementById('timer-text');tEl.classList.remove('warn','danger');txt.innerText=fmt(secondsLeft);timerId=setInterval(()=>{secondsLeft--;if(secondsLeft<0)secondsLeft=0;txt.innerText=fmt(secondsLeft);tEl.classList.remove('warn','danger');if(secondsLeft<=30)tEl.classList.add('danger');else if(secondsLeft<=60)tEl.classList.add('warn');if(secondsLeft<=0){clearInterval(timerId);timerId=null;submitEssay(true);}},1000);}
 function countWords(t){const m=(t||'').trim().match(/[A-Za-z'’-]+/g);return m?m.length:0;}
 function updateWordCount(){const n=countWords(document.getElementById('essay').value);document.getElementById('wc-now').innerText=n;const hint=document.getElementById('wc-hint');if(n>=currentTarget)hint.innerHTML='<b style="color:var(--good);">target reached</b>';else hint.innerHTML='target <b>'+currentTarget+'</b>';}
 
-function reportToHub(level,essayText,aiScores){
+function reportToHub(level,essayText,payload){
   try {
     if(window.parent&&window.parent!==window&&location.hash.indexOf('hub=1')>=0){
       window.parent.postMessage({
         type:'cefr_result',
         level:String(level||''),
         responses:[(essayText||'').trim()],
-        aiScores:aiScores
+        report: payload || {},
+        aiScores: JSON.stringify((payload&&payload.scores)||{})
       },'*');
     }
   }catch(e){}
@@ -408,43 +426,76 @@ function returnToDashboard(){
   }catch(e){}
   restart();
 }
-function restart(){state={round:1,node:'B1_Route',levelReached:'B1',scoreHist:[],essayLevel:null};submitting=false;clearInterval(timerId);hideTile();stopAntiCheat();document.getElementById('results-screen').classList.add('hidden');document.getElementById('essay-screen').classList.add('hidden');document.getElementById('round-screen').classList.remove('hidden');renderRound();}
+function restart(){state={round:1,node:'B1_Route',levelReached:'B1',scoreHist:[],essayLevel:null};submitting=false;clearInterval(timerId);hideTile();stopIntegrityMonitor();document.getElementById('results-screen').classList.add('hidden');document.getElementById('essay-screen').classList.add('hidden');document.getElementById('round-screen').classList.remove('hidden');renderRound();}
 
-/* ===== Anti-cheat (essay round only) ===== */
-function blockEvt(e){e.preventDefault();}
-function pasteBlocked(e){e.preventDefault();try{alert('Pasting is disabled. Please type your essay yourself.');}catch(_){}}
-function copyBlocked(e){e.preventDefault();}
+/* ===== Integrity monitor (essay round only) =====
+   Philosophy: RECORD, don't block. We log interruptions with timestamps and
+   durations so they can be reviewed by a human alongside other evidence.
+   Brief interruptions (an incoming call, a Line message, a notification) are
+   expected and tolerated — only their pattern matters, not a single occurrence.
+   Nothing here ever terminates or auto-submits the test. */
+let acLog=[], acHiddenAt=0, acStart=0, acActive=false;
+// A blur shorter than this (ms) is treated as a normal phone interruption, not a flag.
+const AC_GRACE_MS=15000;
+
+function acNow(){ return Date.now(); }
+function acElapsed(){ return acStart? Math.round((acNow()-acStart)/1000) : 0; }
+
 function onVisChange(){
   if(!acActive)return;
   if(document.hidden){
-    acWarnings++;
-    if(acWarnings>=3){try{alert('Assessment terminated: you left the test repeatedly. Your work will be submitted.');}catch(_){}submitEssay(true);return;}
-    try{alert('Warning '+acWarnings+' of 3: leaving the test tab is not allowed. Outside help is prohibited.');}catch(_){}
+    acHiddenAt=acNow();
+  } else if(acHiddenAt){
+    const dur=acNow()-acHiddenAt; acHiddenAt=0;
+    acLog.push({type:'blur', atSec:acElapsed(), durMs:dur,
+                flagged: dur>=AC_GRACE_MS});
   }
 }
-function onFsChange(){
+// Record paste, but DO NOT block it — the reviewer sees how much was pasted.
+function onPaste(e){
   if(!acActive)return;
-  if(!document.fullscreenElement && !document.webkitFullscreenElement){ onVisChange(); }
+  let len=0; try{ len=(e.clipboardData||window.clipboardData).getData('text').length; }catch(_){}
+  acLog.push({type:'paste', atSec:acElapsed(), chars:len, flagged: len>40});
 }
-function startAntiCheat(){
-  if(acActive)return; acActive=true; acWarnings=0;
+
+function startIntegrityMonitor(){
+  if(acActive)return; acActive=true; acStart=acNow(); acHiddenAt=0; acLog=[];
   document.addEventListener('visibilitychange',onVisChange);
-  document.addEventListener('paste',pasteBlocked,true);
-  document.addEventListener('copy',copyBlocked,true);
-  document.addEventListener('contextmenu',blockEvt);
-  document.addEventListener('fullscreenchange',onFsChange);
-  document.addEventListener('webkitfullscreenchange',onFsChange);
-  try{const el=document.documentElement;const rq=el.requestFullscreen||el.webkitRequestFullscreen;if(rq){const p=rq.call(el);if(p&&p.catch)p.catch(function(){});}}catch(e){}
+  document.addEventListener('paste',onPaste,true);
+  window.addEventListener('blur',onWinBlur);
+  window.addEventListener('focus',onWinFocus);
 }
-function stopAntiCheat(){
+function onWinBlur(){ if(acActive && !document.hidden && !acHiddenAt) acHiddenAt=acNow(); }
+function onWinFocus(){ if(acActive && acHiddenAt && !document.hidden){ const dur=acNow()-acHiddenAt; acHiddenAt=0; acLog.push({type:'blur',atSec:acElapsed(),durMs:dur,flagged:dur>=AC_GRACE_MS}); } }
+
+function stopIntegrityMonitor(){
+  if(!acActive && !acLog.length) return;
   acActive=false;
   document.removeEventListener('visibilitychange',onVisChange);
-  document.removeEventListener('paste',pasteBlocked,true);
-  document.removeEventListener('copy',copyBlocked,true);
-  document.removeEventListener('contextmenu',blockEvt);
-  document.removeEventListener('fullscreenchange',onFsChange);
-  document.removeEventListener('webkitfullscreenchange',onFsChange);
-  try{if(document.fullscreenElement&&document.exitFullscreen){const p=document.exitFullscreen();if(p&&p.catch)p.catch(function(){});}}catch(e){}
+  document.removeEventListener('paste',onPaste,true);
+  window.removeEventListener('blur',onWinBlur);
+  window.removeEventListener('focus',onWinFocus);
+}
+
+// Produce a compact, human-readable integrity summary for the reviewer.
+function integritySummary(){
+  const blurs=acLog.filter(e=>e.type==='blur');
+  const flaggedBlurs=blurs.filter(e=>e.flagged);
+  const pastes=acLog.filter(e=>e.type==='paste');
+  const flaggedPastes=pastes.filter(e=>e.flagged);
+  const totalAway=Math.round(blurs.reduce((a,e)=>a+(e.durMs||0),0)/1000);
+  let risk='low';
+  if(flaggedPastes.length || flaggedBlurs.length>=3 || totalAway>120) risk='review';
+  if(flaggedPastes.reduce((a,e)=>a+e.chars,0)>200 || flaggedBlurs.length>=5) risk='high';
+  return {
+    risk,
+    leftScreenCount: blurs.length,
+    leftScreenFlagged: flaggedBlurs.length,
+    totalSecondsAway: totalAway,
+    pasteCount: pastes.length,
+    pasteCharsTotal: pastes.reduce((a,e)=>a+e.chars,0),
+    events: acLog
+  };
 }
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBFNRu8U9F1a-VwvFJKtpXit-R3zF4hlbXBFU5r33uUl7XFV8xdBZCxZ49v3cT13mZjQ/exec";
@@ -455,7 +506,7 @@ async function submitEssay(timedOut) {
   submitBtn.disabled = true; 
   
   clearInterval(timerId); 
-  stopAntiCheat();
+  stopIntegrityMonitor();
   
   const ta = document.getElementById('essay');
   ta.disabled = true; 
@@ -472,6 +523,12 @@ async function submitEssay(timedOut) {
   const promptLevel = (provisional === 'Pre-A1') ? 'A1' : provisional;
   const e = ESSAYS[promptLevel] || ESSAYS['B1'];
 
+  // Rotate reassuring messages while the AI works (no behavioural cost).
+  const gt=document.getElementById('grading-text');
+  const msgs=[ (timedOut?"Time's up — analysing your writing…":"Analysing your writing…"),
+               "Checking grammar and vocabulary…","Assessing cohesion and task response…","Finalising your CEFR rating…"];
+  let mi=0; const msgTimer=setInterval(()=>{mi=(mi+1)%msgs.length;gt.innerText=msgs[mi];},2200);
+
   // Formulate the full context payload to hand entirely to the AI
   const promptScenario = e.scenario + " (Must include: " + e.subQuestions.join(' ') + ")";
 
@@ -484,30 +541,66 @@ async function submitEssay(timedOut) {
         wordTarget: e.wordTarget[0] + "-" + e.wordTarget[1],
         timeLimit: Math.round(e.sec/60)
     };
-    
     const body = Object.keys(params).map(k => encodeURIComponent(k) + "=" + encodeURIComponent(params[k])).join("&");
-    
+
+    // Abort if the server hangs, so the student isn't stuck on a spinner.
+    const ctrl = ('AbortController' in window) ? new AbortController() : null;
+    const to = ctrl ? setTimeout(()=>ctrl.abort(), 30000) : null;
+
     const response = await fetch(SCRIPT_URL, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-        body: body
+        body: body,
+        signal: ctrl ? ctrl.signal : undefined
     });
-    
+    if(to) clearTimeout(to);
+
     const data = await response.json();
-    gs.classList.add('hidden');
+    clearInterval(msgTimer); gs.classList.add('hidden');
 
     if (data.ok && data.evaluation) {
         finishWithAI(essayText, data.evaluation);
     } else {
-        finishWithAI(essayText, { writingLevel: "Pending", feedback: "API Error: " + (data.error || "Unknown Error") + ". Your submission is saved.", scores: {wordCount:0, cohesion:0, grammar:0, vocabulary:0, topicAdherence:0} });
+        finishWithAI(essayText, localFallbackEval(essayText, e,
+          "Automatic AI scoring was unavailable, so a provisional estimate is shown. " + (data.error||"")));
     }
   } catch (err) {
-    gs.classList.add('hidden');
-    finishWithAI(essayText, { writingLevel: "Network Error", feedback: "Saved locally. " + err.message, scores: {wordCount:0, cohesion:0, grammar:0, vocabulary:0, topicAdherence:0} });
+    clearInterval(msgTimer); gs.classList.add('hidden');
+    finishWithAI(essayText, localFallbackEval(essayText, e,
+      "Saved. AI scoring could not be reached, so a provisional estimate is shown."));
   }
 }
 
-// Map the continuous numerical score back to an overall CEFR string
+// Transparent local estimate used ONLY when the AI is unreachable. It is anchored to
+// the task's target level and nudged by length, lexical diversity, and sentence variety,
+// so the student still gets a sensible provisional score instead of zeros.
+function localFallbackEval(text, e, note){
+  const cefrToNum={'Pre-A1':0,'A1':20,'A2':40,'B1':60,'B2':80,'C1':100};
+  const words=(text||'').trim().match(/[A-Za-z'’-]+/g)||[];
+  const n=words.length;
+  const uniq=new Set(words.map(w=>w.toLowerCase())).size;
+  const ttr=n? uniq/n : 0;                          // type-token ratio (vocab variety)
+  const sentences=(text||'').split(/[.!?]+/).filter(s=>s.trim().length>0);
+  const avgLen=sentences.length? n/sentences.length : 0;
+  const target=e.wordTarget[0];
+  const lenAdequacy=Math.max(0,Math.min(100, Math.round(n/target*100)));
+  const anchor=cefrToNum[e.level]!==undefined?cefrToNum[e.level]:60;
+  // Build sub-scores around the anchor with small, bounded heuristic adjustments.
+  const clamp=v=>Math.max(0,Math.min(100,Math.round(v)));
+  const vocab=clamp(anchor + (ttr>0.55?10:ttr<0.35?-12:0));
+  const cohesion=clamp(anchor + (/\b(however|because|therefore|although|firstly|finally|moreover|as a result)\b/i.test(text)?8:-6));
+  const grammar=clamp(anchor + (avgLen>=12?6:avgLen<6?-8:0));
+  const topic=clamp(n<target*0.4?anchor-25:anchor);
+  return {
+    writingLevel: scoreToLevel(clamp((vocab+cohesion+grammar+topic)/4)),
+    feedback: (note||'') + ' (Provisional estimate — pending human review.)',
+    scores:{ wordCount:lenAdequacy, cohesion, grammar, vocabulary:vocab, topicAdherence:topic },
+    provisional:true
+  };
+}
+
+// Map a continuous 0–100 score to a CEFR band. Boundaries align with cefrToNum anchors
+// (A1=20, A2=40, B1=60, B2=80, C1=100): a band is awarded from its midpoint downward.
 function scoreToLevel(score) {
     if(score < 10) return 'Pre-A1';
     if(score < 30) return 'A1';
@@ -517,43 +610,124 @@ function scoreToLevel(score) {
     return 'C1';
 }
 
+// Coerce any AI-returned score to a clean 0–100 number; bad/missing -> fallback.
+function clampScore(v, fallback){
+  const n = (typeof v==='number') ? v : parseFloat(v);
+  if(!isFinite(n)) return fallback;
+  return Math.max(0, Math.min(100, Math.round(n)));
+}
+
+// Build a per-student strengths / weaknesses / next-steps narrative from BOTH
+// the grammar rounds and the writing sub-scores. Returns a plain object so the hub
+// can store it in the tracking sheet and render a personalised "Report" later.
+function buildNarrative(grammarLevel, aiLevel, s, finalLevel){
+  // Grammar targets the student got wrong/right across all rounds.
+  const wrongTargets=[], rightTargets=[];
+  (state.scoreHist||[]).forEach(r=>(r.targets||[]).forEach(t=>{
+    if(t.result==='no'||t.result==='un') wrongTargets.push(t.target);
+    else if(t.result==='ok') rightTargets.push(t.target);
+  }));
+  // De-duplicate while preserving order.
+  const uniq=a=>a.filter((x,i)=>a.indexOf(x)===i);
+  const missed=uniq(wrongTargets).slice(0,6);
+  const mastered=uniq(rightTargets).slice(0,6);
+
+  // Writing dimensions, named for the report.
+  const dims=[
+    ['Cohesion & linking', s.cohesion],
+    ['Grammatical range & accuracy', s.grammar],
+    ['Vocabulary range & precision', s.vocabulary],
+    ['Task & topic response', s.topicAdherence],
+    ['Length & task completion', s.wordCount]
+  ];
+  const sorted=dims.slice().sort((a,b)=>b[1]-a[1]);
+  const strengths=sorted.filter(d=>d[1]>=60).slice(0,2).map(d=>d[0]);
+  const weaknesses=sorted.filter(d=>d[1]<60).slice(-2).map(d=>d[0]);
+
+  // Tie next-step advice to the final band using the existing improvement themes.
+  const stepHint={
+    'Pre-A1':'Build core vocabulary and write very short, correct sentences daily.',
+    'A1':'Join short sentences with and / but / because, and practise past and future forms.',
+    'A2':'State a main idea, give opinions with reasons, and vary your linking words.',
+    'B1':'Present both sides of an argument and use cohesive devices (however, as a result).',
+    'B2':'Add nuance (tends to, arguably), address counter-arguments, and lift your vocabulary.',
+    'C1':'Refine tone and register, use idiom precisely, and tighten complex sentences.'
+  }[finalLevel] || '';
+
+  // Short prose summary (kept brief; reviewer/Sheet can expand).
+  const sParts=[];
+  if(mastered.length) sParts.push('Confident with: '+mastered.join(', ')+'.');
+  if(strengths.length) sParts.push('In the writing task, strongest on '+strengths.join(' and ')+'.');
+  const wParts=[];
+  if(missed.length) wParts.push('Review these grammar points: '+missed.join(', ')+'.');
+  if(weaknesses.length) wParts.push('In writing, focus first on '+weaknesses.join(' and ')+'.');
+
+  return {
+    finalLevel, grammarLevel, writingLevel: aiLevel,
+    strengthsText: sParts.join(' ') || 'Solid, even performance across the section.',
+    weaknessesText: wParts.join(' ') || 'No single area stands out as weak — keep building range.',
+    nextSteps: stepHint,
+    grammarMissed: missed,
+    grammarMastered: mastered,
+    writingScores: s
+  };
+}
+
 function finishWithAI(essayText, evaluation) {
   const cefrToNum = {'Pre-A1':0, 'A1':20, 'A2':40, 'B1':60, 'B2':80, 'C1':100};
-  const grammarLevel = state.levelReached;
-  const aiLevel = evaluation.writingLevel || 'A1';
-  
-  // Calculate Combined Weighting (70% Grammar, 30% Writing)
+  const grammarLevel = state.essayLevel || state.levelReached;
+  const aiLevel = (cefrToNum[evaluation.writingLevel]!==undefined) ? evaluation.writingLevel : 'A1';
+
+  // Validate & clamp everything the AI returned.
+  const raw = evaluation.scores || {};
+  const s = {
+    wordCount:     clampScore(raw.wordCount, 0),
+    cohesion:      clampScore(raw.cohesion, 0),
+    grammar:       clampScore(raw.grammar, 0),
+    vocabulary:    clampScore(raw.vocabulary, 0),
+    topicAdherence:clampScore(raw.topicAdherence, 0)
+  };
+
+  // ---- Writing sub-score (the only sample of real production) ----
+  // The four ability dimensions are weighted; raw length is NOT an ability and is
+  // used as a completion CAP (a near-empty essay can't earn a high writing score).
+  const abilityScore = (s.cohesion*0.25 + s.grammar*0.35 + s.vocabulary*0.20 + s.topicAdherence*0.20);
+  // completion factor: full credit once length target is essentially met.
+  const completion = Math.max(0.4, Math.min(1, s.wordCount/100 * 1)); // wordCount is already a 0–100 adequacy score
+  const wScore = Math.round(abilityScore * completion);
+
+  // ---- Grammar section score ----
   const gScore = cefrToNum[grammarLevel] !== undefined ? cefrToNum[grammarLevel] : 60;
-  const s = evaluation.scores;
-  // Calculate average of the 5 AI criteria for the raw writing score
-  const wScore = (s.wordCount + s.cohesion + s.grammar + s.vocabulary + s.topicAdherence) / 5;
-  const combinedScore = Math.round((0.7 * gScore) + (0.3 * wScore));
+
+  // ---- Combined: balanced 50/50. This is a writing test, so the production sample
+  // carries equal weight to the auto-graded grammar section. ----
+  const combinedScore = Math.round((0.5 * gScore) + (0.5 * wScore));
   const finalCombinedLevel = scoreToLevel(combinedScore);
 
-  // Helper function to render a progress bar row
+  // Personalised narrative drawing on BOTH sections.
+  const narrative = buildNarrative(grammarLevel, aiLevel, s, finalCombinedLevel);
+
   function makeBar(label, sub, score) {
     let w = Math.max(0, Math.min(100, score));
     return `
       <tr>
         <td style="width: 45%;"><strong>${label}</strong><br><span style="font-size:0.8em;color:var(--ink-faint)">${sub}</span></td>
         <td style="vertical-align: middle;">
-          <div class="bar-wrap">
-            <div class="bar-fill" style="width: ${w}%;"></div>
-          </div>
-          <div class="bar-labels">
-            <span>Pre-A1</span><span>A1</span><span>A2</span><span>B1</span><span>B2</span><span>C1</span>
-          </div>
+          <div class="bar-wrap"><div class="bar-fill" style="width: ${w}%;"></div></div>
+          <div class="bar-labels"><span>Pre-A1</span><span>A1</span><span>A2</span><span>B1</span><span>B2</span><span>C1</span></div>
         </td>
       </tr>`;
   }
 
-  // Build the Report HTML Panes
+  const strengthsList = (narrative.grammarMastered.length||narrative.strengthsText)
+    ? `<p class="feedback-text" style="border-left:3px solid var(--good);">${esc(narrative.strengthsText)}</p>` : '';
+  const weaknessList = (narrative.grammarMissed.length||narrative.weaknessesText)
+    ? `<p class="feedback-text" style="border-left:3px solid var(--accent);">${esc(narrative.weaknessesText)}</p>` : '';
+
   let panesHTML = `
-    <!-- Top Pane: Overall -->
     <div class="pane overall-pane">
       <div class="pane-title">Overall CEFR Rating <span class="badge">${finalCombinedLevel}</span></div>
-      <p style="margin-top:0;">This is your combined score for the writing section.</p>
-      
+      <p style="margin-top:0;">Your combined result for the writing section.</p>
       <div style="margin: 18px 0 10px;">
         <div class="bar-wrap" style="height:20px; border-radius:10px;">
             <div class="bar-fill" style="width: ${Math.max(0, Math.min(100, combinedScore))}%; border-radius:10px;"></div>
@@ -562,40 +736,52 @@ function finishWithAI(essayText, evaluation) {
             ${FULL_ORDER.map(st => '<span class="step'+(st === finalCombinedLevel ? ' on' : '')+'">'+st+'</span>').join('')}
         </div>
       </div>
-      
-      <p class="weight-note" style="text-align:center;">Calculation mechanism: 70% cumulative grammar rating | 30% Round 4 writing rating.</p>
+      <p class="weight-note" style="text-align:center;">Calculation: 50% grammar section (Rounds 1–3) + 50% writing task (Round 4).</p>
     </div>
 
-    <!-- Middle Pane: Grammar -->
     <div class="pane">
-      <div class="pane-title">Grammar & Syntax Check <span class="badge" style="background:var(--ink-soft)">${grammarLevel}</span></div>
+      <div class="pane-title">Your strengths &amp; next steps</div>
+      ${strengthsList}
+      ${weaknessList}
+      <p class="feedback-text" style="border-left:3px solid var(--gold);"><strong>To reach the next level:</strong> ${esc(narrative.nextSteps)}</p>
+    </div>
+
+    <div class="pane">
+      <div class="pane-title">Grammar &amp; Syntax Check <span class="badge" style="background:var(--ink-soft)">${grammarLevel}</span></div>
       <p style="color:var(--ink-soft); font-size: 0.95rem; margin:0 0 14px;">Level achieved through the adaptive scenario rounds (Rounds 1–3).</p>
       <div class="bar-wrap"><div class="bar-fill" style="width: ${gScore}%;"></div></div>
       <div class="bar-labels"><span>Pre-A1</span><span>A1</span><span>A2</span><span>B1</span><span>B2</span><span>C1</span></div>
     </div>
 
-    <!-- Bottom Pane: Writing Table -->
     <div class="pane">
       <div class="pane-title">Writing Task Analysis (Round 4) <span class="badge" style="background:var(--ink-soft)">${aiLevel}</span></div>
-      <p class="feedback-text"><strong>AI Feedback:</strong> ${evaluation.feedback}</p>
-      
+      <p class="feedback-text"><strong>AI Feedback:</strong> ${esc(evaluation.feedback||'')}</p>
       <table class="report-table">
         <tbody>
-          ${makeBar('Task Fulfillment / Length', 'Adherence to word targets & limits', s.wordCount)}
           ${makeBar('Cohesion & Connectives', 'Logical flow and linking words', s.cohesion)}
           ${makeBar('Grammatical Complexity', 'Syntax range and accuracy', s.grammar)}
           ${makeBar('Vocabulary Variance', 'Lexical diversity and precision', s.vocabulary)}
           ${makeBar('Topic Adherence', 'Relevance to prompt scenario', s.topicAdherence)}
+          ${makeBar('Task Completion / Length', 'Met the word target for the task', s.wordCount)}
         </tbody>
       </table>
     </div>
   `;
-  
+
   document.getElementById('report-panes').innerHTML = panesHTML;
   document.getElementById('results-screen').classList.remove('hidden');
   document.getElementById('results-screen').classList.add('fade');
-  
-  reportToHub(finalCombinedLevel, essayText, JSON.stringify(evaluation.scores));
+
+  // Hand the hub: final level, essay text, validated scores, the personalised
+  // narrative, and the integrity telemetry — everything the tracking sheet needs.
+  reportToHub(finalCombinedLevel, essayText, {
+    scores: s,
+    grammarLevel: grammarLevel,
+    writingLevel: aiLevel,
+    combinedScore: combinedScore,
+    narrative: narrative,
+    integrity: integritySummary()
+  });
   scrollTopNow();
 }
 
