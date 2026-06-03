@@ -706,7 +706,7 @@ function validatedWordCount(text){
 // Build a per-student strengths / weaknesses / next-steps narrative from BOTH
 // the grammar rounds and the writing sub-scores. Returns a plain object so the hub
 // can store it in the tracking sheet and render a personalised "Report" later.
-function buildNarrative(grammarLevel, aiLevel, s, finalLevel){
+function buildNarrative(grammarLevel, aiLevel, s, finalLevel, noContent){
   // Grammar targets the student got wrong/right across all rounds.
   const wrongTargets=[], rightTargets=[];
   (state.scoreHist||[]).forEach(r=>(r.targets||[]).forEach(t=>{
@@ -718,13 +718,13 @@ function buildNarrative(grammarLevel, aiLevel, s, finalLevel){
   const missed=uniq(wrongTargets).slice(0,6);
   const mastered=uniq(rightTargets).slice(0,6);
 
-  // Writing dimensions, named for the report.
+  // Writing dimensions, named to match the report bars.
   const dims=[
     ['Cohesion & linking', s.cohesion],
     ['Grammatical range & accuracy', s.grammar],
     ['Vocabulary range & precision', s.vocabulary],
-    ['Task & topic response', s.topicAdherence],
-    ['Length & task completion', s.wordCount]
+    ['Task completion', s.topicAdherence],
+    ['Word count', s.wordCount]
   ];
   const sorted=dims.slice().sort((a,b)=>b[1]-a[1]);
   const strengths=sorted.filter(d=>d[1]>=60).slice(0,2).map(d=>d[0]);
@@ -740,6 +740,23 @@ function buildNarrative(grammarLevel, aiLevel, s, finalLevel){
     'C1':'Refine tone and register, use idiom precisely, and tighten complex sentences.'
   }[finalLevel] || '';
 
+  // No-content case: there is no writing to describe, so report that plainly and keep
+  // only the grammar-round findings (which are still valid).
+  if(noContent){
+    const sParts=[];
+    if(mastered.length) sParts.push('In the grammar rounds, confident with: '+mastered.join(', ')+'.');
+    const wParts=[];
+    if(missed.length) wParts.push('Review these grammar points: '+missed.join(', ')+'.');
+    wParts.push('No writing was submitted for Round 4, so the writing skills could not be assessed.');
+    return {
+      finalLevel, grammarLevel, writingLevel: 'Pre-A1',
+      strengthsText: sParts.join(' ') || 'Grammar rounds completed; see the grammar result above.',
+      weaknessesText: wParts.join(' '),
+      nextSteps: stepHint,
+      grammarMissed: missed, grammarMastered: mastered, writingScores: s
+    };
+  }
+
   // Short prose summary (kept brief; reviewer/Sheet can expand).
   const sParts=[];
   if(mastered.length) sParts.push('Confident with: '+mastered.join(', ')+'.');
@@ -750,7 +767,7 @@ function buildNarrative(grammarLevel, aiLevel, s, finalLevel){
 
   return {
     finalLevel, grammarLevel, writingLevel: aiLevel,
-    strengthsText: sParts.join(' ') || 'Solid, even performance across the section.',
+    strengthsText: sParts.join(' ') || 'No recognizable words submitted.',
     weaknessesText: wParts.join(' ') || 'No single area stands out as weak — keep building range.',
     nextSteps: stepHint,
     grammarMissed: missed,
@@ -816,7 +833,7 @@ function finishWithAI(essayText, evaluation) {
   const finalCombinedLevel = scoreToLevel(combinedScore);
 
   // Personalised narrative drawing on BOTH sections.
-  const narrative = buildNarrative(grammarLevel, aiLevel, s, finalCombinedLevel);
+  const narrative = buildNarrative(grammarLevel, aiLevel, s, finalCombinedLevel, noContent);
 
   // Ability-dimension bar: the score is on the CEFR anchor scale (0=Pre-A1 … 100=C1),
   // so the fill maps directly onto the Pre-A1…C1 axis. We also snap the displayed band
@@ -898,8 +915,8 @@ function finishWithAI(essayText, evaluation) {
           ${makeBar('Cohesion & Connectives', 'Logical flow and linking words', sCoh)}
           ${makeBar('Grammatical Complexity', 'Syntax range and accuracy', sGra)}
           ${makeBar('Vocabulary Variance', 'Lexical diversity and precision', sVoc)}
-          ${makeBar('Topic Adherence', 'Relevance to prompt scenario', sTop)}
-          ${makeCompletionBar('Task Completion / Length', 'Word count plotted on the CEFR scale', wcPos, validWC)}
+          ${makeBar('Task Completion', 'Addresses all parts of the prompt and stays on topic', sTop)}
+          ${makeCompletionBar('Word count', 'Word count plotted on the CEFR scale', wcPos, validWC)}
         </tbody>
       </table>
     </div>
