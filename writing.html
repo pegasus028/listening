@@ -601,8 +601,11 @@ async function submitEssay(timedOut) {
     if (data.ok && data.evaluation) {
         finishWithAI(essayText, data.evaluation);
     } else {
+        // Don't surface raw API error JSON (quota/billing/model strings) to students.
+        // Keep the technical detail out of the learner-facing message; it's still
+        // recoverable server-side if needed.
         finishWithAI(essayText, localFallbackEval(essayText, e,
-          "Automatic AI scoring was unavailable, so a provisional estimate is shown. " + (data.error||"")));
+          "Automatic AI scoring was temporarily unavailable, so a provisional estimate is shown."));
     }
   } catch (err) {
     clearInterval(msgTimer); gs.classList.add('hidden');
