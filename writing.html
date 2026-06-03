@@ -151,8 +151,8 @@ button.main:disabled{background:var(--line-strong);cursor:not-allowed;transform:
 .scale .step.on{background:var(--accent);color:#fff;border-color:var(--accent);}
 
 .restart{margin-top:26px;}
-.restart button{background:transparent;color:var(--ink-soft);border:1.5px solid var(--line-strong);width:100%;padding:14px;border-radius:11px;font-weight:600;font-family:inherit;cursor:pointer;}
-.restart button:hover{background:var(--paper);color:var(--accent);border-color:var(--accent-soft);}
+.restart button{background:var(--accent-soft);color:#fff;border:1.5px solid var(--accent-soft);width:100%;padding:14px;border-radius:11px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .2s,border-color .2s;}
+.restart button:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
 .fade{animation:fade .45s ease both;}
 @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 .hidden{display:none;}
@@ -703,22 +703,28 @@ function validatedWordCount(text){
   return n;
 }
 
-// Build a per-student strengths / weaknesses / next-steps narrative from BOTH
-// the grammar rounds and the writing sub-scores. Returns a plain object so the hub
-// can store it in the tracking sheet and render a personalised "Report" later.
+// Build a per-student narrative. Produces SEPARATE summaries for Rounds 1–3 (grammar)
+// and Round 4 (writing), plus a short next-steps line. Returns a plain object so the hub
+// can store it in the tracking sheet and render a personalised report later.
 function buildNarrative(grammarLevel, aiLevel, s, finalLevel, noContent){
-  // Grammar targets the student got wrong/right across all rounds.
+  // ----- Rounds 1–3: grammar targets the student got wrong/right -----
   const wrongTargets=[], rightTargets=[];
   (state.scoreHist||[]).forEach(r=>(r.targets||[]).forEach(t=>{
     if(t.result==='no'||t.result==='un') wrongTargets.push(t.target);
     else if(t.result==='ok') rightTargets.push(t.target);
   }));
-  // De-duplicate while preserving order.
   const uniq=a=>a.filter((x,i)=>a.indexOf(x)===i);
   const missed=uniq(wrongTargets).slice(0,6);
   const mastered=uniq(rightTargets).slice(0,6);
 
-  // Writing dimensions, named to match the report bars.
+  const rounds13Strengths = mastered.length
+    ? 'Confident with: '+mastered.join(', ')+'.'
+    : 'No grammar items were answered correctly in Rounds 1–3.';
+  const rounds13Weaknesses = missed.length
+    ? 'Review these grammar points: '+missed.join(', ')+'.'
+    : 'No recurring grammar weaknesses stood out across the rounds.';
+
+  // ----- Round 4: writing dimensions, named to match the report bars -----
   const dims=[
     ['Cohesion & linking', s.cohesion],
     ['Grammatical range & accuracy', s.grammar],
@@ -730,7 +736,20 @@ function buildNarrative(grammarLevel, aiLevel, s, finalLevel, noContent){
   const strengths=sorted.filter(d=>d[1]>=60).slice(0,2).map(d=>d[0]);
   const weaknesses=sorted.filter(d=>d[1]<60).slice(-2).map(d=>d[0]);
 
-  // Tie next-step advice to the final band using the existing improvement themes.
+  let round4Strengths, round4Weaknesses;
+  if(noContent){
+    round4Strengths  = 'No recognizable words submitted, so the writing could not be assessed.';
+    round4Weaknesses = 'No writing was submitted for Round 4.';
+  } else {
+    round4Strengths  = strengths.length
+      ? 'Strongest on '+strengths.join(' and ')+'.'
+      : 'A solid, even attempt with no single standout strength yet.';
+    round4Weaknesses = weaknesses.length
+      ? 'Focus first on '+weaknesses.join(' and ')+'.'
+      : 'No single area stands out as weak — keep building range.';
+  }
+
+  // ----- Next steps: short advice toward the next CEFR level, all rounds considered -----
   const stepHint={
     'Pre-A1':'Build core vocabulary and write very short, correct sentences daily.',
     'A1':'Join short sentences with and / but / because, and practise past and future forms.',
@@ -740,36 +759,16 @@ function buildNarrative(grammarLevel, aiLevel, s, finalLevel, noContent){
     'C1':'Refine tone and register, use idiom precisely, and tighten complex sentences.'
   }[finalLevel] || '';
 
-  // No-content case: there is no writing to describe, so report that plainly and keep
-  // only the grammar-round findings (which are still valid).
-  if(noContent){
-    const sParts=[];
-    if(mastered.length) sParts.push('In the grammar rounds, confident with: '+mastered.join(', ')+'.');
-    const wParts=[];
-    if(missed.length) wParts.push('Review these grammar points: '+missed.join(', ')+'.');
-    wParts.push('No writing was submitted for Round 4, so the writing skills could not be assessed.');
-    return {
-      finalLevel, grammarLevel, writingLevel: 'Pre-A1',
-      strengthsText: sParts.join(' ') || 'Grammar rounds completed; see the grammar result above.',
-      weaknessesText: wParts.join(' '),
-      nextSteps: stepHint,
-      grammarMissed: missed, grammarMastered: mastered, writingScores: s
-    };
-  }
-
-  // Short prose summary (kept brief; reviewer/Sheet can expand).
-  const sParts=[];
-  if(mastered.length) sParts.push('Confident with: '+mastered.join(', ')+'.');
-  if(strengths.length) sParts.push('In the writing task, strongest on '+strengths.join(' and ')+'.');
-  const wParts=[];
-  if(missed.length) wParts.push('Review these grammar points: '+missed.join(', ')+'.');
-  if(weaknesses.length) wParts.push('In writing, focus first on '+weaknesses.join(' and ')+'.');
+  // Combined text fields kept for the Google Sheet / backward compatibility.
+  const strengthsText = (rounds13Strengths+' '+round4Strengths).trim();
+  const weaknessesText = (rounds13Weaknesses+' '+round4Weaknesses).trim();
 
   return {
-    finalLevel, grammarLevel, writingLevel: aiLevel,
-    strengthsText: sParts.join(' ') || 'No recognizable words submitted.',
-    weaknessesText: wParts.join(' ') || 'No single area stands out as weak — keep building range.',
+    finalLevel, grammarLevel, writingLevel: noContent ? 'Pre-A1' : aiLevel,
+    rounds13Strengths, rounds13Weaknesses,
+    round4Strengths, round4Weaknesses,
     nextSteps: stepHint,
+    strengthsText, weaknessesText,
     grammarMissed: missed,
     grammarMastered: mastered,
     writingScores: s
@@ -866,10 +865,9 @@ function finishWithAI(essayText, evaluation) {
       </tr>`;
   }
 
-  const strengthsList = (narrative.grammarMastered.length||narrative.strengthsText)
-    ? `<p class="feedback-text" style="border-left:3px solid var(--good);">${esc(narrative.strengthsText)}</p>` : '';
-  const weaknessList = (narrative.grammarMissed.length||narrative.weaknessesText)
-    ? `<p class="feedback-text" style="border-left:3px solid var(--accent);">${esc(narrative.weaknessesText)}</p>` : '';
+  // Small helper to render a bordered feedback line.
+  const fbLine = (text, color) => text
+    ? `<p class="feedback-text" style="border-left:3px solid ${color};">${esc(text)}</p>` : '';
 
   let panesHTML = `
     <div class="pane overall-pane">
@@ -894,6 +892,12 @@ function finishWithAI(essayText, evaluation) {
     </div>
 
     <div class="pane">
+      <div class="pane-title">Overview from Rounds 1–3</div>
+      ${fbLine(narrative.rounds13Strengths, 'var(--good)')}
+      ${fbLine(narrative.rounds13Weaknesses, 'var(--accent)')}
+    </div>
+
+    <div class="pane">
       <div class="pane-title">Writing Task Result <span class="badge" style="background:var(--ink-soft)">${displayWritingLevel}</span></div>
       <p style="color:var(--ink-soft); font-size: 0.95rem; margin:0 0 14px;">Level of your free-writing response in Round 4 (full breakdown below).</p>
       <div class="bar-wrap"><div class="bar-fill" style="width: ${wScore}%;"></div></div>
@@ -901,14 +905,13 @@ function finishWithAI(essayText, evaluation) {
     </div>
 
     <div class="pane">
-      <div class="pane-title">Your strengths &amp; next steps</div>
-      ${strengthsList}
-      ${weaknessList}
-      <p class="feedback-text" style="border-left:3px solid var(--gold);"><strong>To reach the next level:</strong> ${esc(narrative.nextSteps)}</p>
+      <div class="pane-title">Overview from Round 4</div>
+      ${fbLine(narrative.round4Strengths, 'var(--good)')}
+      ${fbLine(narrative.round4Weaknesses, 'var(--accent)')}
     </div>
 
     <div class="pane">
-      <div class="pane-title">Writing Task Analysis (Round 4) <span class="badge" style="background:var(--ink-soft)">${displayWritingLevel}</span></div>
+      <div class="pane-title">Detailed analysis of Round 4 <span class="badge" style="background:var(--ink-soft)">${displayWritingLevel}</span></div>
       <p class="feedback-text"><strong>AI Feedback:</strong> ${esc(evaluation.feedback||'')}</p>
       <table class="report-table">
         <tbody>
@@ -919,6 +922,11 @@ function finishWithAI(essayText, evaluation) {
           ${makeCompletionBar('Word count', 'Word count plotted on the CEFR scale', wcPos, validWC)}
         </tbody>
       </table>
+    </div>
+
+    <div class="pane">
+      <div class="pane-title">Next steps</div>
+      <p class="feedback-text" style="border-left:3px solid var(--gold);">${esc(narrative.nextSteps)}</p>
     </div>
   `;
 
