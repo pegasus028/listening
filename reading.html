@@ -1349,7 +1349,7 @@
     function returnToDashboard() {
         try {
             if (window.parent && window.parent !== window) {
-                window.parent.postMessage({type:'cefr_return'}, '*');
+                window.parent.postMessage({type:'cefr_return', skill:'reading'}, '*');
             }
         } catch(e) {}
     }
