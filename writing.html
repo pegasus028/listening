@@ -47,6 +47,7 @@ ul.rules{margin:0 0 30px;padding-left:18px;color:var(--ink-soft);font-size:.96re
 .inum{font-family:"Fraunces",serif;font-weight:600;color:#fff;background:var(--accent);min-width:25px;height:25px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:.86rem;flex:none;}
 .iq{font-size:1.04rem;font-weight:500;flex:1;}
 .ihelp{font-size:.78rem;color:var(--ink-faint);margin:0 0 10px;}
+.qsentence{font-size:1.04rem;line-height:1.7;margin:2px 0 12px;}
 .tray{display:flex;flex-wrap:wrap;gap:9px;padding:12px;border:1.5px dashed var(--line-strong);border-radius:12px;background:#fdf8ef;min-height:54px;align-content:flex-start;}
 .tray.answer{border-style:solid;border-color:var(--accent-soft);background:#fffaf3;margin-bottom:9px;}
 .tray.vert{flex-direction:column;}
@@ -254,8 +255,12 @@ function renderRound(){
   document.getElementById('lvl-num').innerText=node.level;
   setPips('pips',state.round);
   document.getElementById('scene').innerHTML='<img src="images/' + node.scene + '.jpg" alt=""><div class="scene-cap">'+esc(node.theme)+'</div>';
-  document.getElementById('round-tag').innerText='Scenario · '+node.theme;
-  document.getElementById('round-instructions').innerText=node.instructions;
+  // Scenario description text removed: the scene image already shows the scenario,
+  // and each question carries its own instruction.
+  document.getElementById('round-tag').innerText='';
+  document.getElementById('round-tag').style.display='none';
+  document.getElementById('round-instructions').innerText='';
+  document.getElementById('round-instructions').style.display='none';
   const cb=document.getElementById('check-btn');cb.disabled=false;
   const host=document.getElementById('items');host.innerHTML='';
   node.items.forEach((it,idx)=>{
@@ -265,7 +270,8 @@ function renderRound(){
     else if(it.type==='paraorg'){inner+='<div class="ihelp">Tap a sentence to move it to the ordered paragraph. Tap again to return it.</div><div class="tray answer vert" data-role="answer"><span class="tray-label">Ordered paragraph</span></div><div class="tray vert" data-role="bank"><span class="tray-label">Sentences (wrong order)</span></div>';}
     else if(it.type==='error'){inner+='<div class="proof">'+it.tiles.map((wd,i)=>'<span class="word etile" data-i="'+i+'">'+esc(wd)+'</span>').join(' ')+'</div>';}
     else if(it.type==='match'){inner+='<div class="match"><div><div class="col-label">'+esc(it.leftLabel)+'</div><div class="m-col" data-side="L"></div></div><div><div class="col-label">'+esc(it.rightLabel)+'</div><div class="m-col" data-side="R"></div></div></div><div class="ihelp">Tap an item on the left, then its match on the right.</div><button class="reset-btn" data-reset>Reset matches</button>';}
-    else if(it.type==='transform'){inner+='<div class="ihelp">Tap the word to change its form until the sentence is correct.</div>';}
+    else if(it.type==='transform'){inner+='<div class="qsentence">'+esc(it.before)+'<span class="morph" data-i="0">'+esc(it.forms[0])+'</span>'+esc(it.after)+'</div>';}
+    else if(it.type==='dropdown'){inner+='<div class="qsentence">'+esc(it.before)+'<select class="inline-select"><option value="">— choose —</option></select>'+esc(it.after)+'</div>';}
     else if(it.type==='radio'){inner+='<div class="opts">'+it.options.map((o,oi)=>'<label class="opt" data-oi="'+oi+'"><span class="dot"></span><span class="ltr">'+'ABCD'[oi]+'</span><span>'+esc(o)+'</span></label>').join('')+'</div>';}
     w.innerHTML=inner;host.appendChild(w);wireItem(w,it);
   });
@@ -275,10 +281,10 @@ function renderRound(){
 function itemQuestion(it){
   if(it.type==='build')return esc(it.prompt);
   if(it.type==='paraorg')return 'Put the sentences in the correct order';
-  if(it.type==='error')return 'One part of this sentence has a mistake. Tap the single part that is wrong.';
+  if(it.type==='error')return 'One part of this sentence has a mistake. Tap the part that is wrong.';
   if(it.type==='match')return 'Match each item on the left to the right.';
-  if(it.type==='dropdown')return esc(it.before)+'<select class="inline-select"><option value="">— choose —</option></select>'+esc(it.after);
-  if(it.type==='transform')return esc(it.before)+'<span class="morph" data-i="0">'+esc(it.forms[0])+'</span>'+esc(it.after);
+  if(it.type==='dropdown')return 'Choose the correct word(s) from the drop-down list to complete the sentence.';
+  if(it.type==='transform')return 'Tap the word to change its form until the sentence is correct.';
   if(it.type==='radio')return esc(it.prompt).replace('____','<b style="color:var(--accent-soft)">____</b>');
   return '';
 }
