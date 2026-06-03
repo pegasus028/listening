@@ -216,7 +216,7 @@
     const ORDER=['Pre-A1','A1','A2','B1','B2','C1'];
     const TEST_META=[
         ['Reading','<i>(6-12min)</i>','M4 7h16M4 12h16M4 17h10'],
-        ['Writing','<i>(8-18min)</i>','M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18zM2 2l7.586 7.586'],
+        ['Writing','<i>(10-30min)</i>','M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18zM2 2l7.586 7.586'],
         ['Listening','<i>(6-12min)</i>','M3 18v-6a9 9 0 0118 0v6M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z']
     ];
 
@@ -452,6 +452,16 @@
         if(n.nextSteps) lines.push('NEXT STEPS: '+n.nextSteps);
         if(n.grammarMissed && n.grammarMissed.length) lines.push('Grammar to review: '+n.grammarMissed.join('; '));
         if(s && Object.keys(s).length) lines.push('Writing sub-scores — cohesion '+s.cohesion+', grammar '+s.grammar+', vocab '+s.vocabulary+', topic '+s.topicAdherence+', length '+s.wordCount);
+        if(Array.isArray(r.roundResponses) && r.roundResponses.length){
+            lines.push('— Grammar rounds —');
+            r.roundResponses.forEach(rd=>{
+                lines.push('Round '+rd.round+' ('+rd.level+', '+rd.score+'/5):');
+                (rd.items||[]).forEach(it=>{
+                    const mark = it.result==='ok'?'✓':(it.result==='no'?'✗':'–');
+                    lines.push('  '+mark+' Q'+it.n+' ['+it.target+'] → '+it.answer);
+                });
+            });
+        }
         if(integ && integ.risk) lines.push('Integrity: '+integ.risk+' (left screen '+ (integ.leftScreenCount||0) +'x, ~'+(integ.totalSecondsAway||0)+'s away, pastes '+(integ.pasteCount||0)+')');
         return lines.join('\n');
     }

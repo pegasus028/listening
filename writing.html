@@ -212,7 +212,7 @@ button.main:disabled{background:var(--line-strong);cursor:not-allowed;transform:
 
 <script>
 const BANK={"A1_Route":{"level":"A1","theme":"Morning routine / Getting to school","scene":"A1_Route","instructions":"A school morning. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present simple (be)","prompt":"Put the words in order to make a correct sentence.","tiles":["My sister","is","a student","at Satriwithaya School"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Articles (a/an)","tiles":["She","eats","a","apple","every morning","before school"],"errorTile":2,"fix":"an"},{"type":"match","level":"A2","target":"Past simple (irregular verbs)","leftLabel":"Present","rightLabel":"Past","pairs":[{"left":"leave","right":"left"},{"left":"take","right":"took"},{"left":"ride","right":"rode"}]},{"type":"transform","level":"A2","target":"Comparatives","before":"The bus is ","after":" than the train.","forms":["slow","slower","slowest","more slow"],"correct":"slower"},{"type":"radio","level":"A2","target":"Going to (future)","prompt":"Look at the time! She ____ miss the bus.","options":["is going to","going to","will going","go to"],"answer":0}]},"A1_Confirm":{"level":"A1","theme":"A family afternoon at the park","scene":"A1_Confirm","instructions":"An afternoon in the park. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present simple (have got)","prompt":"Put the words in order to make a correct sentence.","tiles":["They","have","got","a new kite"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Subject pronoun","tiles":["Me","like","walking","in the park"],"errorTile":0,"fix":"I"},{"type":"match","level":"A1","target":"Plurals","leftLabel":"Singular","rightLabel":"Plural","pairs":[{"left":"child","right":"children"},{"left":"leaf","right":"leaves"},{"left":"family","right":"families"}]},{"type":"transform","level":"A1","target":"Present simple (3rd person)","before":"The dog ","after":" across the grass.","forms":["run","runs","running","is run"],"correct":"runs"},{"type":"radio","level":"A1","target":"Prepositions of place","prompt":"The picnic blanket is ____ the grass.","options":["on","into","onto","of"],"answer":0}]},"A2_Route":{"level":"A2","theme":"Searching for a lost item in the classroom","scene":"A2_Route","instructions":"A lost item in the classroom. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present continuous","prompt":"Put the words in order to make a correct sentence.","tiles":["She","is","searching","the classroom"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Plural agreement","tiles":["There","are","three","desk","in the room"],"errorTile":3,"fix":"desks"},{"type":"match","level":"B1","target":"Phrasal verbs","leftLabel":"Phrasal verb","rightLabel":"Meaning","pairs":[{"left":"look for","right":"try to find"},{"left":"give up","right":"stop trying"},{"left":"turn up","right":"appear unexpectedly"}]},{"type":"transform","level":"B1","target":"Present perfect","before":"I ","after":" my keys.","forms":["has lost","have lose","have lost","having lost"],"correct":"have lost"},{"type":"radio","level":"B1","target":"First conditional","prompt":"If anyone ____ it, I hope they will take it to the lost and found office.","options":["finds","find","finding","found"],"answer":0}]},"A2_Confirm":{"level":"A2","theme":"Planning a weekend trip","scene":"A2_Confirm","instructions":"Planning a weekend trip. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A2","target":"Past simple","prompt":"Put the words in order to make a correct sentence.","tiles":["We","bought","the","train","tickets"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"A2","target":"Past simple (irregular)","tiles":["We","goed","to the website","to check prices"],"errorTile":1,"fix":"went"},{"type":"match","level":"A2","target":"Quantifiers / partitives","leftLabel":"Phrase","rightLabel":"Noun","pairs":[{"left":"A bottle of","right":"water"},{"left":"A slice of","right":"cake"},{"left":"A few","right":"tickets"}]},{"type":"transform","level":"A2","target":"Superlatives","before":"It is the ","after":" flight available.","forms":["cheap","cheaper","cheapest","most cheap"],"correct":"cheapest"},{"type":"radio","level":"A2","target":"Should (advice)","prompt":"We want a good seat. We ____ arrive early.","options":["should","must to","ought","has to"],"answer":0}]},"B1_Route":{"level":"B1","theme":"Organizing a school concert","scene":"B1_Route","instructions":"Organizing a school concert. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"B2","target":"Future perfect (passive)","prompt":"Put the words in order to make a correct sentence.","tiles":["By next Friday,","the photos of the concert","will have been","posted online"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A2","target":"Comparative","tiles":["The","main stage","is","more big","than","the one","in the music room"],"errorTile":3,"fix":"bigger"},{"type":"paraorg","level":"A2","target":"Chronological order","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["The band arrived at the hall very early.","First, they built the main music stage.","Then, they set up the food stalls.","Finally, the event started, right on time."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"B2","target":"Third conditional","before":"If the band had missed their train, the concert ","after":" ruined.","options":["would have been","was","had been","will be"],"answer":0},{"type":"transform","level":"B2","target":"Passive (present perfect)","before":"The concert ","after":" by a local charity.","forms":["has sponsor","has been sponsored","was been sponsored","is sponsor"],"correct":"has been sponsored"}]},"B1_Confirm":{"level":"B1","theme":"A disastrous restaurant dinner","scene":"B1_Confirm","instructions":"A disastrous restaurant dinner. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"B1","target":"Passive voice (simple)","prompt":"Put the words in order to make a correct passive sentence.","tiles":["We","were","given","the","wrong bill"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"B1","target":"Present perfect vs past simple","tiles":["When we sat down,","I","have noticed","the dirty glasses"],"errorTile":2,"fix":"noticed"},{"type":"paraorg","level":"B1","target":"Pronouns and sequence","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["Mark ordered the expensive steak for his main course.","When the food arrived, it was completely cold and tasted awful.","He politely called the waiter over to complain about the food.","Because of the terrible service, he decided not to leave a tip."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"B1","target":"Second conditional","before":"If the manager cared about customers, he ","after":" immediately.","options":["would apologize","will apologize","apologizes","had apologized"],"answer":0},{"type":"transform","level":"B1","target":"Used to (past habit)","before":"Before it changed owners, this restaurant ","after":" fantastic.","forms":["uses to be","used be","used to be","was use to"],"correct":"used to be"}]},"B2_Route":{"level":"B2","theme":"A difficult construction project","scene":"B2_Route","instructions":"A difficult construction project. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"C1","target":"Cleft sentence (it-cleft)","prompt":"Put the words in order to make a correct emphatic sentence.","tiles":["It was","the weather","that","delayed","the construction"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"B1","target":"Reported speech (backshift)","tiles":["During yesterday's meeting,","the manager","promised that","the team","will","finish on time"],"errorTile":4,"fix":"would"},{"type":"paraorg","level":"B1","target":"Narrative flow","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["A massive storm suddenly flooded the building site.","Faced with this flood, the chief engineer had to choose a solution quickly.","The first solution she considered was to build a temporary bridge.","If that bridge proved unfeasible, her second option was to redirect the river completely."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"C1","target":"Inversion (negative adverbial)","before":"Not only ","after":" leak, but the walls also cracked.","options":["did the roof","the roof did","the roof","did leak the roof"],"answer":0},{"type":"transform","level":"C1","target":"Causative (have something done)","before":"The company ","after":" the broken pipes replaced yesterday.","forms":["had","has","is having","have"],"correct":"had"}]},"B2_Confirm":{"level":"B2","theme":"A space exploration mission emergency","scene":"B2_Confirm","instructions":"A space mission emergency. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"B2","target":"Passive (modal)","prompt":"Put the words in order to make a correct sentence.","tiles":["The rocket","must","be launched","by tomorrow"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"B2","target":"Mixed conditional","tiles":["If the crew","had packed","enough fuel,","they","will","be safe now"],"errorTile":4,"fix":"would"},{"type":"paraorg","level":"B2","target":"Contrast and linkers","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["The mission was proceeding perfectly until the third day.","On that day, the main engine completely shut down without warning.","Despite this sudden engine shutdown, the commander refused to panic.","Instead, she immediately activated the backup life-support systems."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"B2","target":"Reduced relative clause","before":"The astronauts ","after":" the satellite can return inside.","options":["repairing","who repairing","repaired","they repair"],"answer":0},{"type":"transform","level":"B2","target":"Future continuous","before":"This time next week, the crew ","after":" Mars.","forms":["orbit","orbited","will be orbiting","were orbiting"],"correct":"will be orbiting"}]},"C1_Route":{"level":"C1","theme":"A corporate cybersecurity breach","scene":"C1_Route","instructions":"A corporate cybersecurity breach. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"C1","target":"Inversion (conditional)","prompt":"Put the words in order to make a correct formal sentence.","tiles":["Had they upgraded the firewall,","the data","would be","safe"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"B2","target":"Passive infinitive","tiles":["The","security breach","must","investigate","immediately"],"errorTile":3,"fix":"be investigated"},{"type":"paraorg","level":"B2","target":"Exemplification and result","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["A severe vulnerability was recently discovered in the corporate network.","Specifically, this flaw allowed hackers to easily bypass the outdated password system.","As a result of that breach, the intruders successfully stole sensitive client information.","To prevent any future data leaks, the CEO has now hired a completely new cybersecurity team."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"C1","target":"Cleft (what-cleft)","before":"","after":" shocked the board most was the sheer scale of the theft.","options":["What","That","Something","It"],"answer":0},{"type":"transform","level":"C1","target":"Subjunctive","before":"The lawyers recommended that the CEO ","after":" immediately.","forms":["to resign","resign","resigning","was resigned"],"correct":"resign"}]},"C1_Confirm":{"level":"C1","theme":"An archaeological discovery","scene":"C1_Confirm","instructions":"An archaeological discovery. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"C1","target":"Fronting / emphasis","prompt":"Put the words in order to make a correct emphatic sentence.","tiles":["Never before","had archaeologists","unearthed","such a treasure"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"C1","target":"Inversion agreement","tiles":["Rarely","do","this archaeologist","uncover","such preserved ruins"],"errorTile":1,"fix":"does"},{"type":"paraorg","level":"C1","target":"Argumentative structure","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["A recent archaeological excavation has sparked a fierce debate among historians regarding a newly unearthed stone tablet.","Proponents of the discovery claim that the intricate patterns on this artifact represent humanity's earliest known writing system.","Skeptics, however, dismiss this linguistic interpretation, arguing that the supposed symbols are merely natural geological scratches.","Resolving this polarizing academic dispute will ultimately require advanced microscopic analysis of the contested marks."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"C1","target":"Ellipsis / substitution","before":"The researchers verified the findings, and the university ","after":" too.","options":["did so","did it make","made so","have did"],"answer":0},{"type":"transform","level":"C1","target":"Unreal past (wish)","before":"The historian wishes he ","after":" the site decades ago.","forms":["excavated","had excavated","has excavated","would excavate"],"correct":"had excavated"}]}};
-const ESSAYS={"A1":{"format":"Social media comment","level":"A1","wordTarget":[30,50],"scenario":"A friend posted a photo of their new pet dog. Leave a friendly comment on the post.","subQuestions":["Say what you think about the dog.","Ask one question about the pet.","Tell your friend one thing you like to do with animals."],"sec":300},"A2":{"format":"Informal letter to a friend","level":"A2","wordTarget":[60,90],"scenario":"Write an informal letter (or message) to a friend about a trip you took recently.","subQuestions":["Describe where you went and who you went with.","Explain how you felt about the trip.","Suggest what your friend should do if they visit the same place."],"sec":360},"B1":{"format":"Formal letter — job application","level":"B1","wordTarget":[120,160],"scenario":"You saw an advertisement for a part-time job at a local café. Write a formal letter applying for the position.","subQuestions":["Discuss why you are interested in the job.","Explain what experience or qualities you would bring to the role.","Say when you are available for an interview or to start working."],"sec":480},"B2":{"format":"Comparative essay","level":"B2","wordTarget":[180,230],"scenario":"Write a comparative essay on the following topic: “The advantages and disadvantages of social media.”","subQuestions":["Discuss the main benefits of social media.","Explain how you feel about its effect on everyday life.","Recommend what individuals or companies should do to use it responsibly."],"sec":600},"C1":{"format":"Persuasive speech","level":"C1","wordTarget":[250,320],"scenario":"Write a speech calling for action on a serious issue: “It is time to end animal testing.”","subQuestions":["Discuss why this issue matters and who is affected by it.","Explain how you feel about the current situation and why change is urgent.","Argue what governments, companies, or individuals should do about it."],"sec":720}};
+const ESSAYS={"A1":{"format":"Social media comment","level":"A1","wordTarget":[25,40],"scenario":"A friend posted a photo of their new pet dog. Leave a friendly comment on the post.","subQuestions":["Say what you think about the dog.","Ask one question about the pet.","Tell your friend one thing you like to do with animals."],"sec":360},"A2":{"format":"Informal letter to a friend","level":"A2","wordTarget":[50,80],"scenario":"Write an informal letter (or message) to a friend about a trip you took recently.","subQuestions":["Describe where you went and who you went with.","Explain how you felt about the trip.","Suggest what your friend should do if they visit the same place."],"sec":480},"B1":{"format":"Formal letter — job application","level":"B1","wordTarget":[100,140],"scenario":"You saw an advertisement for a part-time job at a local café. Write a formal letter applying for the position.","subQuestions":["Discuss why you are interested in the job.","Explain what experience or qualities you would bring to the role.","Say when you are available for an interview or to start working."],"sec":720},"B2":{"format":"Comparative essay","level":"B2","wordTarget":[150,190],"scenario":"Write a comparative essay on the following topic: “The advantages and disadvantages of social media.”","subQuestions":["Discuss the main benefits of social media.","Explain how you feel about its effect on everyday life.","Recommend what individuals or companies should do to use it responsibly."],"sec":900},"C1":{"format":"Persuasive speech","level":"C1","wordTarget":[220,260],"scenario":"Write a speech calling for action on a serious issue: “It is time to end animal testing.”","subQuestions":["Discuss why this issue matters and who is affected by it.","Explain how you feel about the current situation and why change is urgent.","Argue what governments, companies, or individuals should do about it."],"sec":1080}};
 
 const FULL_ORDER=['Pre-A1','A1','A2','B1','B2','C1'];
 const LADDER=['Pre-A1','A1','A2','B1','B2','C1'];
@@ -316,6 +316,46 @@ function gradeItem(w,it){
   return null;
 }
 
+// Extract a human-readable record of what the student actually answered, for the Sheet.
+function readItemResponse(w,it){
+  try{
+    if(it.type==='build'){
+      const ans=w.querySelector('[data-role="answer"]');
+      const words=[...ans.querySelectorAll('.chip')].map(c=>c.textContent.trim());
+      return words.length? words.join(' ') : '(blank)';
+    }
+    if(it.type==='paraorg'){
+      const ans=w.querySelector('[data-role="answer"]');
+      const segs=[...ans.querySelectorAll('.chip')].map(c=>c.dataset.si);
+      return segs.length? ('order '+segs.map(x=>parseInt(x)+1).join('→')) : '(blank)';
+    }
+    if(it.type==='error'){
+      if(w._flag==null) return '(blank)';
+      return 'flagged: "'+it.tiles[w._flag]+'"';
+    }
+    if(it.type==='match'){
+      const p=w._matchPairs||{};
+      const keys=Object.keys(p);
+      if(!keys.length) return '(blank)';
+      return keys.map(k=>it.pairs[parseInt(k)].left+'→'+it.pairs[parseInt(p[k])].right).join('; ');
+    }
+    if(it.type==='dropdown'){
+      const sel=w.querySelector('select'); const v=sel.value;
+      if(v==='') return '(blank)';
+      return '"'+it.options[parseInt(v)]+'"';
+    }
+    if(it.type==='transform'){
+      return '"'+w.querySelector('.morph').textContent+'"';
+    }
+    if(it.type==='radio'){
+      const s=w.querySelector('.opt.sel');
+      if(!s) return '(blank)';
+      return '"'+it.options[parseInt(s.dataset.oi)]+'"';
+    }
+  }catch(e){}
+  return '';
+}
+
 const UPMAP={A1_Route:'A2_Route',A2_Route:'B1_Route',B1_Route:'B2_Route',B2_Route:'C1_Route',C1_Route:'C1_Route'};
 const DOWNMAP={C1_Route:'B2_Route',B2_Route:'B1_Route',B1_Route:'A2_Route',A2_Route:'A1_Route',A1_Route:'A1_Route'};
 const CONFIRM={A1:'A1_Confirm',A2:'A2_Confirm',B1:'B1_Confirm',B2:'B2_Confirm',C1:'C1_Confirm'};
@@ -324,12 +364,12 @@ function submitRound(){
   if(submitting)return;submitting=true;
   const node=BANK[state.node];
   const wraps=[...document.querySelectorAll('.gitem')];
-  let score=0,unfinished=0,detail=[];
-  wraps.forEach((w,i)=>{const r=gradeItem(w,node.items[i]);const tag=(r===null?'un':(r?'ok':'no'));detail.push(tag);if(r===true)score++;if(r===null)unfinished++;});
+  let score=0,unfinished=0,detail=[],responses=[];
+  wraps.forEach((w,i)=>{const r=gradeItem(w,node.items[i]);const tag=(r===null?'un':(r?'ok':'no'));detail.push(tag);if(r===true)score++;if(r===null)unfinished++;responses.push(readItemResponse(w,node.items[i]));});
   const passed=score>=3;
   // record richer history (used later for the personalized report and to break the ceiling)
   state.scoreHist.push({node:state.node,level:node.level,score:score,unfinished:unfinished,passed:passed,
-    targets:node.items.map((it,i)=>({target:it.target,type:it.type,result:detail[i]}))});
+    targets:node.items.map((it,i)=>({target:it.target,type:it.type,result:detail[i],response:responses[i]}))});
 
   let nextAction;
   if(state.round>=3){
@@ -740,17 +780,24 @@ function finishWithAI(essayText, evaluation) {
     </div>
 
     <div class="pane">
-      <div class="pane-title">Your strengths &amp; next steps</div>
-      ${strengthsList}
-      ${weaknessList}
-      <p class="feedback-text" style="border-left:3px solid var(--gold);"><strong>To reach the next level:</strong> ${esc(narrative.nextSteps)}</p>
-    </div>
-
-    <div class="pane">
       <div class="pane-title">Grammar &amp; Syntax Check <span class="badge" style="background:var(--ink-soft)">${grammarLevel}</span></div>
       <p style="color:var(--ink-soft); font-size: 0.95rem; margin:0 0 14px;">Level achieved through the adaptive scenario rounds (Rounds 1–3).</p>
       <div class="bar-wrap"><div class="bar-fill" style="width: ${gScore}%;"></div></div>
       <div class="bar-labels"><span>Pre-A1</span><span>A1</span><span>A2</span><span>B1</span><span>B2</span><span>C1</span></div>
+    </div>
+
+    <div class="pane">
+      <div class="pane-title">Writing Task Result <span class="badge" style="background:var(--ink-soft)">${aiLevel}</span></div>
+      <p style="color:var(--ink-soft); font-size: 0.95rem; margin:0 0 14px;">Level of your free-writing response in Round 4 (full breakdown below).</p>
+      <div class="bar-wrap"><div class="bar-fill" style="width: ${wScore}%;"></div></div>
+      <div class="bar-labels"><span>Pre-A1</span><span>A1</span><span>A2</span><span>B1</span><span>B2</span><span>C1</span></div>
+    </div>
+
+    <div class="pane">
+      <div class="pane-title">Your strengths &amp; next steps</div>
+      ${strengthsList}
+      ${weaknessList}
+      <p class="feedback-text" style="border-left:3px solid var(--gold);"><strong>To reach the next level:</strong> ${esc(narrative.nextSteps)}</p>
     </div>
 
     <div class="pane">
@@ -772,14 +819,28 @@ function finishWithAI(essayText, evaluation) {
   document.getElementById('results-screen').classList.remove('hidden');
   document.getElementById('results-screen').classList.add('fade');
 
+  // Build a readable per-round record of every grammar item: the target, what the
+  // student answered, and whether it was correct — for the Google Sheet.
+  const roundResponses = (state.scoreHist||[]).map((r,ri)=>({
+    round: ri+1,
+    node: r.node,
+    level: r.level,
+    score: r.score,
+    items: (r.targets||[]).map((t,ti)=>({
+      n: ti+1, target: t.target, type: t.type,
+      answer: t.response||'', result: t.result
+    }))
+  }));
+
   // Hand the hub: final level, essay text, validated scores, the personalised
-  // narrative, and the integrity telemetry — everything the tracking sheet needs.
+  // narrative, the round-by-round responses, and the integrity telemetry.
   reportToHub(finalCombinedLevel, essayText, {
     scores: s,
     grammarLevel: grammarLevel,
     writingLevel: aiLevel,
     combinedScore: combinedScore,
     narrative: narrative,
+    roundResponses: roundResponses,
     integrity: integritySummary()
   });
   scrollTopNow();
