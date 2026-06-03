@@ -729,8 +729,7 @@ function buildNarrative(grammarLevel, aiLevel, s, finalLevel, noContent){
     ['Cohesion & linking', s.cohesion],
     ['Grammatical range & accuracy', s.grammar],
     ['Vocabulary range & precision', s.vocabulary],
-    ['Task completion', s.topicAdherence],
-    ['Word count', s.wordCount]
+    ['Task completion', s.topicAdherence]
   ];
   const sorted=dims.slice().sort((a,b)=>b[1]-a[1]);
   const strengths=sorted.filter(d=>d[1]>=60).slice(0,2).map(d=>d[0]);
@@ -749,15 +748,41 @@ function buildNarrative(grammarLevel, aiLevel, s, finalLevel, noContent){
       : 'No single area stands out as weak — keep building range.';
   }
 
-  // ----- Next steps: short advice toward the next CEFR level, all rounds considered -----
-  const stepHint={
-    'Pre-A1':'Build core vocabulary and write very short, correct sentences daily.',
-    'A1':'Join short sentences with and / but / because, and practise past and future forms.',
-    'A2':'State a main idea, give opinions with reasons, and vary your linking words.',
-    'B1':'Present both sides of an argument and use cohesive devices (however, as a result).',
-    'B2':'Add nuance (tends to, arguably), address counter-arguments, and lift your vocabulary.',
-    'C1':'Refine tone and register, use idiom precisely, and tighten complex sentences.'
-  }[finalLevel] || '';
+  // ----- Next steps: considers BOTH the grammar level (Rounds 1–3) and the writing
+  // level (Round 4). When the two disagree sharply it diagnoses the likely cause and
+  // gives a concrete recommendation; otherwise it gives level-appropriate study advice. -----
+  const levelHint={
+    'Pre-A1':'build core vocabulary and write very short, correct sentences daily',
+    'A1':'join short sentences with and / but / because, and practise past and future forms',
+    'A2':'state a main idea, give opinions with reasons, and vary your linking words',
+    'B1':'present both sides of an argument and use cohesive devices (however, as a result)',
+    'B2':'add nuance (tends to, arguably), address counter-arguments, and lift your vocabulary',
+    'C1':'refine tone and register, use idiom precisely, and tighten complex sentences'
+  };
+  const gI = FULL_ORDER.indexOf(grammarLevel);
+  const wBand = noContent ? 'Pre-A1' : aiLevel;
+  const wI = FULL_ORDER.indexOf(wBand);
+  const gap = (gI>=0 && wI>=0) ? (wI - gI) : 0;   // + means writing higher than grammar
+  let nextSteps;
+  if(noContent){
+    nextSteps = 'No writing was submitted, so this result reflects the grammar rounds only. '
+      + 'Re-take the test and complete the Round 4 writing task to get a full, accurate placement.';
+  } else if(gap >= 2){
+    // Writing markedly stronger than grammar (e.g. the Pre-A1 grammar / B2 writing case).
+    nextSteps = 'There is a large gap between your grammar rounds ('+grammarLevel+') and your writing ('+wBand+'). '
+      + 'This usually means the grammar rounds did not reflect your true ability — for example if they were rushed. '
+      + 'We recommend re-taking Rounds 1–3 (the grammar section) so your overall level is accurate. '
+      + 'Meanwhile, to keep improving your writing, '+(levelHint[wBand]||levelHint['B1'])+'.';
+  } else if(gap <= -2){
+    // Grammar markedly stronger than writing.
+    nextSteps = 'Your grammar ('+grammarLevel+') is well ahead of your writing ('+wBand+'). '
+      + 'Focus on putting that grammar into longer written responses: '+(levelHint[wBand]||levelHint['A2'])+'. '
+      + 'Aim to write a full response to each prompt rather than a few short sentences.';
+  } else {
+    // Balanced: advise toward the next band above the overall level.
+    const nextUp = FULL_ORDER[Math.min(FULL_ORDER.length-1, Math.max(gI,wI)+1)] || finalLevel;
+    nextSteps = 'To move toward '+nextUp+', '+(levelHint[finalLevel]||levelHint['A2'])+'.';
+  }
 
   // Combined text fields kept for the Google Sheet / backward compatibility.
   const strengthsText = (rounds13Strengths+' '+round4Strengths).trim();
@@ -767,7 +792,8 @@ function buildNarrative(grammarLevel, aiLevel, s, finalLevel, noContent){
     finalLevel, grammarLevel, writingLevel: noContent ? 'Pre-A1' : aiLevel,
     rounds13Strengths, rounds13Weaknesses,
     round4Strengths, round4Weaknesses,
-    nextSteps: stepHint,
+    nextSteps,
+    levelGap: gap,
     strengthsText, weaknessesText,
     grammarMissed: missed,
     grammarMastered: mastered,
@@ -790,14 +816,11 @@ function finishWithAI(essayText, evaluation) {
     topicAdherence:clampScore(raw.topicAdherence, 0)
   };
 
-  // ---- Validated word count drives the Task Completion bar and the length factor ----
+  // ---- Validated word count: shown as informational text only (NOT scored) ----
   const validWC = validatedWordCount(essayText);
-  const wcPos   = wordCountToCEFRpos(validWC);          // 0–100 position on the CEFR axis
-  // This level's minimum word target (lower bound), used for the completion factor.
-  const lvlMin  = { 'Pre-A1':25,'A1':25,'A2':50,'B1':100,'B2':150,'C1':220 }[aiLevel] || 25;
 
-  // Content gate: with essentially no real writing there is nothing to assess, so every
-  // bar reads Pre-A1 regardless of the grammar level reached in Rounds 1–3.
+  // Content gate: with essentially no real writing there is nothing to assess, so the
+  // writing side reads Pre-A1 regardless of the grammar level reached in Rounds 1–3.
   const noContent = validWC < 5;
 
   // Safety net: keep each ability dimension within one CEFR band of the overall writing
@@ -809,35 +832,32 @@ function finishWithAI(essayText, evaluation) {
         sVoc = capDim(s.vocabulary), sTop = capDim(s.topicAdherence);
 
   // ---- Writing sub-score (the only sample of real production) ----
-  // The four ability dimensions are weighted; length is NOT an ability — it is applied
-  // as a fair completion factor measured against THIS level's minimum target:
-  //   • 0 words            -> factor 0  -> writing sub-score 0 (all bars Pre-A1)
-  //   • under the minimum  -> proportional credit, never harsher than the words justify
-  //   • at/above minimum   -> full credit (extra words give NO bonus here; quality is
-  //                           rewarded through the other four criteria instead)
-  const abilityScore = (sCoh*0.25 + sGra*0.35 + sVoc*0.20 + sTop*0.20);
-  const completion = noContent ? 0 : Math.max(0, Math.min(1, validWC / lvlMin));
-  const wScore = Math.round(abilityScore * completion);
+  // Four weighted ability dimensions. Word count is NOT a factor here — it is reported
+  // as text only, so a short-but-strong response is no longer unfairly suppressed.
+  const wScore = noContent ? 0 : Math.round(sCoh*0.25 + sGra*0.35 + sVoc*0.20 + sTop*0.20);
 
-  // The writing level shown to the student: Pre-A1 when there is no real content,
-  // otherwise the AI's assessed band. (wScore already collapses to 0 when noContent.)
-  const displayWritingLevel = noContent ? 'Pre-A1' : aiLevel;
+  // Band shown for the writing task (used in the Writing Task Result pane + badge).
+  const writingBand = noContent ? 'Pre-A1' : scoreToLevel(wScore);
+  const displayWritingLevel = writingBand;
 
-  // ---- Grammar section score ----
+  // ---- Grammar section level ----
   const gScore = cefrToNum[grammarLevel] !== undefined ? cefrToNum[grammarLevel] : 60;
 
-  // ---- Combined: balanced 50/50. This is a writing test, so the production sample
-  // carries equal weight to the auto-graded grammar section. ----
-  const combinedScore = Math.round((0.5 * gScore) + (0.5 * wScore));
-  const finalCombinedLevel = scoreToLevel(combinedScore);
+  // ---- Overall CEFR: a straight 50/50 AVERAGE of the two displayed band levels
+  // (Grammar & Syntax Check  and  Writing Task Result). Averaging the bands directly
+  // means the headline can never contradict the two panes it sits above. ----
+  const gIdx = FULL_ORDER.indexOf(grammarLevel) >= 0 ? FULL_ORDER.indexOf(grammarLevel) : 0;
+  const wIdx = FULL_ORDER.indexOf(writingBand) >= 0 ? FULL_ORDER.indexOf(writingBand) : 0;
+  const finalCombinedLevel = FULL_ORDER[Math.round((gIdx + wIdx) / 2)];
+  const combinedScore = Math.round((cefrToNum[finalCombinedLevel] || 0)); // for the bar width
 
   // Personalised narrative drawing on BOTH sections.
-  const narrative = buildNarrative(grammarLevel, aiLevel, s, finalCombinedLevel, noContent);
+  const narrative = buildNarrative(grammarLevel, writingBand, s, finalCombinedLevel, noContent);
 
   // Ability-dimension bar: the score is on the CEFR anchor scale (0=Pre-A1 … 100=C1),
   // so the fill maps directly onto the Pre-A1…C1 axis. We also snap the displayed band
   // label so the bar can't visually overshoot the writer's overall level.
-  function makeBar(label, sub, score) {
+  function makeBar(label, sub, score, footnote) {
     let w = Math.max(0, Math.min(100, score));
     return `
       <tr>
@@ -845,22 +865,7 @@ function finishWithAI(essayText, evaluation) {
         <td style="vertical-align: middle;">
           <div class="bar-wrap"><div class="bar-fill" style="width: ${w}%;"></div></div>
           <div class="bar-labels"><span>Pre-A1</span><span>A1</span><span>A2</span><span>B1</span><span>B2</span><span>C1</span></div>
-        </td>
-      </tr>`;
-  }
-
-  // Task-completion bar (CEFR axis): the student's validated word count is plotted on the
-  // same Pre-A1…C1 scale as the other bars, where each tick is that level's MINIMUM word
-  // count (A1=25, A2=50, B1=100, B2=150, C1=220). Beyond the C1 minimum it caps at C1.
-  function makeCompletionBar(label, sub, pos, words){
-    let w = Math.max(0, Math.min(100, pos));
-    return `
-      <tr>
-        <td style="width: 45%;"><strong>${label}</strong><br><span style="font-size:0.8em;color:var(--ink-faint)">${sub}</span></td>
-        <td style="vertical-align: middle;">
-          <div class="bar-wrap"><div class="bar-fill" style="width: ${w}%;"></div></div>
-          <div class="bar-labels"><span>Pre-A1</span><span>A1</span><span>A2</span><span>B1</span><span>B2</span><span>C1</span></div>
-          <div style="font-size:0.78rem;color:var(--ink-faint);margin-top:3px;">${words} words written</div>
+          ${footnote ? '<div style="font-size:0.78rem;color:var(--ink-faint);margin-top:3px;">'+footnote+'</div>' : ''}
         </td>
       </tr>`;
   }
@@ -881,7 +886,7 @@ function finishWithAI(essayText, evaluation) {
             ${FULL_ORDER.map(st => '<span class="step'+(st === finalCombinedLevel ? ' on' : '')+'">'+st+'</span>').join('')}
         </div>
       </div>
-      <p class="weight-note" style="text-align:center;">Calculation: 50% grammar section (Rounds 1–3) + 50% writing task (Round 4).</p>
+      <p class="weight-note" style="text-align:center;">Calculation: the average of your Grammar &amp; Syntax level (Rounds 1–3) and your Writing Task level (Round 4).</p>
     </div>
 
     <div class="pane">
@@ -918,8 +923,7 @@ function finishWithAI(essayText, evaluation) {
           ${makeBar('Cohesion & Connectives', 'Logical flow and linking words', sCoh)}
           ${makeBar('Grammatical Complexity', 'Syntax range and accuracy', sGra)}
           ${makeBar('Vocabulary Variance', 'Lexical diversity and precision', sVoc)}
-          ${makeBar('Task Completion', 'Addresses all parts of the prompt and stays on topic', sTop)}
-          ${makeCompletionBar('Word count', 'Word count plotted on the CEFR scale', wcPos, validWC)}
+          ${makeBar('Task Completion', 'Addresses all parts of the prompt and stays on topic', sTop, validWC+' words written')}
         </tbody>
       </table>
     </div>
